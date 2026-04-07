@@ -3,16 +3,48 @@ package com.projeto.unibook1
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.projeto.unibook1.ui.admin.AdminLoginScreen // Importa a tela que criamos
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+
+// Imports do seu amigo
+import com.projeto.unibook1.ui.admin.AdminLoginScreen
 import com.projeto.unibook1.ui.theme.Unibook1Theme
+
+// Seus imports
+import com.projeto.unibook1.usuario.mapa.MapScreen
+import com.projeto.unibook1.telasgerais.TelaReservaArmario
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             Unibook1Theme {
-                // Aqui você chama a função que criou na pasta admin
-                AdminLoginScreen()
+
+
+                val navController = rememberNavController()
+
+                NavHost(navController = navController, startDestination = "mapa") {
+
+                    // Tela de Login Zíltom
+                    composable("login_admin") {
+                        AdminLoginScreen()
+                    }
+
+                    // Tela do Mapa Renan
+                    composable("mapa") {
+                        MapScreen(
+                            onReservaClick = {
+                                navController.navigate("reserva")
+                            }
+                        )
+                    }
+
+                    // Tela de Reserva, essa é geral, de todo mundo
+                    composable("reserva") {
+                        TelaReservaArmario()
+                    }
+                }
             }
         }
     }
