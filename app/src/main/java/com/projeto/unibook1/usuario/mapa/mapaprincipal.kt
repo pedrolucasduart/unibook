@@ -16,14 +16,17 @@ import androidx.compose.foundation.rememberScrollState // 👈 Import do estado 
 // 👇 Aqui nós começamos direto na tela, sem a MainActivity!
 
 @Composable
-fun MapScreen(modifier: Modifier = Modifier) {
+fun MapScreen(
+        modifier: Modifier = Modifier,
+        onReservaClick: () -> Unit
+    ) {
     Scaffold(
         bottomBar = {
             BottomNavBar()
         }
     ) { paddingValues ->
 
-        // 👇 AQUI adicionamos o verticalScroll!
+
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -127,7 +130,7 @@ fun MapScreen(modifier: Modifier = Modifier) {
 
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
-                            onClick = {},
+                            onClick = {onReservaClick()},
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(text = "Reserva")
@@ -238,8 +241,7 @@ fun BottomNavBar() {
 @Preview(showBackground = true)
 @Composable
 fun MapScreenPreview() {
-    // Como tiramos o tema antigo, o preview usa o MaterialTheme padrão do Android por enquanto
     MaterialTheme {
-        MapScreen()
+        MapScreen(onReservaClick = {})
     }
 }
