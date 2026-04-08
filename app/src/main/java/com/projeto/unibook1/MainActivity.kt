@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 // Imports do seu amigo
 import com.projeto.unibook1.ui.admin.AdminLoginScreen
 import com.projeto.unibook1.ui.theme.Unibook1Theme
+import com.projeto.unibook1.usuario.mapa.CadastroScreen
 
 // Seus imports
 import com.projeto.unibook1.usuario.mapa.MapScreen
