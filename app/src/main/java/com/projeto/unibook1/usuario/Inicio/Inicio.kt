@@ -1,6 +1,5 @@
-package com.projeto.unibook1.tela.inicial
+package com.projeto.unibook1.usuario.Inicio
 
-import android.R
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
