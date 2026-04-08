@@ -1,4 +1,4 @@
-package com.projeto.unibook1.usuario.mapa // 👈 Pacote atualizado!
+package com.projeto.unibook1.usuario.mapa
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -10,20 +10,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.Alignment
-import androidx.compose.foundation.verticalScroll // 👈 Import da rolagem
-import androidx.compose.foundation.rememberScrollState // 👈 Import do estado da rolagem
-
-// 👇 Aqui nós começamos direto na tela, sem a MainActivity!
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 @Composable
-fun MapScreen(modifier: Modifier = Modifier) {
+fun MapScreen(
+    modifier: Modifier = Modifier,
+    onReservaClick: () -> Unit
+) {
+    // 👇 Arrumado: Faltava o } no final dessa linha!
+    var andarSelecionado by remember { mutableStateOf("Térreo") }
+
     Scaffold(
         bottomBar = {
             BottomNavBar()
         }
     ) { paddingValues ->
 
-        // 👇 AQUI adicionamos o verticalScroll!
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -56,18 +63,30 @@ fun MapScreen(modifier: Modifier = Modifier) {
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Button(
-                    onClick = { },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
-                ) {
-                    Text(text = "Térreo", color = Color.White)
+                // LÓGICA DO BOTÃO TÉRREO
+                if (andarSelecionado == "Térreo") {
+                    Button(
+                        onClick = { andarSelecionado = "Térreo" },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
+                    ) { Text(text = "Térreo", color = Color.White) }
+                } else {
+                    OutlinedButton(
+                        onClick = { andarSelecionado = "Térreo" },
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF8B9CB6))
+                    ) { Text(text = "Térreo") }
                 }
 
-                OutlinedButton(
-                    onClick = { },
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF8B9CB6))
-                ) {
-                    Text(text = "1º Andar")
+                // LÓGICA DO BOTÃO 1º ANDAR
+                if (andarSelecionado == "1º Andar") {
+                    Button(
+                        onClick = { andarSelecionado = "1º Andar" },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
+                    ) { Text(text = "1º Andar", color = Color.White) }
+                } else {
+                    OutlinedButton(
+                        onClick = { andarSelecionado = "1º Andar" },
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF8B9CB6))
+                    ) { Text(text = "1º Andar") }
                 }
             }
 
@@ -85,7 +104,8 @@ fun MapScreen(modifier: Modifier = Modifier) {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "[ Imagem do Mapa Aqui ]",
+                        // O texto muda conforme o botão que você apertou!
+                        text = if (andarSelecionado == "Térreo") "[ Imagem do Mapa Térreo Aqui ]" else "[ Imagem do Mapa 1º Andar Aqui ]",
                         color = Color(0xFF8B9CB6),
                         fontWeight = FontWeight.Bold
                     )
@@ -127,7 +147,7 @@ fun MapScreen(modifier: Modifier = Modifier) {
 
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
-                            onClick = {},
+                            onClick = { onReservaClick() },
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(text = "Reserva")
@@ -191,30 +211,45 @@ fun MapScreen(modifier: Modifier = Modifier) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = "🔵 ")
-                            Text(text = "Engenharia")
+                    // SE FOR TÉRREO, MOSTRA ISSO:
+                    if (andarSelecionado == "Térreo") {
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = "🔵 ")
+                                Text(text = "Engenharia")
+                            }
+                            Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = "🟠 ")
+                                Text(text = "Humanas")
+                            }
                         }
-                        Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = "🟠 ")
-                            Text(text = "Humanas")
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = "\uD83D\uDFE3")
+                                Text(text = "Direito")
+                            }
+                            Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = "\uD83D\uDFE2")
+                                Text(text = "Salas de Estudo OI")
+                            }
                         }
                     }
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = "\uD83D\uDFE3")
-                            Text(text = "Direito")
-                        }
-                        Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = "\uD83D\uDFE2")
-                            Text(text = "Salas de Estudo OI")
+                    // SE FOR 1º ANDAR, MOSTRA ISSO:
+                    else {
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = "🔴 ")
+                                Text(text = "Saúde")
+                            }
+                            Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = "⚪ ")
+                                Text(text = "Informática")
+                            }
                         }
                     }
-                }
-            }
+                } // 👇 Arrumado: Faltava fechar a Column aqui!
+            } // 👇 Arrumado: Faltava fechar o Card aqui!
 
-            // Um espacinho extra no final para a legenda não colar na barra inferior
             Spacer(modifier = Modifier.height(24.dp))
         }
     }
@@ -238,8 +273,7 @@ fun BottomNavBar() {
 @Preview(showBackground = true)
 @Composable
 fun MapScreenPreview() {
-    // Como tiramos o tema antigo, o preview usa o MaterialTheme padrão do Android por enquanto
     MaterialTheme {
-        MapScreen()
+        MapScreen(onReservaClick = {})
     }
 }
