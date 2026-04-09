@@ -297,6 +297,22 @@ fun TelaInicial(onReservaClick: () -> Unit) {
 
 }
 
+
+@Composable
+fun BottomNavBar() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Text(text = "🏠 Início")
+        Text(text = "🗺️ Mapa")
+        Text(text = "📚 Livros")
+        Text(text = "👤 Perfil")
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun TelaInicialPreview() {
