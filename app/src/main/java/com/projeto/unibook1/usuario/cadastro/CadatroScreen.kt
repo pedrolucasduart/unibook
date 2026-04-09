@@ -1,11 +1,14 @@
-package com.projeto.unibook1.usuario.mapa
+package com.projeto.unibook1.usuario.cadastro
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -61,7 +64,6 @@ fun CadastroScreen(
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Botão voltar
         Row(modifier = Modifier.fillMaxWidth()) {
             TextButton(onClick = onNavigateToLogin) {
                 Text("←", fontSize = 20.sp, color = Color(0xFF2196F3))
@@ -70,7 +72,6 @@ fun CadastroScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Ícone
         Surface(
             shape = RoundedCornerShape(50),
             color = Color(0xFFE3F0FF),
@@ -93,14 +94,14 @@ fun CadastroScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Campos
         CampoTexto("Nome Completo", "Seu nome completo", nomeCompleto) { nomeCompleto = it }
         CampoTexto("Número da Matrícula", "ex. 2023-0045", matricula) { matricula = it }
         CampoTexto("E-mail Institucional", "aluno@unifor.br", email, KeyboardType.Email) { email = it }
         CampoSenha("Senha", senha) { senha = it }
         CampoSenha("Confirmar Senha", confirmarSenha) { confirmarSenha = it }
 
-        // Mensagem de erro
+        RequisitosSenha(senha = senha)
+
         if (mensagemErro.isNotEmpty()) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(mensagemErro, color = Color.Red, fontSize = 13.sp)
@@ -108,7 +109,6 @@ fun CadastroScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Botão Cadastrar
         Button(
             onClick = { validar() },
             modifier = Modifier
@@ -122,7 +122,6 @@ fun CadastroScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Link login
         TextButton(onClick = onNavigateToLogin) {
             Text("Já possui conta? Fazer Login", color = Color(0xFF2196F3))
         }
@@ -131,8 +130,61 @@ fun CadastroScreen(
 
         Text("Precisa de ajuda?", color = Color.Gray, fontSize = 12.sp)
         TextButton(onClick = onNavigateToSuporte) {
-            Text("🛟 Contatar Suporte", color = Color(0xFF2196F3), fontSize = 13.sp)
+            Text("📞 Contatar Suporte", color = Color(0xFF2196F3), fontSize = 13.sp)
         }
+    }
+}
+
+@Composable
+fun RequisitosSenha(senha: String) {
+    val temOitoCaracteres = senha.length >= 8 // verificar se tem 8 caracteres
+    val temMaiusculaENumero = senha.any { it.isUpperCase() }
+            && senha.any { it.isDigit() }  // verfifica se tem letra maiuscula e numeros
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Text(
+            "REQUISITOS DA SENHA:",
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Gray
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        ItemRequisito("Mínimo de 8 caracteres", temOitoCaracteres)
+        ItemRequisito("Letras maiúsculas e números", temMaiusculaENumero)
+    }
+}
+
+@Composable
+fun ItemRequisito(texto: String, atendido: Boolean) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 2.dp)
+    ) {
+        if (atendido) {
+            Icon(
+                imageVector = Icons.Filled.CheckCircle,
+                contentDescription = null,
+                tint = Color(0xFF4CAF50),
+                modifier = Modifier.size(18.dp)
+            )
+        } else {
+            Surface(
+                shape = RoundedCornerShape(50),
+                color = Color.Transparent,
+                border = BorderStroke(1.5.dp, Color.Gray),
+                modifier = Modifier.size(18.dp)
+            ) {}
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            texto,
+            fontSize = 13.sp,
+            color = if (atendido) Color(0xFF4CAF50) else Color.Gray
+        )
     }
 }
 
