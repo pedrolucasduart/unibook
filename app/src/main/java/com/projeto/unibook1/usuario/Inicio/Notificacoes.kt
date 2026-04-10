@@ -75,7 +75,7 @@ fun NotificacoesScreen(
                 fontWeight = FontWeight.Bold
             )
         }
-            Text(text = "Hoje")
+            Text(text = "HOJE", color = Color(0xFF485569))
             Spacer(modifier = Modifier.height(24.dp))
             Column(
                 modifier = Modifier.background(Color.White)
