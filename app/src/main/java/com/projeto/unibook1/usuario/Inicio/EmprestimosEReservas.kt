@@ -56,6 +56,7 @@ fun TelaReservas(
         Column(
             modifier = Modifier.fillMaxSize().background(Color(0xFFF6F6F9)).padding(14.dp)
         ) {
+            Spacer(modifier = Modifier.height(24.dp))
             Text(text = "Empréstimos e Reservas",
                 style = MaterialTheme.typography.headlineLarge,
                 color = Color(0xFF1976D2),
