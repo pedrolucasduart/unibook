@@ -169,6 +169,7 @@ fun AcessoBiblioteca(
 
             }
             Spacer(modifier = Modifier.height(16.dp))
+
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = Color(0xFFEEF1F5))
