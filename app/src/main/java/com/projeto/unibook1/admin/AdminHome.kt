@@ -31,7 +31,8 @@ val TextoCinza = Color(0xFF6B7280)
 fun AdminMainScreen(
     modifier: Modifier = Modifier,
     onOpenScannerClick: () -> Unit = {},
-    onStudentClick: (String) -> Unit = {}
+    onStudentClick: (String) -> Unit = {},
+    onProfileClick: () -> Unit = {}
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -52,7 +53,8 @@ fun AdminMainScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             // 1. Cabeçalho (Perfil e Nome)
-            TopBarAdmin(nomeAdmin = "KELSON")
+            TopBarAdmin(nomeAdmin = "KELSON",
+                        onProfileClick = onProfileClick)
 
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -96,7 +98,8 @@ fun AdminMainScreen(
 
 @Composable
 
-fun TopBarAdmin(nomeAdmin: String) {
+fun TopBarAdmin(nomeAdmin: String,
+                onProfileClick: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -104,7 +107,7 @@ fun TopBarAdmin(nomeAdmin: String) {
     ) {
         // Botão de Perfil
         IconButton(
-            onClick = { },
+            onClick = onProfileClick,
             modifier = Modifier
                 .size(48.dp) // 👈 Tamanho da bolinha do botão
                 .clip(CircleShape)
@@ -127,7 +130,7 @@ fun TopBarAdmin(nomeAdmin: String) {
             fontSize = 20.sp,
             letterSpacing = 2.sp
         )
-        
+
     }
 }
 
