@@ -34,13 +34,13 @@ fun AdminMainScreen(
     onStudentClick: (String) -> Unit = {}
 ) {
     Scaffold(
-        modifier = modifier.fillMaxSize(), // 👈 A MÁGICA 1 ESTÁ AQUI!
+        modifier = modifier.fillMaxSize(),
         bottomBar = {
             AdminBottomNavBar()
         },
         containerColor = FundoApp
     ) { paddingValues ->
-        // ... (o resto da sua Column continua igualzinho aqui embaixo)
+
 
         Column(
             modifier = modifier
@@ -77,7 +77,7 @@ fun AdminMainScreen(
             )
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Lista de Estudantes (Hardcoded por enquanto, igual ao design)
+
             StudentItemCard(nome = "Zíltom mac", matricula = "2510359", onClick = { onStudentClick("Zíltom") })
             Spacer(modifier = Modifier.height(12.dp))
             StudentItemCard(nome = "Renan Rabelo", matricula = "2510364", onClick = { onStudentClick("Renan") })
@@ -86,13 +86,13 @@ fun AdminMainScreen(
             Spacer(modifier = Modifier.height(12.dp))
             StudentItemCard(nome = "Pedro Mendonça", matricula = "2310359", onClick = { onStudentClick("Mariana") })
 
-            // Espaço extra no final pro scroll não colar na barra
+
             Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
 
-// --- COMPONENTES MENORES (Para deixar o código organizado) ---
+// --- COMPONENTES MENORES
 
 @Composable
 
@@ -104,13 +104,13 @@ fun TopBarAdmin(nomeAdmin: String) {
     ) {
         // Botão de Perfil
         IconButton(
-            onClick = { /* Ação do perfil */ },
+            onClick = { },
             modifier = Modifier
                 .size(48.dp) // 👈 Tamanho da bolinha do botão
                 .clip(CircleShape)
                 .background(Color.White)
         ) {
-            // 👇 A MÁGICA ACONTECE AQUI: Forçamos o ícone a ter 24dp!
+
             Icon(
                 imageVector = Icons.Default.Person,
                 contentDescription = "Perfil",
@@ -127,14 +127,7 @@ fun TopBarAdmin(nomeAdmin: String) {
             fontSize = 20.sp,
             letterSpacing = 2.sp
         )
-
-        // Espaço vazio ou ícone da direita
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .clip(CircleShape)
-                .background(Color.White.copy(alpha = 0.5f))
-        )
+        
     }
 }
 
