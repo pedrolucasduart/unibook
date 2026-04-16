@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.projeto.unibook1.admin.AdminMainScreen
+import com.projeto.unibook1.admin.ProfileScreen
 
 // Imports do seu amigo
 import com.projeto.unibook1.ui.admin.AdminLoginScreen
@@ -26,7 +28,7 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "login_aluno") {
+                NavHost(navController = navController, startDestination = "admin_main") {
 
                     // Tela de Login do Aluno - Pedro
                     composable(route = "login_aluno") {
@@ -43,6 +45,22 @@ class MainActivity : ComponentActivity() {
                         CadastroScreen(
                             onNavigateToLogin = { navController.navigate(route = "login_aluno") },
                             onNavigateToSuporte = { }
+                        )
+                    }
+
+                    // Tela principal do Admin - Ziltom
+                    composable("admin_main") {
+                        AdminMainScreen(
+                            onOpenScannerClick = { },
+                            onStudentClick = { },
+                            onProfileClick = { navController.navigate("perfil_admin") }
+                        )
+                    }
+
+                    composable("perfil_admin") {
+                        ProfileScreen(
+                            onBackClick = { navController.popBackStack() },
+                            onChangeProfilePictureClick = { }
                         )
                     }
 
@@ -63,14 +81,6 @@ class MainActivity : ComponentActivity() {
                     // Tela de Reserva, essa é geral, de todo mundo
                     composable("reserva") {
                         TelaReservaArmario()
-                    }
-
-                    // Tela de Cadastro - Pedro
-                    composable(route = "cadastro") {
-                        CadastroScreen(
-                            onNavigateToLogin = { navController.navigate(route = "mapa") },
-                            onNavigateToSuporte = { }
-                        )
                     }
                 }
             }
