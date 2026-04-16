@@ -1,4 +1,4 @@
-/*package com.projeto.unibook1
+package com.projeto.unibook1
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,6 +15,7 @@ import com.projeto.unibook1.usuario.cadastro.CadastroScreen
 // Seus imports
 import com.projeto.unibook1.usuario.mapa.MapScreen
 import com.projeto.unibook1.telasgerais.TelaReservaArmario
+import com.projeto.unibook1.usuario.cadastro.LoginAlunoScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +26,25 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "cadastro") {
+                NavHost(navController = navController, startDestination = "login_aluno") {
+
+                    // Tela de Login do Aluno - Pedro
+                    composable(route = "login_aluno") {
+                        LoginAlunoScreen(
+                            onNavigateToCadastro = { navController.navigate(route = "cadastro") },
+                            onNavigateToSuporte = { },
+                            onEsqueceuSenha = { },
+                            onLoginSucesso = { navController.navigate(route = "login_aluno") }
+                        )
+                    }
+
+                    // Tela de Cadastro - Pedro
+                    composable(route = "cadastro") {
+                        CadastroScreen(
+                            onNavigateToLogin = { navController.navigate(route = "login_aluno") },
+                            onNavigateToSuporte = { }
+                        )
+                    }
 
                     // Tela de Login Zíltom
                     composable("login_admin") {
@@ -58,5 +77,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
- */
