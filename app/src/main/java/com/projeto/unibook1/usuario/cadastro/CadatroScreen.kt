@@ -25,10 +25,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// Recebe 3 parâmetros:
-// - onNavigateToLogin: ação ao clicar em "Já possui conta"
-// - onNavigateToSuporte: ação ao clicar em "Contatar Suporte"
-// - emailsJaCadastrados: lista de e-mails que não podem ser usados
+// ação ao clicar em "Já possui conta"
+// ação ao clicar em "Contatar Suporte"
+// lista de e-mails que não podem ser usados
 @Composable
 fun CadastroScreen(
     onNavigateToLogin: () -> Unit,

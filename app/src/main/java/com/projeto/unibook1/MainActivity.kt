@@ -8,16 +8,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.projeto.unibook1.admin.AdminMainScreen
 import com.projeto.unibook1.admin.ProfileScreen
-
-// Imports do seu amigo
 import com.projeto.unibook1.ui.admin.AdminLoginScreen
 import com.projeto.unibook1.ui.theme.Unibook1Theme
 import com.projeto.unibook1.usuario.cadastro.CadastroScreen
-
-// Seus imports
 import com.projeto.unibook1.usuario.mapa.MapScreen
 import com.projeto.unibook1.telasgerais.TelaReservaArmario
 import com.projeto.unibook1.usuario.cadastro.LoginAlunoScreen
+import com.projeto.unibook1.usuario.cadastro.RecuperarSenhaScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,14 +25,14 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "admin_main") {
+                NavHost(navController = navController, startDestination = "login_aluno") {
 
-                    // Tela de Login do Aluno - Pedro
+                    // tela de login - Pedro
                     composable(route = "login_aluno") {
                         LoginAlunoScreen(
                             onNavigateToCadastro = { navController.navigate(route = "cadastro") },
                             onNavigateToSuporte = { },
-                            onEsqueceuSenha = { },
+                            onEsqueceuSenha = { navController.navigate(route = "recuperar_senha") }, // <- aqui
                             onLoginSucesso = { navController.navigate(route = "login_aluno") }
                         )
                     }
@@ -45,6 +42,13 @@ class MainActivity : ComponentActivity() {
                         CadastroScreen(
                             onNavigateToLogin = { navController.navigate(route = "login_aluno") },
                             onNavigateToSuporte = { }
+                        )
+                    }
+
+                    // Tela de Recuperar Senha - Pedro
+                    composable(route = "recuperar_senha") {
+                        RecuperarSenhaScreen(
+                            onVoltarLogin = { navController.navigate(route = "login_aluno") }
                         )
                     }
 
