@@ -14,6 +14,7 @@ import com.projeto.unibook1.usuario.cadastro.CadastroScreen
 import com.projeto.unibook1.usuario.mapa.MapScreen
 import com.projeto.unibook1.telasgerais.TelaReservaArmario
 import com.projeto.unibook1.usuario.Inicio.TelaInicial
+import com.projeto.unibook1.usuario.cadastro.DefinirNovaSenhaScreen
 import com.projeto.unibook1.usuario.cadastro.LoginAlunoScreen
 import com.projeto.unibook1.usuario.cadastro.RecuperarSenhaScreen
 
@@ -53,7 +54,19 @@ class MainActivity : ComponentActivity() {
                     // Tela de Recuperar Senha - Pedro
                     composable(route = "recuperar_senha") {
                         RecuperarSenhaScreen(
-                            onVoltarLogin = { navController.navigate(route = "login_aluno") }
+                            onVoltarLogin = { navController.navigate(route = "login_aluno") },
+                            onContinuar = { navController.navigate("definir_nova_senha") } // 👈 adicione aqui
+                        )
+                    }
+
+                    composable("definir_nova_senha") {
+                        DefinirNovaSenhaScreen(
+                            onVoltarLogin = { navController.navigate("login_aluno") },
+                            onSenhaAtualizada = {
+                                navController.navigate("login_aluno") {
+                                    popUpTo("login_aluno") { inclusive = true }
+                                }
+                            }
                         )
                     }
 

@@ -17,7 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun RecuperarSenhaScreen(
-    onVoltarLogin: () -> Unit
+    onVoltarLogin: () -> Unit,
+    onContinuar: () -> Unit  // 👈 adicionado
 ) {
     var email by remember { mutableStateOf("") }
     var mensagem by remember { mutableStateOf<String?>(null) }
@@ -49,7 +50,6 @@ fun RecuperarSenhaScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Título
         Text(
             text = "Recuperar Senha",
             fontSize = 24.sp,
@@ -59,7 +59,6 @@ fun RecuperarSenhaScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Subtítulo
         Text(
             text = "Insira seu e-mail institucional para receber as instruções de redefinição",
             fontSize = 14.sp,
@@ -69,7 +68,6 @@ fun RecuperarSenhaScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Label do campo
         Text(
             text = "E-MAIL INSTITUCIONAL",
             fontSize = 12.sp,
@@ -80,7 +78,6 @@ fun RecuperarSenhaScreen(
 
         Spacer(modifier = Modifier.height(6.dp))
 
-        // Campo de e-mail
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -96,7 +93,6 @@ fun RecuperarSenhaScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Mensagem de status
         mensagem?.let {
             Text(
                 text = it,
@@ -107,7 +103,6 @@ fun RecuperarSenhaScreen(
             )
         }
 
-        // Botão Enviar
         Button(
             onClick = {
                 if (email.isBlank()) {
@@ -117,10 +112,9 @@ fun RecuperarSenhaScreen(
                 } else {
                     isLoading = true
                     mensagem = null
-                    // TODO: chamar função de verificação no banco de dados
-                    // Simulação de resposta:
                     isLoading = false
                     mensagem = "Instruções enviadas! Verifique seu e-mail."
+                    onContinuar() // 👈 adicionado
                 }
             },
             modifier = Modifier
@@ -139,7 +133,6 @@ fun RecuperarSenhaScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Voltar para o Login
         TextButton(onClick = onVoltarLogin) {
             Text(
                 text = "Voltar para o Login",
@@ -153,5 +146,5 @@ fun RecuperarSenhaScreen(
 @Preview(showBackground = true)
 @Composable
 fun RecuperarSenhaPreview() {
-    RecuperarSenhaScreen(onVoltarLogin = {})
+    RecuperarSenhaScreen(onVoltarLogin = {}, onContinuar = {})  // 👈 adicionado no preview
 }
