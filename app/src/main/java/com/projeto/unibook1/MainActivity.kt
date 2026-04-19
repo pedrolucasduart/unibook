@@ -13,6 +13,7 @@ import com.projeto.unibook1.ui.theme.Unibook1Theme
 import com.projeto.unibook1.usuario.cadastro.CadastroScreen
 import com.projeto.unibook1.usuario.mapa.MapScreen
 import com.projeto.unibook1.telasgerais.TelaReservaArmario
+import com.projeto.unibook1.usuario.Inicio.TelaInicial
 import com.projeto.unibook1.usuario.cadastro.LoginAlunoScreen
 import com.projeto.unibook1.usuario.cadastro.RecuperarSenhaScreen
 
@@ -32,8 +33,12 @@ class MainActivity : ComponentActivity() {
                         LoginAlunoScreen(
                             onNavigateToCadastro = { navController.navigate(route = "cadastro") },
                             onNavigateToSuporte = { },
-                            onEsqueceuSenha = { navController.navigate(route = "recuperar_senha") }, // <- aqui
-                            onLoginSucesso = { navController.navigate(route = "login_aluno") }
+                            onEsqueceuSenha = { navController.navigate(route = "recuperar_senha") },
+                            onLoginSucesso = {
+                                navController.navigate("inicio") {
+                                    popUpTo("login_aluno") { inclusive = true }
+                                }
+                            }
                         )
                     }
 
@@ -50,6 +55,10 @@ class MainActivity : ComponentActivity() {
                         RecuperarSenhaScreen(
                             onVoltarLogin = { navController.navigate(route = "login_aluno") }
                         )
+                    }
+
+                    composable("inicio") {
+                        TelaInicial(onReservaClick = { navController.navigate("reserva") })
                     }
 
                     // Tela principal do Admin - Ziltom
