@@ -59,9 +59,7 @@ fun ArmarioScreen(
         bottomBar = { BottomNavBar() }
     ) { paddingValues ->
         Column(
-            modifier = modifier
-                .padding(14.dp)
-                .background(Color(0xFFF6F6F9))
+            modifier = Modifier.fillMaxSize().background(Color(0xFFF6F6F9)).padding(14.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             Text(text = "⬅\uFE0F\u200B Verificar Armário",
