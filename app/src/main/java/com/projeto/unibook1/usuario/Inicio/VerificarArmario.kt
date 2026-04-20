@@ -125,17 +125,70 @@ fun ArmarioScreen(
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(20.dp)
+                    modifier = Modifier.fillMaxWidth().padding(20.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.avatar),
-                        contentDescription = "Foto de perfil",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .clip(CircleShape)
-                            .border(2.dp, Color.White, CircleShape),
-                        contentScale = ContentScale.Crop
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = com.projeto.unibook1.R.drawable.avatar),
+                            contentDescription = "Foto de perfil",
+                            modifier = Modifier
+                                .size(60.dp)
+                                .clip(CircleShape)
+                                .border(2.dp, Color.White, CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Text(text = "Zíltom Machado",
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+
+                    Text(text = "\uD83D\uDCAC\u200B")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Card(
+                    modifier = Modifier,
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Text(text = "\uD83D\uDCCD\u200B")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = "Localização:")
+                        Text(text = "Bloco C - Piso 2",
+                            fontWeight = FontWeight.Bold,
+                            )
+
+                    }
+                }
+
+                Card(
+                    modifier = Modifier,
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Text(text = "\uD83D\uDDD3\uFE0F\u200B")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = "Expira em:")
+                        Text(text = "25 dez 2026",
+                            fontWeight = FontWeight.Bold,
+                        )
+
+                    }
                 }
             }
 
