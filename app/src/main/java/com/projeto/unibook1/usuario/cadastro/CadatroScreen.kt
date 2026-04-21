@@ -3,6 +3,7 @@ package com.projeto.unibook1.usuario.cadastro
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,10 +25,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// Recebe 3 parâmetros:
-// - onNavigateToLogin: ação ao clicar em "Já possui conta"
-// - onNavigateToSuporte: ação ao clicar em "Contatar Suporte"
-// - emailsJaCadastrados: lista de e-mails que não podem ser usados
+// ação ao clicar em "Já possui conta"
+// ação ao clicar em "Contatar Suporte"
+// lista de e-mails que não podem ser usados
 @Composable
 fun CadastroScreen(
     onNavigateToLogin: () -> Unit,
@@ -105,7 +105,9 @@ fun CadastroScreen(
         // campo de texto usando a fun campoTexto
         CampoTexto("Nome Completo", "Seu nome completo", nomeCompleto) { nomeCompleto = it }
         CampoTexto("Número da Matrícula", "ex. 2023-0045", matricula) { matricula = it }
-        CampoTexto("E-mail Institucional", "aluno@unifor.br", email, KeyboardType.Email) { email = it }
+        CampoTexto("E-mail Institucional", "aluno@unifor.br", email, KeyboardType.Email) {
+            email = it
+        }
         // Campos de senha com o olhinho para mostrar/ocultar
         CampoSenha("Senha", senha) { senha = it }
         CampoSenha("Confirmar Senha", confirmarSenha) { confirmarSenha = it }
@@ -143,9 +145,14 @@ fun CadastroScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         // contatar o suporte
-        Text("Precisa de ajuda?", color = Color.Gray, fontSize = 12.sp)
-        TextButton(onClick = onNavigateToSuporte) {
-            Text("📞 Contatar Suporte", color = Color(0xFF2196F3), fontSize = 13.sp)
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("Precisa de ajuda?", color = Color.Gray, fontSize = 13.sp)
+            TextButton(onClick = onNavigateToSuporte) {
+                Text(" Contatar Suporte", color = Color(0xFF2196F3), fontSize = 14.sp)
+            }
         }
     }
 }
