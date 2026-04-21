@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.projeto.unibook1.ui.theme.Unibook1Theme
 import com.projeto.unibook1.usuario.cadastro.CadastroScreen
+import com.projeto.unibook1.usuario.cadastro.DefinirNovaSenhaScreen
 import com.projeto.unibook1.usuario.cadastro.LoginAlunoScreen
 import com.projeto.unibook1.usuario.cadastro.RecuperarSenhaScreen
 
@@ -42,14 +43,24 @@ class MainActivity : ComponentActivity() {
                     // Tela de Recuperar Senha - adicionar isso
                     composable(route = "recuperar_senha") {
                         RecuperarSenhaScreen(
-                            onVoltarLogin = { navController.navigate(route = "login_aluno") }
+                            onVoltarLogin = { navController.navigate(route = "login_aluno") },
+                            onContinuar = { navController.navigate("definir_nova_senha") } // 👈 essa linha
                         )
                     }
 
+                    composable("definir_nova_senha") {
+                        DefinirNovaSenhaScreen(
+                            onVoltarLogin = { navController.navigate("login_aluno") },
+                            onSenhaAtualizada = {
+                                navController.navigate("login_aluno") {
+                                    popUpTo("login_aluno") { inclusive = true }
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }
     }
 }
-
  */
