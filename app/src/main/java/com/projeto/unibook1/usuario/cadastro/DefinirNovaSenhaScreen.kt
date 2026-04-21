@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -200,19 +201,12 @@ fun DefinirNovaSenhaScreen(
     }
 }
 
-// Componente de requisito com check dinâmico
+
+@Preview(showBackground = true)
 @Composable
-fun RequisiteItem(texto: String, atendido: Boolean) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            text = if (atendido) "✅" else "⭕",
-            fontSize = 14.sp
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = texto,
-            fontSize = 13.sp,
-            color = if (atendido) Color(0xFF2E7D32) else Color.Gray
-        )
-    }
+fun DefinirNovaSenhaScreenPreview() {
+    DefinirNovaSenhaScreen(
+        onVoltarLogin = {},
+        onSenhaAtualizada = {}
+    )
 }
