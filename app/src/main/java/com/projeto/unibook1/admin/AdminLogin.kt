@@ -6,12 +6,18 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
-fun AdminLoginScreen() {
+fun AdminLoginScreen(
+    onNavigateToForgotPassword: () -> Unit,
+    onLoginSuccess: () -> Unit
+) {
 
     var matricula by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
@@ -52,10 +58,22 @@ fun AdminLoginScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        TextButton(
+            onClick = onNavigateToForgotPassword,
+            modifier = Modifier.padding(top = 4.dp)
+        ) {
+            Text(
+                text = "Esqueci a senha",
+                color = Color(0xFFA056F3),
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 14.sp
+            )
+        }
+
         Button(
             onClick = {
-
-                println("Logando com: $matricula")
+                // a lógica de validação
+                onLoginSuccess()
             },
             modifier = Modifier.width(280.dp)
         ) {

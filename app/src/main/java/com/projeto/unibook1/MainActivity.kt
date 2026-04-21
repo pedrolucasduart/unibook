@@ -6,17 +6,20 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.projeto.unibook1.admin.AdminMainScreen
-import com.projeto.unibook1.admin.ProfileScreen
+
+
 import com.projeto.unibook1.ui.admin.AdminLoginScreen
 import com.projeto.unibook1.ui.theme.Unibook1Theme
-import com.projeto.unibook1.usuario.cadastro.CadastroScreen
+
+
+
 import com.projeto.unibook1.usuario.mapa.MapScreen
 import com.projeto.unibook1.telasgerais.TelaReservaArmario
-import com.projeto.unibook1.usuario.Inicio.TelaInicial
-import com.projeto.unibook1.usuario.cadastro.DefinirNovaSenhaScreen
-import com.projeto.unibook1.usuario.cadastro.LoginAlunoScreen
-import com.projeto.unibook1.usuario.cadastro.RecuperarSenhaScreen
+
+
+import com.projeto.unibook1.admin.AdminMainScreen
+import com.projeto.unibook1.admin.ProfileScreen
+import com.projeto.unibook1.admin.RecuperarSenhaScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,72 +30,35 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "login_aluno") {
 
-                    // tela de login - Pedro
-                    composable(route = "login_aluno") {
-                        LoginAlunoScreen(
-                            onNavigateToCadastro = { navController.navigate(route = "cadastro") },
-                            onNavigateToSuporte = { },
-                            onEsqueceuSenha = { navController.navigate(route = "recuperar_senha") },
-                            onLoginSucesso = {
-                                navController.navigate("inicio") {
-                                    popUpTo("login_aluno") { inclusive = true }
-                                }
-                            }
-                        )
-                    }
-
-                    // Tela de Cadastro - Pedro
-                    composable(route = "cadastro") {
-                        CadastroScreen(
-                            onNavigateToLogin = { navController.navigate(route = "login_aluno") },
-                            onNavigateToSuporte = { }
-                        )
-                    }
-
-                    // Tela de Recuperar Senha - Pedro
-                    composable(route = "recuperar_senha") {
-                        RecuperarSenhaScreen(
-                            onVoltarLogin = { navController.navigate(route = "login_aluno") },
-                            onContinuar = { navController.navigate("definir_nova_senha") } // 👈 adicione aqui
-                        )
-                    }
-
-                    composable("definir_nova_senha") {
-                        DefinirNovaSenhaScreen(
-                            onVoltarLogin = { navController.navigate("login_aluno") },
-                            onSenhaAtualizada = {
-                                navController.navigate("login_aluno") {
-                                    popUpTo("login_aluno") { inclusive = true }
-                                }
-                            }
-                        )
-                    }
-
-                    composable("inicio") {
-                        TelaInicial(onReservaClick = { navController.navigate("reserva") })
-                    }
-
-                    // Tela principal do Admin - Ziltom
-                    composable("admin_main") {
-                        AdminMainScreen(
-                            onOpenScannerClick = { },
-                            onStudentClick = { },
-                            onProfileClick = { navController.navigate("perfil_admin") }
-                        )
-                    }
-
-                    composable("perfil_admin") {
-                        ProfileScreen(
-                            onBackClick = { navController.popBackStack() },
-                            onChangeProfilePictureClick = { }
-                        )
-                    }
+                NavHost(navController = navController, startDestination = "admin_home") {
 
                     // Tela de Login Zíltom
                     composable("login_admin") {
-                        AdminLoginScreen()
+                        AdminLoginScreen(
+                            onNavigateToForgotPassword = {
+                                navController.navigate("forgot_password")
+                            },
+                            onLoginSuccess = {
+                                navController.navigate("admin_home") {
+                                    popUpTo("login_admin") { inclusive = true }
+                                }
+                            }
+                        )
+                    }
+
+                    // Tela de Esqueci a Senha
+                    composable("forgot_password") {
+                        RecuperarSenhaScreen(
+                            onNavigateToLogin = {
+                                navController.navigate("login_admin") {
+                                    popUpTo("login_admin") { inclusive = true }
+                                }
+                            },
+                            onNavigateToRegister = {
+                                // Implementar navegação para registro se necessário
+                            }
+                        )
                     }
 
                     // Tela do Mapa Renan
@@ -108,6 +74,38 @@ class MainActivity : ComponentActivity() {
                     composable("reserva") {
                         TelaReservaArmario()
                     }
+
+
+
+                    // Tela Principal do Admin (Home)
+                    composable("admin_home") {
+                        AdminMainScreen(
+                            onProfileClick = {
+
+                                navController.navigate("admin_profile")
+                            },
+                            onOpenScannerClick = {
+                                // Lógica futura do seu scanner
+                            },
+                            onStudentClick = { _ ->
+                                // Lógica futura ao clicar em um aluno na lista
+                            }
+                        )
+                    }
+
+                    // Tela de Perfil do Admin
+                    composable("admin_profile") {
+                        ProfileScreen(
+                            onBackClick = {
+
+                                navController.popBackStack()
+                            },
+                            onChangeProfilePictureClick = {
+                                // Lógica futura para abrir a galeria e mudar a foto
+                            }
+                        )
+                    }
+
                 }
             }
         }
