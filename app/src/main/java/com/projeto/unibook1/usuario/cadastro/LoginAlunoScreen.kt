@@ -34,7 +34,7 @@ fun LoginAlunoScreen(
 
     // Simulando usuários cadastrados, substituir por banco de dados depois
     val usuariosCadastrados = listOf(
-        Pair("2513871", "Senha123"),
+        Pair("123", "123"),
         Pair("2023-0046", "Senha456")
     )
 
