@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 
 
 import com.projeto.unibook1.ui.admin.AdminLoginScreen
+import com.projeto.unibook1.ui.admin.AdminRegisterScreen
 import com.projeto.unibook1.ui.theme.Unibook1Theme
 
 
@@ -35,11 +36,33 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
 
-                NavHost(navController = navController, startDestination = "admin_home") {
+                NavHost(navController = navController, startDestination = "forgot_password") {
 
-                    // Tela de Login Zíltom
+                    // Tela de Login
+                    composable("login_admin") {
+                        AdminLoginScreen(
+                            onNavigateToRegister = {
+                                navController.navigate("admin_register")
+                            },
+                            onNavigateToForgotPassword = {
+                                navController.navigate("forgot_password")
+                            },
+                            onLoginSuccess = {
+                                navController.navigate("admin_home") {
+                                    popUpTo("login_admin") { inclusive = true }
+                                }
+                            }
+                        )
+                    }
 
-
+                    // Tela de Cadastro
+                    composable("admin_register") {
+                        AdminRegisterScreen(
+                            onBackToLogin = {
+                                navController.popBackStack()
+                            }
+                        )
+                    }
 
                     // Tela de Esqueci a Senha
                     composable("forgot_password") {
@@ -50,7 +73,9 @@ class MainActivity : ComponentActivity() {
                                 }
                             },
                             onNavigateToRegister = {
-                                // Implementar navegação para registro se necessário
+                                navController.navigate("admin_register") {
+                                    popUpTo("login_admin")
+                                }
                             }
                         )
                     }
