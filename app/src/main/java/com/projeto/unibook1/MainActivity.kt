@@ -25,8 +25,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Ativa o modo de tela cheia (opcional, padrão do Android Studio atual)
-        enableEdgeToEdge()
+
+
 
         setContent {
             Unibook1Theme {
@@ -38,18 +38,8 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = "admin_home") {
 
                     // Tela de Login Zíltom
-                    composable("login_admin") {
-                        AdminLoginScreen(
-                            onNavigateToForgotPassword = {
-                                navController.navigate("forgot_password")
-                            },
-                            onLoginSuccess = {
-                                navController.navigate("admin_home") {
-                                    popUpTo("login_admin") { inclusive = true }
-                                }
-                            }
-                        )
-                    }
+
+
 
                     // Tela de Esqueci a Senha
                     composable("forgot_password") {

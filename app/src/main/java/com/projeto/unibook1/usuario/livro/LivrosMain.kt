@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.*
-import trabalho.em.unibooktelas23.LivroProfessoresScreen
+
 
 
 // ── Color palette ──────────────────────────────────────────────────────────────
@@ -134,7 +134,7 @@ fun MainScreen(navController: NavController) {
         ) {
             TopAppBarSection()
             Spacer(Modifier.height(12.dp))
-            SearchBarSection()
+            MainSearchBarSection()
             Spacer(Modifier.height(10.dp))
             FilterChipsRow()
             Spacer(Modifier.height(16.dp))
@@ -208,7 +208,7 @@ fun TopAppBarSection() {
 // 2 · Search Bar
 // ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun SearchBarSection() {
+fun MainSearchBarSection() {
     Row(
         modifier = Modifier
             .fillMaxWidth()

@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AdminRegisterScreen(onBackToLogin: () -> Unit) {
@@ -34,4 +35,11 @@ fun AdminRegisterScreen(onBackToLogin: () -> Unit) {
             Text("Já tem conta? Faça Login")
         }
     }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun AdminRegisterScreenPreview() {
+    // Passamos um bloco vazio {} para o parâmetro de navegação
+    AdminRegisterScreen(onBackToLogin = {})
 }
