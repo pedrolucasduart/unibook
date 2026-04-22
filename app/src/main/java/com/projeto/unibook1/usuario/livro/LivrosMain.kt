@@ -1,4 +1,4 @@
-package com.example.azurescholar
+package com.projeto.unibook1.usuario.livro
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
