@@ -83,7 +83,7 @@ fun LivroProfessoresScreen(navController: NavController) {
                 .verticalScroll(rememberScrollState())
         ) {
             Spacer(Modifier.height(8.dp))
-            SearchBarSection()
+            ProfessoresSearchBarSection()
             Spacer(Modifier.height(24.dp))
             SectionHeader(title = "CORPO DOCENTE", count = "48 Disponíveis")
             Spacer(Modifier.height(16.dp))
@@ -167,7 +167,7 @@ fun ProfessoresTopBar() {
 // 2 · Search Bar (Interactive)
 // ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun SearchBarSection() {
+fun ProfessoresSearchBarSection() {
     var searchQuery by remember { mutableStateOf("") }
 
     Box(modifier = Modifier.padding(horizontal = 16.dp)) {

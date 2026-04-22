@@ -12,6 +12,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.projeto.unibook1.ui.theme.Unibook1Theme
+
 
 @Composable
 
@@ -107,5 +110,17 @@ fun AdminLoginScreen(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AdminLoginScreenPreview() {
+    Unibook1Theme {
+        AdminLoginScreen(
+            onNavigateToRegister = {},
+            onNavigateToForgotPassword = {},
+            onLoginSuccess = {}
+        )
     }
 }
