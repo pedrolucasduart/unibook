@@ -24,6 +24,10 @@ import com.projeto.unibook1.admin.RecuperarSenhaScreen
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Ativa o modo de tela cheia (opcional, padrão do Android Studio atual)
+        enableEdgeToEdge()
+
         setContent {
             Unibook1Theme {
 
