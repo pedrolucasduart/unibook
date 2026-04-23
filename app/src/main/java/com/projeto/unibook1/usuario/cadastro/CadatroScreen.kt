@@ -253,7 +253,7 @@ fun CampoSenha(label: String, valor: String, onValorChange: (String) -> Unit) {
             placeholder = { Text("••••••••", color = Color.LightGray) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
-            // Alterna entre mostrar o texto normal ou ocultar com ••••
+            // Alterna entre mostrar o texto normal ou ocultar
             visualTransformation = if (senhaVisivel) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             singleLine = true,
