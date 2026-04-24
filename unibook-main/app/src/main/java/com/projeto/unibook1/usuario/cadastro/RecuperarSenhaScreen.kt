@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun RecuperarSenhaScreen(
     onVoltarLogin: () -> Unit,
-    onContinuar: () -> Unit
+    onContinuar: () -> Unit  // 👈 adicionado
 ) {
     var email by remember { mutableStateOf("") }
     var mensagem by remember { mutableStateOf<String?>(null) }
@@ -39,7 +39,12 @@ fun RecuperarSenhaScreen(
             modifier = Modifier.size(80.dp)
         ) {
             Box(contentAlignment = Alignment.Center) {
-                Text("🎓", fontSize = 32.sp)
+                Icon(
+                    imageVector = Icons.Filled.School,
+                    contentDescription = "Logo",
+                    tint = Color(0xFF2196F3),
+                    modifier = Modifier.size(40.dp)
+                )
             }
         }
 
@@ -109,7 +114,7 @@ fun RecuperarSenhaScreen(
                     mensagem = null
                     isLoading = false
                     mensagem = "Instruções enviadas! Verifique seu e-mail."
-                    onContinuar()
+                    onContinuar() // 👈 adicionado
                 }
             },
             modifier = Modifier
@@ -141,5 +146,5 @@ fun RecuperarSenhaScreen(
 @Preview(showBackground = true)
 @Composable
 fun RecuperarSenhaPreview() {
-    RecuperarSenhaScreen(onVoltarLogin = {}, onContinuar = {})
+    RecuperarSenhaScreen(onVoltarLogin = {}, onContinuar = {})  // 👈 adicionado no preview
 }

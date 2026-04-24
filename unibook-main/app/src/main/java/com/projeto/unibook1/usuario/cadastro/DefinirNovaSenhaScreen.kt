@@ -30,7 +30,7 @@ fun DefinirNovaSenhaScreen(
     var confirmarSenhaVisivel by remember { mutableStateOf(false) }
     var mensagemErro by remember { mutableStateOf("") }
 
-    // Requisitos minimos
+    // Requisitos
     val temMinimoCaracteres = novaSenha.length >= 8
     val temMaiusculaENumero = novaSenha.any { it.isUpperCase() } && novaSenha.any { it.isDigit() }
 
