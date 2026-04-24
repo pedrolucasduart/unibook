@@ -1,4 +1,4 @@
-/*package com.projeto.unibook1
+package com.projeto.unibook1
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,13 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.projeto.unibook1.ui.theme.Unibook1Theme
-import com.projeto.unibook1.usuario.Inicio.TelaInicial
 import com.projeto.unibook1.usuario.cadastro.CadastroScreen
 import com.projeto.unibook1.usuario.cadastro.DefinirNovaSenhaScreen
 import com.projeto.unibook1.usuario.cadastro.LoginAlunoScreen
-import com.projeto.unibook1.usuario.cadastro.OnboardingScreen
 import com.projeto.unibook1.usuario.cadastro.RecuperarSenhaScreen
-import com.projeto.unibook1.usuario.cadastro.SuporteAlunoScreen // <- adicionar
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,26 +22,29 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(navController = navController, startDestination = "login_aluno") {
 
+                    // Tela de Login do Aluno - Pedro
                     composable(route = "login_aluno") {
                         LoginAlunoScreen(
                             onNavigateToCadastro = { navController.navigate(route = "cadastro") },
-                            onNavigateToSuporte = { navController.navigate(route = "suporte") }, // <- preencher
-                            onEsqueceuSenha = { navController.navigate(route = "recuperar_senha") },
-                            onLoginSucesso = { navController.navigate(route = "onboarding") }
+                            onNavigateToSuporte = { },
+                            onEsqueceuSenha = { navController.navigate(route = "recuperar_senha") }, // <- aqui
+                            onLoginSucesso = { navController.navigate(route = "login_aluno") }
                         )
                     }
 
+                    // Tela de Cadastro - Pedro
                     composable(route = "cadastro") {
                         CadastroScreen(
                             onNavigateToLogin = { navController.navigate(route = "login_aluno") },
-                            onNavigateToSuporte = { navController.navigate(route = "suporte") } // <- preencher
+                            onNavigateToSuporte = { }
                         )
                     }
 
+                    // Tela de Recuperar Senha - adicionar isso
                     composable(route = "recuperar_senha") {
                         RecuperarSenhaScreen(
                             onVoltarLogin = { navController.navigate(route = "login_aluno") },
-                            onContinuar = { navController.navigate("definir_nova_senha") }
+                            onContinuar = { navController.navigate("definir_nova_senha") } // 👈 essa linha
                         )
                     }
 
@@ -58,41 +58,8 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
-
-                    // Tela de Suporte - adicionar
-                    composable(route = "suporte") {
-                        SuporteAlunoScreen(
-                            onVoltar = { navController.popBackStack() },
-                            onIniciarConversa = { },
-                            onAbrirFaq = { }
-                        )
-                    }
-
-                    // Adicione a rota do onboarding
-                    composable(route = "onboarding") {
-                        OnboardingScreen(
-                            onPular = {
-                                navController.navigate("tela_inicial") {
-                                    popUpTo("login_aluno") { inclusive = true }
-                                }
-                            },
-                            onConcluir = {
-                                navController.navigate("tela_inicial") {
-                                    popUpTo("login_aluno") { inclusive = true }
-                                }
-                            }
-                        )
-                    }
-
-                    composable(route = "tela_inicial") {
-                        TelaInicial(
-                            onReservaClick = { }
-                        )
-                    }
                 }
             }
         }
     }
 }
-
- */
