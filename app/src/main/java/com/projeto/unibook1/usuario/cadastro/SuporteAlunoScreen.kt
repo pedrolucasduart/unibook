@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,7 +26,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material.icons.filled.HelpOutline
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,13 +35,11 @@ fun SuporteAlunoScreen(
     onAbrirFaq: () -> Unit
 ) {
     val categorias = listOf(
-        Triple("📚", "Dúvidas sobre\nEmpréstimos", "emprestimos"),
-        Triple("🔒", "Problemas de\nAcesso", "acesso"),
-        Triple("📖", "Sugestão de\nLivros", "sugestao"),
-        Triple("💬", "Outros Assuntos", "outros")
+        Triple("📚", "Dúvidas sobre\nEmpréstimos", "Dúvidas sobre Empréstimos"),
+        Triple("🔒", "Problemas de\nAcesso", "Problemas de Acesso"),
+        Triple("📖", "Sugestão de\nLivros", "Sugestão de Livros"),
+        Triple("💬", "Outros Assuntos", "Outros Assuntos")
     )
-
-    var categoriaSelecionada by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
         topBar = {
@@ -62,7 +60,6 @@ fun SuporteAlunoScreen(
                     }
                 },
                 actions = {
-                    // espaço vazio do mesmo tamanho do ícone para equilibrar
                     IconButton(onClick = {}) {}
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -117,7 +114,6 @@ fun SuporteAlunoScreen(
 
             Spacer(modifier = Modifier.height(28.dp))
 
-            // Seção de categorias
             Text(
                 "CATEGORIAS DE SUPORTE",
                 fontSize = 13.sp,
@@ -128,7 +124,7 @@ fun SuporteAlunoScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Grid 2x2 de categorias
+            // Grid 2x2 — clique já abre o chat direto
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -136,16 +132,16 @@ fun SuporteAlunoScreen(
                 CategoriaCard(
                     emoji = categorias[0].first,
                     titulo = categorias[0].second,
-                    selecionada = categoriaSelecionada == categorias[0].third,
+                    selecionada = false,
                     modifier = Modifier.weight(1f),
-                    onClick = { categoriaSelecionada = categorias[0].third }
+                    onClick = { onIniciarConversa(categorias[0].third) }
                 )
                 CategoriaCard(
                     emoji = categorias[1].first,
                     titulo = categorias[1].second,
-                    selecionada = categoriaSelecionada == categorias[1].third,
+                    selecionada = false,
                     modifier = Modifier.weight(1f),
-                    onClick = { categoriaSelecionada = categorias[1].third }
+                    onClick = { onIniciarConversa(categorias[1].third) }
                 )
             }
 
@@ -158,26 +154,24 @@ fun SuporteAlunoScreen(
                 CategoriaCard(
                     emoji = categorias[2].first,
                     titulo = categorias[2].second,
-                    selecionada = categoriaSelecionada == categorias[2].third,
+                    selecionada = false,
                     modifier = Modifier.weight(1f),
-                    onClick = { categoriaSelecionada = categorias[2].third }
+                    onClick = { onIniciarConversa(categorias[2].third) }
                 )
                 CategoriaCard(
                     emoji = categorias[3].first,
                     titulo = categorias[3].second,
-                    selecionada = categoriaSelecionada == categorias[3].third,
+                    selecionada = false,
                     modifier = Modifier.weight(1f),
-                    onClick = { categoriaSelecionada = categorias[3].third }
+                    onClick = { onIniciarConversa(categorias[3].third) }
                 )
             }
 
             Spacer(modifier = Modifier.height(28.dp))
 
-            // Botão Iniciar Conversa
+            // Botão Iniciar Conversa — abre chat sem categoria específica
             Button(
-                onClick = {
-                    onIniciarConversa(categoriaSelecionada ?: "geral")
-                },
+                onClick = { onIniciarConversa("geral") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
@@ -199,7 +193,6 @@ fun SuporteAlunoScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Seção canais de atendimento
             Text(
                 "CANAIS DE ATENDIMENTO",
                 fontSize = 11.sp,
@@ -238,7 +231,6 @@ fun SuporteAlunoScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("", fontSize = 16.sp)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         "Ver Perguntas Frequentes (FAQ)",
@@ -268,19 +260,16 @@ fun CategoriaCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    val borderColor = if (selecionada) Color(0xFF2196F3) else Color(0xFFE0E0E0)
-    val bgColor = if (selecionada) Color(0xFFE3F0FF) else Color.White
-
     Surface(
         modifier = modifier
             .height(90.dp)
             .clickable { onClick() }
             .border(
-                BorderStroke(if (selecionada) 2.dp else 1.dp, borderColor),
+                BorderStroke(1.dp, Color(0xFFE0E0E0)),
                 RoundedCornerShape(10.dp)
             ),
         shape = RoundedCornerShape(10.dp),
-        color = bgColor
+        color = Color.White
     ) {
         Column(
             modifier = Modifier
@@ -295,7 +284,7 @@ fun CategoriaCard(
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
                 lineHeight = 16.sp,
-                color = if (selecionada) Color(0xFF1565C0) else Color(0xFF333333)
+                color = Color(0xFF333333)
             )
         }
     }
@@ -327,7 +316,7 @@ fun CanalAtendimento(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = false)
 @Composable
 fun SuporteAlunoScreenPreview() {
     SuporteAlunoScreen(

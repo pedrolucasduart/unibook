@@ -1,4 +1,4 @@
-/*package com.projeto.unibook1
+package com.projeto.unibook1
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,11 +9,13 @@ import androidx.navigation.compose.rememberNavController
 import com.projeto.unibook1.ui.theme.Unibook1Theme
 import com.projeto.unibook1.usuario.Inicio.TelaInicial
 import com.projeto.unibook1.usuario.cadastro.CadastroScreen
+import com.projeto.unibook1.usuario.cadastro.ChatScreen
 import com.projeto.unibook1.usuario.cadastro.DefinirNovaSenhaScreen
 import com.projeto.unibook1.usuario.cadastro.LoginAlunoScreen
 import com.projeto.unibook1.usuario.cadastro.OnboardingScreen
 import com.projeto.unibook1.usuario.cadastro.RecuperarSenhaScreen
-import com.projeto.unibook1.usuario.cadastro.SuporteAlunoScreen // <- adicionar
+import com.projeto.unibook1.usuario.cadastro.SuporteAlunoScreen
+import com.projeto.unibook1.usuario.suporte.FAQScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,8 +65,24 @@ class MainActivity : ComponentActivity() {
                     composable(route = "suporte") {
                         SuporteAlunoScreen(
                             onVoltar = { navController.popBackStack() },
-                            onIniciarConversa = { },
-                            onAbrirFaq = { }
+                            onIniciarConversa = { categoria ->
+                                navController.navigate("chat/$categoria")
+                            },
+                            onAbrirFaq = { navController.navigate("faq") }
+                        )
+                    }
+
+                    composable(route = "chat/{categoria}") { backStackEntry ->
+                        val categoria = backStackEntry.arguments?.getString("categoria") ?: "geral"
+                        ChatScreen(
+                            categoria = categoria,
+                            onVoltar = { navController.popBackStack() }
+                        )
+                    }
+
+                    composable(route = "faq") {
+                        FAQScreen(
+                            onVoltar = { navController.popBackStack() }
                         )
                     }
 
@@ -94,5 +112,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
- */

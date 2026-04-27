@@ -1,4 +1,4 @@
-package com.projeto.unibook1
+/*package com.projeto.unibook1
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -130,3 +130,5 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+ */
