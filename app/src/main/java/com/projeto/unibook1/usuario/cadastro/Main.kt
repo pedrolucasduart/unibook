@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.projeto.unibook1.ui.theme.Unibook1Theme
 import com.projeto.unibook1.usuario.Inicio.TelaInicial
 import com.projeto.unibook1.usuario.cadastro.CadastroScreen
 import com.projeto.unibook1.usuario.cadastro.ChatScreen
