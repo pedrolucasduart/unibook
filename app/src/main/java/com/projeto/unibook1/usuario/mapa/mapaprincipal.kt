@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import com.projeto.unibook1.usuario.Inicio.BottomNavBar
 
 @Composable
 fun MapScreen(
