@@ -179,5 +179,5 @@ fun ArmarioScreen(
 @Preview(showBackground = true)
 @Composable
 fun ArmariosPreview() {
-    ArmarioScreen(onReservaClick = {})
+    ArmarioScreen()
 }

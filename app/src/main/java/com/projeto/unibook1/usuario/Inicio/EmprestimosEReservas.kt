@@ -22,7 +22,6 @@ import com.projeto.unibook1.usuario.mapa.BottomNavBar
 @Composable
 fun TelaReservas(
     modifier: Modifier = Modifier,
-    onReservaClick: () -> Unit
 ){
 
     Scaffold(
@@ -74,12 +73,6 @@ fun TelaReservas(
 @Preview(showBackground = true)
 @Composable
 fun TelaReservasPreview() {
-    Unibook1Theme {
-        TelaReservas(onReservaClick = {})
-    }
+        TelaReservas()
 }
 
-@Composable
-fun Unibook1Theme(content: @Composable () -> Unit) {
-    TODO("Not yet implemented")
-}
