@@ -1,15 +1,14 @@
 package com.projeto.unibook1.admin // 👈 Verifique se o pacote bate com a sua pasta!
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -33,16 +32,17 @@ fun AdminMainScreen(
     modifier: Modifier = Modifier,
     onOpenScannerClick: () -> Unit = {},
     onStudentClick: (String) -> Unit = {},
-    onProfileClick: () -> Unit = {}
+    onProfileClick: () -> Unit = {},
+    onEmprestimosClick: () -> Unit = {}
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
-            AdminBottomNavBar()
+            // 1. Passando o parâmetro corretamente aqui
+            AdminBottomNavBar(onEmprestimosClick = onEmprestimosClick)
         },
         containerColor = FundoApp
     ) { paddingValues ->
-
 
         Column(
             modifier = modifier
@@ -54,8 +54,10 @@ fun AdminMainScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             // 1. Cabeçalho (Perfil e Nome)
-            TopBarAdmin(nomeAdmin = "KELSON",
-                        onProfileClick = onProfileClick)
+            TopBarAdmin(
+                nomeAdmin = "KELSON",
+                onProfileClick = onProfileClick
+            )
 
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -80,7 +82,6 @@ fun AdminMainScreen(
             )
             Spacer(modifier = Modifier.height(12.dp))
 
-
             StudentItemCard(nome = "Zíltom mac", matricula = "2510359", onClick = { onStudentClick("Zíltom") })
             Spacer(modifier = Modifier.height(12.dp))
             StudentItemCard(nome = "Renan Rabelo", matricula = "2510364", onClick = { onStudentClick("Renan") })
@@ -88,7 +89,6 @@ fun AdminMainScreen(
             StudentItemCard(nome = "José Valdenor", matricula = "2510491", onClick = { onStudentClick("José") })
             Spacer(modifier = Modifier.height(12.dp))
             StudentItemCard(nome = "Pedro Mendonça", matricula = "2310359", onClick = { onStudentClick("Mariana") })
-
 
             Spacer(modifier = Modifier.height(24.dp))
         }
@@ -98,9 +98,10 @@ fun AdminMainScreen(
 // --- COMPONENTES MENORES
 
 @Composable
-
-fun TopBarAdmin(nomeAdmin: String,
-                onProfileClick: () -> Unit) {
+fun TopBarAdmin(
+    nomeAdmin: String,
+    onProfileClick: () -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -110,11 +111,10 @@ fun TopBarAdmin(nomeAdmin: String,
         IconButton(
             onClick = onProfileClick,
             modifier = Modifier
-                .size(48.dp) // 👈 Tamanho da bolinha do botão
+                .size(48.dp)
                 .clip(CircleShape)
                 .background(Color.White)
         ) {
-
             Icon(
                 imageVector = Icons.Default.Person,
                 contentDescription = "Perfil",
@@ -131,7 +131,6 @@ fun TopBarAdmin(nomeAdmin: String,
             fontSize = 20.sp,
             letterSpacing = 2.sp
         )
-
     }
 }
 
@@ -149,7 +148,6 @@ fun ScannerCard(onOpenScannerClick: () -> Unit) {
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Ícone do QR Code (usando um Box com texto para simular o ícone do design)
             Box(
                 modifier = Modifier
                     .size(80.dp)
@@ -157,7 +155,7 @@ fun ScannerCard(onOpenScannerClick: () -> Unit) {
                     .background(RoxoClaro),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "🔳", fontSize = 32.sp) // Substitua por um Icon QR real se tiver
+                Text(text = "🔳", fontSize = 32.sp)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -207,7 +205,6 @@ fun StudentItemCard(nome: String, matricula: String, onClick: () -> Unit) {
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Avatar (Chapéu de formatura simulado)
             Box(
                 modifier = Modifier
                     .size(50.dp)
@@ -220,7 +217,6 @@ fun StudentItemCard(nome: String, matricula: String, onClick: () -> Unit) {
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Textos
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = nome,
@@ -235,7 +231,6 @@ fun StudentItemCard(nome: String, matricula: String, onClick: () -> Unit) {
                 )
             }
 
-            // Setinha pra direita
             Box(
                 modifier = Modifier
                     .size(32.dp)
@@ -253,9 +248,9 @@ fun StudentItemCard(nome: String, matricula: String, onClick: () -> Unit) {
     }
 }
 
+// 2. Parâmetro adicionado nesta declaração
 @Composable
-fun AdminBottomNavBar() {
-    // Essa Box simula o formato arredondado "flutuante" do seu design
+fun AdminBottomNavBar(onEmprestimosClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -268,7 +263,7 @@ fun AdminBottomNavBar() {
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Item Início (Selecionado)
+            // Item Início
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -279,15 +274,18 @@ fun AdminBottomNavBar() {
                 Text(text = "INÍCIO", color = RoxoPrincipal, fontSize = 10.sp, fontWeight = FontWeight.Bold)
             }
 
-            // Item Empréstimos
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            // Item Empréstimos (3. Modificador clickable adicionado aqui)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.clickable { onEmprestimosClick() }
+            ) {
                 Text(text = "📖", fontSize = 20.sp)
                 Text(text = "EMPRÉSTIMOS", color = TextoCinza, fontSize = 10.sp, fontWeight = FontWeight.Bold)
             }
 
             // Item Livros
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "👥", fontSize = 20.sp) // Usei ícone de pessoas pro "Perfil/Livros"
+                Text(text = "👥", fontSize = 20.sp)
                 Text(text = "LIVROS", color = TextoCinza, fontSize = 10.sp, fontWeight = FontWeight.Bold)
             }
         }

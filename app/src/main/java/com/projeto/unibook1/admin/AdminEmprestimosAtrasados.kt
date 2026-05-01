@@ -44,7 +44,21 @@ fun AdminEmprestimosAtrasados(onBack: () -> Unit) {
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = AdminColor.BackgroundGray)
             )
         },
-        bottomBar = { BottomNavigationBar() },
+        bottomBar = { NavigationBar {
+            NavigationBarItem(
+                selected = true,
+                onClick = {},
+                icon = { Icon(Icons.Default.Home, contentDescription = null) },
+                label = { Text("Início") }
+            )
+
+            NavigationBarItem(
+                selected = false,
+                onClick = {},
+                icon = { Icon(Icons.Default.Book, contentDescription = null) },
+                label = { Text("Empréstimos") }
+            )
+        } },
         containerColor = AdminColor.BackgroundGray
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding).padding(horizontal = 20.dp)) {
