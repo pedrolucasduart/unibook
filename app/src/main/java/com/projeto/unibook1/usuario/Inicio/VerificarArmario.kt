@@ -54,9 +54,6 @@ fun ArmarioScreen(
                     color = Color(0xFF1976D2),
                     fontWeight = FontWeight.Bold,
                 )
-                IconButton(onClick = { /* Configurações */ }) {
-                    Text(text = "...", style = MaterialTheme.typography.headlineSmall)
-                }
             }
             Spacer(modifier = Modifier.height(24.dp))
             Card(
