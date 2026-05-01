@@ -18,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -43,11 +44,20 @@ fun ArmarioScreen(
             modifier = Modifier.fillMaxSize().background(Color(0xFFF6F6F9)).padding(14.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
-            Text(text = "⬅️ Verificar Armário",
-                style = MaterialTheme.typography.headlineMedium,
-                color = Color(0xFF1976D2),
-                fontWeight = FontWeight.Bold,
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "⬅️ Verificar Armário",
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = Color(0xFF1976D2),
+                    fontWeight = FontWeight.Bold,
+                )
+                IconButton(onClick = { /* Configurações */ }) {
+                    Text(text = "...", style = MaterialTheme.typography.headlineSmall)
+                }
+            }
             Spacer(modifier = Modifier.height(24.dp))
             Card(
                 modifier = Modifier.fillMaxWidth(),
