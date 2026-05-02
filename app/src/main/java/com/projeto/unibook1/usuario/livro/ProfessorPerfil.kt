@@ -2,6 +2,7 @@ package com.projeto.unibook1.usuario.livro
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -24,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
-// ── Color palette (padrão das outras telas) ──────────────────────────────────
+// ── Color palette ──────────────────────────────────────────────────────────────
 private val AzureBlue        = Color(0xFF1A73E8)
 private val TextPrimary      = Color(0xFF1A1A1A)
 private val TextSecondary    = Color(0xFF666666)
@@ -41,9 +42,6 @@ private val ChipBg           = Color(0xFFF5F5F5)
 private val ChipBorder       = Color(0xFFE0E0E0)
 private val StarYellow       = Color(0xFFFFC107)
 
-// ══════════════════════════════════════════════════════════════════════════════
-// Tela de perfil do professor
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun ProfessorPerfilScreen(navController: NavController) {
     Scaffold(
@@ -57,12 +55,10 @@ fun ProfessorPerfilScreen(navController: NavController) {
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // Cabeçalho do professor
             item {
                 ProfessorHeader()
             }
 
-            // Seção: Plataformas Móveis
             item {
                 BookSection(
                     sectionTitle = "Plataformas Móveis",
@@ -71,7 +67,6 @@ fun ProfessorPerfilScreen(navController: NavController) {
                 )
             }
 
-            // Seção: Inteligência Artificial
             item {
                 BookSection(
                     sectionTitle = "Inteligência Artificial",
@@ -80,7 +75,6 @@ fun ProfessorPerfilScreen(navController: NavController) {
                 )
             }
 
-            // Espaço final
             item {
                 Spacer(Modifier.height(24.dp))
             }
@@ -88,9 +82,6 @@ fun ProfessorPerfilScreen(navController: NavController) {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 1 · Top App Bar
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun ProfessorPerfilTopBar(navController: NavController) {
     Row(
@@ -104,7 +95,9 @@ fun ProfessorPerfilTopBar(navController: NavController) {
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = "Voltar",
             tint = AzureBlue,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .size(24.dp)
+                .clickable { navController.popBackStack() }   // Voltar funcional
         )
         Spacer(Modifier.width(12.dp))
         Text(
@@ -114,19 +107,11 @@ fun ProfessorPerfilTopBar(navController: NavController) {
             color = AzureBlue,
             modifier = Modifier.weight(1f)
         )
-        Icon(
-            imageVector = Icons.Outlined.Share,
-            contentDescription = "Compartilhar",
-            tint = AzureBlue,
-            modifier = Modifier.size(22.dp)
-        )
+        
     }
     HorizontalDivider(color = DividerColor, thickness = 0.5.dp)
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 2 · Cabeçalho do professor (avatar, nome, departamento, badges)
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun ProfessorHeader() {
     Row(
@@ -135,7 +120,6 @@ fun ProfessorHeader() {
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Avatar
         Box(
             modifier = Modifier
                 .size(72.dp)
@@ -165,9 +149,7 @@ fun ProfessorHeader() {
             )
             Spacer(Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                // Badge Sênior
                 BadgeItem(text = "Sênior")
-                // Badge PhD
                 BadgeItem(text = "PhD")
             }
         }
@@ -191,9 +173,6 @@ fun BadgeItem(text: String) {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 3 · Seção de livros (título + contador + lista de livros)
-// ══════════════════════════════════════════════════════════════════════════════
 data class ProfessorBook(
     val title: String,
     val author: String,
@@ -215,7 +194,6 @@ private val aiBooks = listOf(
 @Composable
 fun BookSection(sectionTitle: String, bookCount: String, books: List<ProfessorBook>) {
     Column {
-        // Cabeçalho da seção
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -243,7 +221,6 @@ fun BookSection(sectionTitle: String, bookCount: String, books: List<ProfessorBo
         }
         Spacer(Modifier.height(12.dp))
 
-        // Lista de livros
         books.forEachIndexed { index, book ->
             RecommendedBookItem(book)
             if (index < books.size - 1) {
@@ -263,7 +240,6 @@ fun RecommendedBookItem(book: ProfessorBook) {
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Ícone de livro pequeno (placeholder)
         Box(
             modifier = Modifier
                 .size(48.dp, 64.dp)
@@ -280,7 +256,6 @@ fun RecommendedBookItem(book: ProfessorBook) {
         }
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            // Chip "RECOMENDADO"
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp))
@@ -310,19 +285,10 @@ fun RecommendedBookItem(book: ProfessorBook) {
                 color = TextSecondary
             )
         }
-        // Ícone de bookmock (opcional)
-        Icon(
-            imageVector = Icons.Outlined.BookmarkBorder,
-            contentDescription = null,
-            tint = Color(0xFFBDBDBD),
-            modifier = Modifier.size(20.dp)
-        )
+
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// Preview
-// ══════════════════════════════════════════════════════════════════════════════
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ProfessorPerfilPreview() {
