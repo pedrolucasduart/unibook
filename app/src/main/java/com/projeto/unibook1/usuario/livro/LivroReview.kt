@@ -2,6 +2,7 @@ package com.projeto.unibook1.usuario.livro
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -26,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
-// ── Color palette (padrão das outras telas) ──────────────────────────────────
+// ── Color palette ──────────────────────────────────────────────────────────────
 private val AzureBlue        = Color(0xFF1A73E8)
 private val TextPrimary      = Color(0xFF1A1A1A)
 private val TextSecondary    = Color(0xFF666666)
@@ -36,9 +37,6 @@ private val CardBorder       = Color(0xFFE0E0E0)
 private val DividerColor     = Color(0xFFEEEEEE)
 private val ButtonBlue       = Color(0xFF1A73E8)
 
-// ══════════════════════════════════════════════════════════════════════════════
-// Tela de avaliação do livro
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun LivroReviewScreen(navController: NavController) {
     Scaffold(
@@ -54,36 +52,27 @@ fun LivroReviewScreen(navController: NavController) {
         ) {
             Spacer(Modifier.height(8.dp))
 
-            // Informações do livro
             BookInfoCard()
 
             Spacer(Modifier.height(24.dp))
 
-            // Seção da nota
             RatingSection()
 
             Spacer(Modifier.height(24.dp))
 
-            // Campo de avaliação
             ReviewTextField()
 
             Spacer(Modifier.height(16.dp))
 
-            // Checkbox spoilers e contador
             SpoilerCheckbox()
 
             Spacer(Modifier.height(24.dp))
-
-
 
             Spacer(Modifier.height(40.dp))
         }
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 1 · Top App Bar
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun ReviewTopBar(navController: NavController) {
     Row(
@@ -97,7 +86,9 @@ fun ReviewTopBar(navController: NavController) {
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = "Voltar",
             tint = AzureBlue,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .size(24.dp)
+                .clickable { navController.popBackStack() }   // Voltar funcional
         )
         Spacer(Modifier.width(12.dp))
         Text(
@@ -107,7 +98,6 @@ fun ReviewTopBar(navController: NavController) {
             color = AzureBlue,
             modifier = Modifier.weight(1f)
         )
-        // Botão Publicar (visual)
         TextButton(onClick = { }) {
             Text(
                 text = "Publicar",
@@ -120,9 +110,6 @@ fun ReviewTopBar(navController: NavController) {
     HorizontalDivider(color = DividerColor, thickness = 0.5.dp)
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 2 · Card com informações do livro
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun BookInfoCard() {
     Card(
@@ -137,7 +124,6 @@ fun BookInfoCard() {
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Capa simulada
             Box(
                 modifier = Modifier
                     .size(56.dp, 76.dp)
@@ -170,9 +156,6 @@ fun BookInfoCard() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 3 · Seção de avaliação com estrelas
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun RatingSection() {
     Column(
@@ -187,7 +170,6 @@ fun RatingSection() {
             letterSpacing = 1.sp
         )
         Spacer(Modifier.height(12.dp))
-        // Estrelas (apenas visual, não interativas)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
@@ -217,9 +199,6 @@ fun RatingSection() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 4 · Campo de texto da avaliação
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun ReviewTextField() {
     var reviewText by remember { mutableStateOf("") }
@@ -240,7 +219,6 @@ fun ReviewTextField() {
         minLines = 4,
         maxLines = 8
     )
-    // Contador de caracteres
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
@@ -254,9 +232,6 @@ fun ReviewTextField() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 5 · Checkbox de spoilers
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun SpoilerCheckbox() {
     var checked by remember { mutableStateOf(false) }
@@ -277,7 +252,6 @@ fun SpoilerCheckbox() {
         )
     }
 }
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
