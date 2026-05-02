@@ -1,7 +1,8 @@
-package com.example.azurescholar
+package com.projeto.unibook1.usuario.livro
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
-// ── Color palette (padrão das outras telas) ──────────────────────────────────
+// ── Color palette ──────────────────────────────────────────────────────────────
 private val AzureBlue        = Color(0xFF1A73E8)
 private val TextPrimary      = Color(0xFF1A1A1A)
 private val TextSecondary    = Color(0xFF666666)
@@ -46,14 +47,11 @@ private val StarYellow       = Color(0xFFFFC107)
 private val NoteBg           = Color(0xFFF5F7FA)
 private val ButtonBlue       = Color(0xFF1A73E8)
 
-// ══════════════════════════════════════════════════════════════════════════════
-// Tela de detalhes do livro
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun LivroDetalhesScreen(navController: NavController) {
     Scaffold(
         containerColor = Color.White,
-        topBar = { DetalhesTopBar(navController) }
+        topBar = { LivroDetalhesTopBar(navController) }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -62,37 +60,30 @@ fun LivroDetalhesScreen(navController: NavController) {
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Cabeçalho com título, autor, rating, tags
             item {
                 BookHeader()
             }
 
-            // Informações técnicas
             item {
                 TechnicalInfoCard()
             }
 
-            // Localização física
             item {
-                LocationCard()
+                LivroLocationCard()
             }
 
-            // Status dos exemplares
             item {
-                ExemplaresCard()
+                LivroExemplaresCard()
             }
 
-            // Comunidade & Notas
             item {
                 CommunityNoteCard()
             }
 
-            // Nota pessoal
             item {
                 PersonalNoteCard()
             }
 
-            // Botão reservar (sticky visual dentro da lista, mas pode ser fixo)
             item {
                 Spacer(Modifier.height(8.dp))
                 ReserveButton()
@@ -102,11 +93,8 @@ fun LivroDetalhesScreen(navController: NavController) {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 1 · Top App Bar
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun DetalhesTopBar(navController: NavController) {
+fun LivroDetalhesTopBar(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -118,7 +106,9 @@ fun DetalhesTopBar(navController: NavController) {
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = "Voltar",
             tint = AzureBlue,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .size(24.dp)
+                .clickable { navController.popBackStack() }   // Voltar funcional
         )
         Spacer(Modifier.width(12.dp))
         Text(
@@ -128,26 +118,11 @@ fun DetalhesTopBar(navController: NavController) {
             color = AzureBlue,
             modifier = Modifier.weight(1f)
         )
-        Icon(
-            imageVector = Icons.Outlined.Share,
-            contentDescription = "Compartilhar",
-            tint = AzureBlue,
-            modifier = Modifier.size(22.dp)
-        )
-        Spacer(Modifier.width(8.dp))
-        Icon(
-            imageVector = Icons.Outlined.BookmarkBorder,
-            contentDescription = "Salvar",
-            tint = AzureBlue,
-            modifier = Modifier.size(22.dp)
-        )
+
     }
     HorizontalDivider(color = DividerColor, thickness = 0.5.dp)
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 2 · Cabeçalho do livro
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun BookHeader() {
     Column {
@@ -165,7 +140,6 @@ fun BookHeader() {
             color = TextSecondary
         )
         Spacer(Modifier.height(8.dp))
-        // Rating
         Row(verticalAlignment = Alignment.CenterVertically) {
             Row {
                 repeat(4) {
@@ -181,16 +155,15 @@ fun BookHeader() {
             )
         }
         Spacer(Modifier.height(12.dp))
-        // Tags
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            FilterTag(label = "Psicologia")
-            FilterTag(label = "Acadêmico")
+            LivroFilterTag(label = "Psicologia")
+            LivroFilterTag(label = "Acadêmico")
         }
     }
 }
 
 @Composable
-fun FilterTag(label: String) {
+fun LivroFilterTag(label: String) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(20.dp))
@@ -206,9 +179,6 @@ fun FilterTag(label: String) {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 3 · Informações Técnicas
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun TechnicalInfoCard() {
     Card(
@@ -236,16 +206,16 @@ fun TechnicalInfoCard() {
                 lineHeight = 20.sp
             )
             Spacer(Modifier.height(12.dp))
-            InfoRow(label = "ISBN", value = "978-0131496712")
-            InfoRow(label = "Edição", value = "8ª Edição")
-            InfoRow(label = "Editora", value = "Pearson")
-            InfoRow(label = "Ano", value = "2014")
+            LivroInfoRow(label = "ISBN", value = "978-0131496712")
+            LivroInfoRow(label = "Edição", value = "8ª Edição")
+            LivroInfoRow(label = "Editora", value = "Pearson")
+            LivroInfoRow(label = "Ano", value = "2014")
         }
     }
 }
 
 @Composable
-fun InfoRow(label: String, value: String) {
+fun LivroInfoRow(label: String, value: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -257,11 +227,8 @@ fun InfoRow(label: String, value: String) {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 4 · Localização Física
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun LocationCard() {
+fun LivroLocationCard() {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -289,20 +256,11 @@ fun LocationCard() {
                 }
             }
             Spacer(Modifier.height(8.dp))
-            Text(
-                text = "Ver no Mapa",
-                fontSize = 14.sp,
-                color = TextBlue,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.padding(top = 4.dp)
-            )
+
         }
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 5 · Status dos Exemplares
-// ══════════════════════════════════════════════════════════════════════════════
 data class Exemplar(
     val id: String,
     val status: String,
@@ -318,7 +276,7 @@ private val exemplaresList = listOf(
 )
 
 @Composable
-fun ExemplaresCard() {
+fun LivroExemplaresCard() {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -375,7 +333,6 @@ fun ExemplaresCard() {
                             )
                         }
                     }
-                    // Botão Reservar apenas para disponíveis
                     if (exemplar.status == "DISPONÍVEL") {
                         TextButton(onClick = { }) {
                             Text("Reservar", fontSize = 12.sp, color = AzureBlue)
@@ -392,9 +349,6 @@ fun ExemplaresCard() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 6 · Comunidade & Notas
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun CommunityNoteCard() {
     Card(
@@ -408,7 +362,6 @@ fun CommunityNoteCard() {
                 .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
                 .padding(16.dp)
         ) {
-            // Ícone e número
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Default.People, null, tint = AzureBlue, modifier = Modifier.size(24.dp))
                 Spacer(Modifier.height(4.dp))
@@ -420,7 +373,6 @@ fun CommunityNoteCard() {
                 )
             }
             Spacer(Modifier.width(16.dp))
-            // Mensagem
             Text(
                 text = "Indicado pelo professor Anderson para Processos Psicológicos Básicos.",
                 fontSize = 14.sp,
@@ -432,9 +384,6 @@ fun CommunityNoteCard() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 7 · Nota Pessoal
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun PersonalNoteCard() {
     Card(
@@ -469,9 +418,6 @@ fun PersonalNoteCard() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 8 · Botão Reservar Livro
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun ReserveButton() {
     Button(
@@ -493,9 +439,6 @@ fun ReserveButton() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// Preview
-// ══════════════════════════════════════════════════════════════════════════════
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LivroDetalhesPreview() {
