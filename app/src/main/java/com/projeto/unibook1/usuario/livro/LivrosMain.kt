@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -17,12 +18,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,8 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.*
-
-
 
 // ── Color palette ──────────────────────────────────────────────────────────────
 private val AzureBlue      = Color(0xFF1565C0)
@@ -50,10 +51,10 @@ private val TextPrimary    = Color(0xFF1A1A1A)
 private val TextSecondary  = Color(0xFF666666)
 private val TextBlue       = Color(0xFF1A73E8)
 private val Divider        = Color(0xFFEEEEEE)
-private val BookCardBg1    = Color(0xFFF5E6D3)  // warm orange/terracotta
-private val BookCardBg2    = Color(0xFFF7EDE2)  // beige/cream
-private val BookCardBg3    = Color(0xFF4E8B7A)  // teal green
-private val BookCardBg4    = Color(0xFFF5D6C0)  // light peach
+private val BookCardBg1    = Color(0xFFF5E6D3)
+private val BookCardBg2    = Color(0xFFF7EDE2)
+private val BookCardBg3    = Color(0xFF4E8B7A)
+private val BookCardBg4    = Color(0xFFF5D6C0)
 private val NavSelected    = Color(0xFF1A73E8)
 private val NavUnselected  = Color(0xFF9E9E9E)
 
@@ -63,68 +64,50 @@ class LivrosMain : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MaterialTheme {
-
-                // Controlador de navegação
                 val navController = rememberNavController()
-
                 Surface {
-
-                    // Define as rotas do app
                     NavHost(
                         navController = navController,
                         startDestination = "main"
                     ) {
-
-                        // Tela principal
                         composable("main") {
                             MainScreen(navController)
                         }
-
-                        // Tela professores
                         composable("professores") {
                             LivroProfessoresScreen(navController)
                         }
-
-                        // Tela insight
                         composable("insight") {
                             LivroInsightScreen(navController)
                         }
+                        // Novas rotas adicionadas
+                        composable("pesquisa") {
+                            LivroPesquisaScreen(navController)
+                        }
+                        composable("detalhes") {
+                            LivroInsightScreen(navController)
+                        }
+                        composable("recomendacoes_curso") {
+                            LivroRec2Screen(navController)
+                        }
+                        composable("avaliacao") {
+                            LivroReviewScreen(navController)
+                        }
+                        composable("professor_perfil") {
+                            ProfessorPerfilScreen(navController)
+                        }
                     }
                 }
-
-
             }
         }
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// Root screen
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun MainScreen(navController: NavController) {
-
-
-    // CHIP "Professor"
-    AssistChip(
-        onClick = {
-            navController.navigate("professores")
-        },
-        label = { Text("Professor") }
-    )
-
-    // CHIP "Princípios de Design"
-    AssistChip(
-        onClick = {
-            navController.navigate("insight")
-        },
-        label = { Text("Princípios de Design") }
-    )
-
     Scaffold(
         containerColor = Color.White,
-        floatingActionButton = { MicFab() },
-        bottomBar = { BottomNavBar() }
+
+        bottomBar = { LivroBottomNavBar() }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -134,25 +117,24 @@ fun MainScreen(navController: NavController) {
         ) {
             TopAppBarSection()
             Spacer(Modifier.height(12.dp))
-            MainSearchBarSection()
+            // Barra de pesquisa agora recebe navController
+            LivroSearchBarSection(navController)
             Spacer(Modifier.height(10.dp))
-            FilterChipsRow()
+            LivroFilterChipsRow()
             Spacer(Modifier.height(16.dp))
-            DestaqueSection()
+            LivroDestaqueSection()
             Spacer(Modifier.height(16.dp))
-            NotasComunidadeSection()
+            // Notas da comunidade recebe navController
+            NotasComunidadeSection(navController)
             Spacer(Modifier.height(20.dp))
-            RecomendadosSection()
+            LivroRecomendadosSection()
             Spacer(Modifier.height(20.dp))
-            ExplorarCatalogoSection()
+            LivroExplorarCatalogoSection()
             Spacer(Modifier.height(80.dp))
         }
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 1 · Top App Bar
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun TopAppBarSection() {
     Row(
@@ -161,7 +143,6 @@ fun TopAppBarSection() {
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Hamburger
         Icon(
             imageVector = Icons.Default.Menu,
             contentDescription = "Menu",
@@ -169,7 +150,6 @@ fun TopAppBarSection() {
             modifier = Modifier.size(26.dp)
         )
         Spacer(Modifier.width(12.dp))
-        // Brand name – two-line
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = "Uni",
@@ -186,29 +166,14 @@ fun TopAppBarSection() {
                 lineHeight = 22.sp
             )
         }
-        // Avatar
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(CircleShape)
-                .background(Color(0xFFBDBDBD)),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "Perfil",
-                tint = Color.White,
-                modifier = Modifier.size(22.dp)
-            )
-        }
+
+
+
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 2 · Search Bar
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun MainSearchBarSection() {
+fun LivroSearchBarSection(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -216,6 +181,7 @@ fun MainSearchBarSection() {
             .clip(RoundedCornerShape(24.dp))
             .border(1.dp, ChipBorder, RoundedCornerShape(24.dp))
             .background(Color(0xFFF9F9F9))
+            .clickable { navController.navigate("pesquisa") }   // Navega para pesquisa
             .padding(horizontal = 14.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -234,44 +200,25 @@ fun MainSearchBarSection() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 3 · Filter Chips
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun FilterChipsRow() {
+fun LivroFilterChipsRow() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        FilterChipItem(label = "Curso",     icon = Icons.Default.School)
+        LivroFilterChipItem(label = "Curso",     icon = Icons.Default.School)
         Spacer(Modifier.width(8.dp))
-        FilterChipItem(label = "Professor", icon = Icons.Default.Person)
+        LivroFilterChipItem(label = "Professor", icon = Icons.Default.Person)
         Spacer(Modifier.width(8.dp))
-        FilterChipItem(label = "Edição",    icon = Icons.Default.MenuBook)
-        Spacer(Modifier.weight(1f))
-        // Sliders / filter icon
-        Box(
-            modifier = Modifier
-                .size(34.dp)
-                .clip(RoundedCornerShape(6.dp))
-                .border(1.dp, ChipBorder, RoundedCornerShape(6.dp))
-                .background(Color.White),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.Tune,
-                contentDescription = "Filtros",
-                tint = TextSecondary,
-                modifier = Modifier.size(18.dp)
-            )
-        }
+
+
     }
 }
 
 @Composable
-fun FilterChipItem(label: String, icon: androidx.compose.ui.graphics.vector.ImageVector) {
+fun LivroFilterChipItem(label: String, icon: ImageVector) {
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(20.dp))
@@ -291,11 +238,8 @@ fun FilterChipItem(label: String, icon: androidx.compose.ui.graphics.vector.Imag
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 4 · Destaque da Semana
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun DestaqueSection() {
+fun LivroDestaqueSection() {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Text(
             text = "Destaque da Semana",
@@ -305,7 +249,6 @@ fun DestaqueSection() {
         )
         Spacer(Modifier.height(12.dp))
 
-        // Book hero image placeholder
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -314,7 +257,6 @@ fun DestaqueSection() {
                 .background(Color(0xFFF0F0F0)),
             contentAlignment = Alignment.Center
         ) {
-            // Simulated green book cover
             Box(
                 modifier = Modifier
                     .width(130.dp)
@@ -322,7 +264,6 @@ fun DestaqueSection() {
                     .clip(RoundedCornerShape(4.dp))
                     .background(Color(0xFF7BA492))
             )
-            // Subtle decorative circle top-right
             Box(
                 modifier = Modifier
                     .size(90.dp)
@@ -335,12 +276,10 @@ fun DestaqueSection() {
 
         Spacer(Modifier.height(12.dp))
 
-        // Badge + stars row
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // DISPONÍVEL badge
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp))
@@ -355,7 +294,6 @@ fun DestaqueSection() {
                 )
             }
             Spacer(Modifier.weight(1f))
-            // Stars
             Row(verticalAlignment = Alignment.CenterVertically) {
                 repeat(4) {
                     Icon(Icons.Default.Star, null, tint = StarYellow, modifier = Modifier.size(16.dp))
@@ -377,7 +315,6 @@ fun DestaqueSection() {
         Text(text = "Por Alex Miller", fontSize = 14.sp, color = TextSecondary)
         Spacer(Modifier.height(6.dp))
 
-        // Location
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 imageVector = Icons.Default.LocationOn,
@@ -395,7 +332,6 @@ fun DestaqueSection() {
 
         Spacer(Modifier.height(14.dp))
 
-        // Reservar Agora button
         Button(
             onClick = {},
             modifier = Modifier
@@ -409,17 +345,14 @@ fun DestaqueSection() {
                 fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.White,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                textAlign = TextAlign.Center
             )
         }
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 5 · Notas da Comunidade
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun NotasComunidadeSection() {
+fun NotasComunidadeSection(navController: NavController) {
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -428,7 +361,6 @@ fun NotasComunidadeSection() {
             .background(Color.White)
             .padding(16.dp)
     ) {
-        // Header
         Row(verticalAlignment = Alignment.Top) {
             Icon(
                 imageVector = Icons.Default.StickyNote2,
@@ -448,7 +380,6 @@ fun NotasComunidadeSection() {
 
         Spacer(Modifier.height(12.dp))
 
-        // Note 1
         CommunityNoteItem(
             author = "Prof. Ricardo Rocha (Arquitetura)",
             quote = "\"Livro base para a disciplina de Teoria da Forma II. Recomendo a leitura dos capítulos 3 e 5.\""
@@ -458,7 +389,6 @@ fun NotasComunidadeSection() {
         HorizontalDivider(color = Divider, thickness = 0.5.dp)
         Spacer(Modifier.height(10.dp))
 
-        // Note 2
         CommunityNoteItem(
             author = "Ana Clara (Monitora)",
             quote = "\"O exemplar possui anotações úteis sobre a Gestalt na página 112.\""
@@ -466,9 +396,10 @@ fun NotasComunidadeSection() {
 
         Spacer(Modifier.height(12.dp))
 
-        // Ver todas link
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { navController.navigate("insight") },   // Navega para insights
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -478,7 +409,7 @@ fun NotasComunidadeSection() {
                 color = TextBlue,
                 textDecoration = TextDecoration.None,
                 fontWeight = FontWeight.Medium,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                textAlign = TextAlign.Center
             )
             Spacer(Modifier.width(4.dp))
             Icon(
@@ -494,7 +425,6 @@ fun NotasComunidadeSection() {
 @Composable
 fun CommunityNoteItem(author: String, quote: String) {
     Row(modifier = Modifier.fillMaxWidth()) {
-        // Blue left border accent
         Box(
             modifier = Modifier
                 .width(3.dp)
@@ -510,9 +440,6 @@ fun CommunityNoteItem(author: String, quote: String) {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 6 · Recomendados para Você
-// ══════════════════════════════════════════════════════════════════════════════
 data class BookCard(
     val title: String,
     val author: String,
@@ -529,7 +456,7 @@ private val recommendedBooks = listOf(
 )
 
 @Composable
-fun RecomendadosSection() {
+fun LivroRecomendadosSection() {
     Column {
         Row(
             modifier = Modifier
@@ -556,13 +483,7 @@ fun RecomendadosSection() {
                     color = TextSecondary
                 )
             }
-            Text(
-                text = "Ver\ntudo",
-                fontSize = 13.sp,
-                color = TextBlue,
-                fontWeight = FontWeight.Medium,
-                textAlign = androidx.compose.ui.text.style.TextAlign.End
-            )
+
         }
 
         Spacer(Modifier.height(12.dp))
@@ -581,7 +502,6 @@ fun RecomendadosSection() {
 @Composable
 fun RecommendedBookCard(book: BookCard) {
     Column(modifier = Modifier.width(110.dp)) {
-        // Book cover
         Box(
             modifier = Modifier
                 .width(110.dp)
@@ -590,7 +510,6 @@ fun RecommendedBookCard(book: BookCard) {
                 .background(book.bgColor),
             contentAlignment = Alignment.Center
         ) {
-            // Small book title overlay for teal card (Marketing Digital)
             if (book.bgColor == BookCardBg3) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -621,9 +540,6 @@ fun RecommendedBookCard(book: BookCard) {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 7 · Explorar Catálogo
-// ══════════════════════════════════════════════════════════════════════════════
 data class CatalogBook(
     val title: String,
     val author: String,
@@ -639,7 +555,7 @@ private val catalogBooks = listOf(
 )
 
 @Composable
-fun ExplorarCatalogoSection() {
+fun LivroExplorarCatalogoSection() {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Text(
             text = "Explorar Catálogo",
@@ -667,7 +583,6 @@ fun CatalogBookItem(book: CatalogBook) {
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Book thumbnail
         Box(
             modifier = Modifier
                 .width(52.dp)
@@ -680,7 +595,6 @@ fun CatalogBookItem(book: CatalogBook) {
             Text(text = book.title, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary)
             Text(text = book.author, fontSize = 12.sp, color = TextSecondary)
             Spacer(Modifier.height(5.dp))
-            // Status badge
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp))
@@ -695,7 +609,6 @@ fun CatalogBookItem(book: CatalogBook) {
                 )
             }
         }
-        // Bookmark icon
         Icon(
             imageVector = if (book.bookmarkFilled) Icons.Default.Bookmark else Icons.Outlined.BookmarkBorder,
             contentDescription = "Bookmark",
@@ -705,31 +618,10 @@ fun CatalogBookItem(book: CatalogBook) {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 8 · Mic FAB
-// ══════════════════════════════════════════════════════════════════════════════
-@Composable
-fun MicFab() {
-    FloatingActionButton(
-        onClick = {},
-        containerColor = ButtonBlue,
-        contentColor = Color.White,
-        shape = CircleShape,
-        modifier = Modifier.size(56.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Default.Mic,
-            contentDescription = "Pesquisa por voz",
-            modifier = Modifier.size(26.dp)
-        )
-    }
-}
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 9 · Bottom Navigation Bar
-// ══════════════════════════════════════════════════════════════════════════════
+
 @Composable
-fun BottomNavBar() {
+fun LivroBottomNavBar() {
     NavigationBar(
         containerColor = Color.White,
         tonalElevation = 0.dp,
@@ -802,14 +694,10 @@ fun BottomNavBar() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// Preview
-// ══════════════════════════════════════════════════════════════════════════════
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun AzureScholarPreview() {
     val navController = rememberNavController()
-
     MaterialTheme {
         MainScreen(navController)
     }
