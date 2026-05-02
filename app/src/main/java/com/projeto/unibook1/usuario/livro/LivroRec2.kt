@@ -2,6 +2,7 @@ package com.projeto.unibook1.usuario.livro
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
-// ── Color palette (padrão das outras telas) ──────────────────────────────────
+// ── Color palette ──────────────────────────────────────────────────────────────
 private val AzureBlue        = Color(0xFF1A73E8)
 private val TextPrimary      = Color(0xFF1A1A1A)
 private val TextSecondary    = Color(0xFF666666)
@@ -39,15 +40,12 @@ private val NavSelected      = Color(0xFF1A73E8)
 private val NavUnselected    = Color(0xFF9E9E9E)
 private val StarYellow       = Color(0xFFFFC107)
 
-// ══════════════════════════════════════════════════════════════════════════════
-// Tela de recomendações do curso (sem a parte da IA)
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun LivroRec2Screen(navController: NavController) {
     Scaffold(
         containerColor = Color.White,
         topBar = { Rec2TopBar(navController) },
-        bottomBar = { Rec2BottomBar() }
+
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -56,17 +54,14 @@ fun LivroRec2Screen(navController: NavController) {
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Cabeçalho
             item {
-                HeaderSection()
+                LivroHeaderSection()
             }
 
-            // Lista de livros recomendados
             items(recommendedBooks) { book ->
-                RecommendedBookCard(book)
+                RecommendedBookCard(book, navController)
             }
 
-            // Espaço final sem o card de IA
             item {
                 Spacer(Modifier.height(24.dp))
             }
@@ -74,9 +69,6 @@ fun LivroRec2Screen(navController: NavController) {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 1 · Top App Bar
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun Rec2TopBar(navController: NavController) {
     Row(
@@ -90,7 +82,9 @@ fun Rec2TopBar(navController: NavController) {
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = "Voltar",
             tint = AzureBlue,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .size(24.dp)
+                .clickable { navController.popBackStack() }   // Voltar funcional
         )
         Spacer(Modifier.width(12.dp))
         Text(
@@ -100,21 +94,13 @@ fun Rec2TopBar(navController: NavController) {
             color = AzureBlue,
             modifier = Modifier.weight(1f)
         )
-        Icon(
-            imageVector = Icons.Outlined.Share,
-            contentDescription = "Compartilhar",
-            tint = AzureBlue,
-            modifier = Modifier.size(22.dp)
-        )
+
     }
     HorizontalDivider(color = DividerColor, thickness = 0.5.dp)
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 2 · Cabeçalho com curso e semestre
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun HeaderSection() {
+fun LivroHeaderSection() {
     Column {
         Text(
             text = "Psicologia — 4° Semestre",
@@ -132,9 +118,6 @@ fun HeaderSection() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 3 · Dados dos livros (mock)
-// ══════════════════════════════════════════════════════════════════════════════
 data class CursoBook(
     val title: String,
     val author: String,
@@ -167,11 +150,8 @@ private val recommendedBooks = listOf(
     )
 )
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 4 · Card de livro recomendado
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun RecommendedBookCard(book: CursoBook) {
+fun RecommendedBookCard(book: CursoBook, navController: NavController) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -183,12 +163,10 @@ fun RecommendedBookCard(book: CursoBook) {
                 .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
                 .padding(16.dp)
         ) {
-            // Linha com capa simulada e título/autor
             Row(
                 verticalAlignment = Alignment.Top,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                // Capa simulada
                 Box(
                     modifier = Modifier
                         .size(60.dp, 80.dp)
@@ -221,7 +199,6 @@ fun RecommendedBookCard(book: CursoBook) {
 
             Spacer(Modifier.height(12.dp))
 
-            // Badge de destaque
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp))
@@ -238,7 +215,6 @@ fun RecommendedBookCard(book: CursoBook) {
 
             Spacer(Modifier.height(10.dp))
 
-            // Linha ISBN e botão "Ver Detalhes"
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -249,63 +225,30 @@ fun RecommendedBookCard(book: CursoBook) {
                     fontSize = 12.sp,
                     color = TextSecondary
                 )
-                TextButton(onClick = { }) {
-                    Text(
-                        text = "Ver Detalhes",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = TextBlue
-                    )
+                Row {
+                    TextButton(onClick = { navController.navigate("detalhes") }) {
+                        Text(
+                            text = "Ver Detalhes",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = TextBlue
+                        )
+                    }
+                    TextButton(onClick = { navController.navigate("avaliacao") }) {
+                        Text(
+                            text = "Adicionar Avaliação",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = TextBlue
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 5 · Bottom Navigation Bar (igual às outras telas)
-// ══════════════════════════════════════════════════════════════════════════════
-@Composable
-fun Rec2BottomBar() {
-    NavigationBar(
-        containerColor = Color.White,
-        tonalElevation = 0.dp,
-        modifier = Modifier.border(
-            width = 0.5.dp,
-            color = DividerColor,
-            shape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp)
-        )
-    ) {
-        NavigationBarItem(
-            selected = false,
-            onClick = { },
-            icon = { Icon(Icons.Outlined.Home, contentDescription = "Início", modifier = Modifier.size(22.dp)) },
-            label = { Text("Início", fontSize = 11.sp) },
-            colors = navBarColors()
-        )
-        NavigationBarItem(
-            selected = true,  // guia "Livros" ativa
-            onClick = { },
-            icon = { Icon(Icons.Default.MenuBook, contentDescription = "Livros", modifier = Modifier.size(22.dp)) },
-            label = { Text("Livros", fontSize = 11.sp) },
-            colors = navBarColors()
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = { },
-            icon = { Icon(Icons.Outlined.Bookmark, contentDescription = "Reservas", modifier = Modifier.size(22.dp)) },
-            label = { Text("Reservas", fontSize = 11.sp) },
-            colors = navBarColors()
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = { },
-            icon = { Icon(Icons.Outlined.Person, contentDescription = "Perfil", modifier = Modifier.size(22.dp)) },
-            label = { Text("Perfil", fontSize = 11.sp) },
-            colors = navBarColors()
-        )
-    }
-}
+
 
 @Composable
 private fun navBarColors() = NavigationBarItemDefaults.colors(
@@ -316,9 +259,6 @@ private fun navBarColors() = NavigationBarItemDefaults.colors(
     indicatorColor = Color.Transparent
 )
 
-// ══════════════════════════════════════════════════════════════════════════════
-// Preview
-// ══════════════════════════════════════════════════════════════════════════════
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LivroRec2Preview() {
