@@ -1,11 +1,8 @@
 package com.projeto.unibook1.usuario.livro
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -24,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,34 +57,12 @@ private val NavUnselected    = Color(0xFF9E9E9E)
 private val ButtonBlue       = Color(0xFF1A73E8)
 private val DescBlue         = Color(0xFF1A73E8)
 
-// ══════════════════════════════════════════════════════════════════════════════
-// Entry point  (swap out if embedding in an existing Activity)
-// ══════════════════════════════════════════════════════════════════════════════
-
-
-// ══════════════════════════════════════════════════════════════════════════════
-// Root screen
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun LivroInsightScreen(navController: NavController) {
-    Column {
-        IconButton(onClick = {
-            navController.popBackStack()
-        }) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Voltar"
-            )
-        }
-
-        Text("Tela de Insight")
-    }
-
-
     Scaffold(
         containerColor = Color.White,
-        topBar = { InsightTopBar() },
-        bottomBar = { InsightBottomBar() }
+        topBar = { InsightTopBar(navController) },
+
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -99,34 +73,25 @@ fun LivroInsightScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(bottom = 90.dp)          // room for FAB-style button
+                    .padding(bottom = 90.dp)
             ) {
                 Spacer(Modifier.height(8.dp))
                 HeroCard()
                 Spacer(Modifier.height(16.dp))
-                ProfessoresSection()
+                ProfessoresReviewSection()
                 Spacer(Modifier.height(16.dp))
                 MonitoresSection()
                 Spacer(Modifier.height(16.dp))
-                AlunosSection()
+                AlunosReviewSection()
                 Spacer(Modifier.height(16.dp))
             }
 
-            // "Adicionar minha nota" sticky button
-            AdicionarNotaButton(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(horizontal = 24.dp, vertical = 12.dp)
-            )
         }
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 1 · Top App Bar
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun InsightTopBar() {
+fun InsightTopBar(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -138,7 +103,9 @@ fun InsightTopBar() {
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = "Voltar",
             tint = AzureBlue,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .size(24.dp)
+                .clickable { navController.popBackStack() }   // Voltar funcional
         )
         Spacer(Modifier.width(8.dp))
         Text(
@@ -148,19 +115,11 @@ fun InsightTopBar() {
             color = AzureBlue,
             modifier = Modifier.weight(1f)
         )
-        Icon(
-            imageVector = Icons.Outlined.Share,
-            contentDescription = "Compartilhar",
-            tint = AzureBlue,
-            modifier = Modifier.size(22.dp)
-        )
+
     }
     HorizontalDivider(color = DividerColor, thickness = 0.5.dp)
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 2 · Hero Card  (book cover + meta)
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun HeroCard() {
     Box(
@@ -172,7 +131,6 @@ fun HeroCard() {
             .padding(16.dp)
     ) {
         Column {
-            // Book cover
             Box(
                 modifier = Modifier
                     .width(120.dp)
@@ -181,7 +139,6 @@ fun HeroCard() {
                     .background(BookCoverBg),
                 contentAlignment = Alignment.Center
             ) {
-                // Simulated teal cover with text overlay
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -199,7 +156,6 @@ fun HeroCard() {
                         Text("PRINCÍPIOS", fontSize = 10.sp, color = Color.White, fontWeight = FontWeight.Bold)
                         Text("DE",       fontSize = 9.sp,  color = Color.White.copy(alpha = 0.85f), fontWeight = FontWeight.Light)
                         Spacer(Modifier.height(6.dp))
-                        // decorative lines
                         repeat(3) {
                             Box(
                                 modifier = Modifier
@@ -215,7 +171,6 @@ fun HeroCard() {
 
             Spacer(Modifier.height(14.dp))
 
-            // Rating pill
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(20.dp))
@@ -264,11 +219,8 @@ fun HeroCard() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 3 · Dicas de Professores
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun ProfessoresSection() {
+fun ProfessoresReviewSection() {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         SectionHeader(
             icon = Icons.Default.School,
@@ -276,7 +228,6 @@ fun ProfessoresSection() {
         )
         Spacer(Modifier.height(10.dp))
 
-        // Card with blue left border
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -284,7 +235,6 @@ fun ProfessoresSection() {
                 .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
                 .background(CardBg)
         ) {
-            // Blue left accent bar
             Box(
                 modifier = Modifier
                     .width(4.dp)
@@ -292,9 +242,7 @@ fun ProfessoresSection() {
                     .background(BlueBorderAccent)
             )
             Column(modifier = Modifier.padding(12.dp)) {
-                // Author row
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    // RR avatar
                     InitialsAvatar(initials = "RR", bg = AvatarPurpleBg, textColor = AvatarPurpleText)
                     Spacer(Modifier.width(10.dp))
                     Column(modifier = Modifier.weight(1f)) {
@@ -306,7 +254,6 @@ fun ProfessoresSection() {
                         )
                         Text(text = "Há 2 dias", fontSize = 12.sp, color = TextSecondary)
                     }
-                    // ESPECIALISTA badge
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(6.dp))
@@ -337,9 +284,6 @@ fun ProfessoresSection() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 4 · Dicas de Monitores
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
 fun MonitoresSection() {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -358,9 +302,7 @@ fun MonitoresSection() {
                 .padding(12.dp)
         ) {
             Column {
-                // Author row with photo-style avatar
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    // Photo placeholder avatar
                     Box(
                         modifier = Modifier
                             .size(40.dp)
@@ -402,11 +344,8 @@ fun MonitoresSection() {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 5 · Comentários de Alunos
-// ══════════════════════════════════════════════════════════════════════════════
 @Composable
-fun AlunosSection() {
+fun AlunosReviewSection() {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         SectionHeader(
             icon = Icons.Default.Forum,
@@ -475,76 +414,9 @@ fun StudentCommentCard(
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 6 · "Adicionar minha nota" sticky button
-// ══════════════════════════════════════════════════════════════════════════════
-@Composable
-fun AdicionarNotaButton(modifier: Modifier = Modifier) {
-    Button(
-        onClick = {},
-        modifier = modifier
-            .fillMaxWidth()
-            .height(52.dp),
-        shape = RoundedCornerShape(28.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = ButtonBlue),
-        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Default.AddBox,
-            contentDescription = null,
-            tint = Color.White,
-            modifier = Modifier.size(20.dp)
-        )
-        Spacer(Modifier.width(8.dp))
-        Text(
-            text = "Adicionar minha nota",
-            fontSize = 15.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Color.White
-        )
-    }
-}
 
-// ══════════════════════════════════════════════════════════════════════════════
-// 7 · Bottom Navigation Bar
-// ══════════════════════════════════════════════════════════════════════════════
-@Composable
-fun InsightBottomBar() {
-    HorizontalDivider(color = DividerColor, thickness = 0.5.dp)
-    NavigationBar(
-        containerColor = Color.White,
-        tonalElevation = 0.dp
-    ) {
-        NavigationBarItem(
-            selected = true,
-            onClick = {},
-            icon = { Icon(Icons.Default.MenuBook, contentDescription = "Library", modifier = Modifier.size(22.dp)) },
-            label = { Text("Library", fontSize = 11.sp) },
-            colors = navBarColors()
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Outlined.Groups, contentDescription = "Community", modifier = Modifier.size(22.dp)) },
-            label = { Text("Community", fontSize = 11.sp) },
-            colors = navBarColors()
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Outlined.StickyNote2, contentDescription = "Notes", modifier = Modifier.size(22.dp)) },
-            label = { Text("Notes", fontSize = 11.sp) },
-            colors = navBarColors()
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Outlined.Person, contentDescription = "Profile", modifier = Modifier.size(22.dp)) },
-            label = { Text("Profile", fontSize = 11.sp) },
-            colors = navBarColors()
-        )
-    }
-}
+
+
 
 @Composable
 private fun navBarColors() = NavigationBarItemDefaults.colors(
@@ -555,11 +427,6 @@ private fun navBarColors() = NavigationBarItemDefaults.colors(
     indicatorColor      = Color.Transparent
 )
 
-// ══════════════════════════════════════════════════════════════════════════════
-// Shared helpers
-// ══════════════════════════════════════════════════════════════════════════════
-
-/** Coloured circle with 2-letter initials */
 @Composable
 fun InitialsAvatar(
     initials: String,
@@ -583,7 +450,6 @@ fun InitialsAvatar(
     }
 }
 
-/** Section title row with icon */
 @Composable
 fun SectionHeader(icon: ImageVector, title: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -603,14 +469,10 @@ fun SectionHeader(icon: ImageVector, title: String) {
     }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// Preview
-// ══════════════════════════════════════════════════════════════════════════════
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LivroInsightPreview() {
     val navController = rememberNavController()
-
     MaterialTheme {
         LivroInsightScreen(navController)
     }
