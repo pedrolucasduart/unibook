@@ -33,6 +33,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.*
+import com.projeto.unibook1.usuario.Inicio.TelaInicial
+import com.projeto.unibook1.usuario.Inicio.TelaReservas
+import com.projeto.unibook1.usuario.mapa.MapScreen
+import com.projeto.unibook1.telasgerais.TelaReservaArmario
 
 // ── Color palette ──────────────────────────────────────────────────────────────
 private val AzureBlue      = Color(0xFF1565C0)
@@ -95,6 +99,18 @@ class LivrosMain : ComponentActivity() {
                         composable("professor_perfil") {
                             ProfessorPerfilScreen(navController)
                         }
+                        composable("inicio") {
+                            TelaInicial(onReservaClick = { navController.navigate("perfil") })
+                        }
+                        composable("mapa") {
+                            MapScreen(onReservaClick = { navController.navigate("reserva_armario") })
+                        }
+                        composable("perfil") {
+                            TelaReservas()
+                        }
+                        composable("reserva_armario") {
+                            TelaReservaArmario()
+                        }
                     }
                 }
             }
@@ -107,7 +123,7 @@ fun MainScreen(navController: NavController) {
     Scaffold(
         containerColor = Color.White,
 
-        bottomBar = { LivroBottomNavBar() }
+        bottomBar = { LivroBottomNavBar(navController) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -432,6 +448,7 @@ fun CommunityNoteItem(author: String, quote: String) {
                 .background(BlueBorder)
         )
         Spacer(Modifier.width(10.dp))
+
         Column {
             Text(text = author, fontSize = 12.sp, color = TextBlue, fontWeight = FontWeight.Medium)
             Spacer(Modifier.height(3.dp))
@@ -621,7 +638,9 @@ fun CatalogBookItem(book: CatalogBook) {
 
 
 @Composable
-fun LivroBottomNavBar() {
+fun LivroBottomNavBar(navController: NavController) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
     NavigationBar(
         containerColor = Color.White,
         tonalElevation = 0.dp,
@@ -632,8 +651,8 @@ fun LivroBottomNavBar() {
         )
     ) {
         NavigationBarItem(
-            selected = false,
-            onClick = {},
+            selected = currentRoute == "inicio",
+            onClick = { navController.navigate("inicio") },
             icon = {
                 Icon(Icons.Outlined.Home, contentDescription = "Início", modifier = Modifier.size(22.dp))
             },
@@ -647,8 +666,8 @@ fun LivroBottomNavBar() {
             )
         )
         NavigationBarItem(
-            selected = false,
-            onClick = {},
+            selected = currentRoute == "mapa",
+            onClick = { navController.navigate("mapa") },
             icon = {
                 Icon(Icons.Outlined.Map, contentDescription = "Mapa", modifier = Modifier.size(22.dp))
             },
@@ -662,8 +681,14 @@ fun LivroBottomNavBar() {
             )
         )
         NavigationBarItem(
-            selected = true,
-            onClick = {},
+            selected = currentRoute == "main",
+            onClick = { 
+                if (currentRoute != "main") {
+                    navController.navigate("main") {
+                        popUpTo("main") { inclusive = true }
+                    }
+                }
+            },
             icon = {
                 Icon(Icons.Default.MenuBook, contentDescription = "Livros", modifier = Modifier.size(22.dp))
             },
@@ -677,8 +702,8 @@ fun LivroBottomNavBar() {
             )
         )
         NavigationBarItem(
-            selected = false,
-            onClick = {},
+            selected = currentRoute == "perfil",
+            onClick = { navController.navigate("perfil") },
             icon = {
                 Icon(Icons.Outlined.Person, contentDescription = "Perfil", modifier = Modifier.size(22.dp))
             },
