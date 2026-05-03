@@ -245,59 +245,81 @@ fun TelaInicial(onReservaClick: () -> Unit) {
             )
 
             Row(
-                modifier = Modifier.fillMaxWidth().background(Color.White)
-                    .padding(16.dp),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(10.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Column(
-                    modifier = Modifier.background(Color.White)
-                        .padding(10.dp),
+                Card(
+                    modifier = Modifier,
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
                 ) {
-                    Button(
-                        onClick = { /* Ação de renovar */ },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE9F1FB)),
-                        modifier = Modifier.background(color = Color(0xFFE9F1FB)),
+                    Column(
+                        modifier = Modifier.background(Color.White)
+                            .padding(10.dp),
+                    ) {
+                        Button(
+                            onClick = { /* Ação de renovar */ },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                            modifier = Modifier.background(color = Color.White),
 
-                        ) {
-                        Text(text = "\uD83D\uDCF7\u200B \n QR \n Code",
-                            color = Color.Black
-                        )
+                            ) {
+                            Text(text = "\uD83D\uDCF7\u200B \n QR \n Code",
+                                color = Color.Black
+                            )
+                        }
+
                     }
-
                 }
 
-                Column(
-                    modifier = Modifier.background(Color.White)
-                        .padding(10.dp),
+                Card(
+                    modifier = Modifier,
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
                 ) {
-                    Button(
-                        onClick = { /* Ação de renovar */ },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE9F1FB)),
-                        modifier = Modifier.background(color = Color(0xFFE9F1FB)),
+                    Column(
+                        modifier = Modifier.background(Color.White)
+                            .padding(10.dp),
+                    ) {
+                        Button(
+                            onClick = { /* Ação de renovar */ },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                            modifier = Modifier.background(color = Color.White),
 
-                        ) {
-                        Text(text = "\uD83D\uDDFA\uFE0F\u200B \n Mapa",
-                            color = Color.Black
-                        )
+                            ) {
+                            Text(text = "\uD83D\uDDFA\uFE0F\u200B \n Mapa",
+                                color = Color.Black
+                            )
+                        }
+
                     }
-
                 }
-                Column(
-                    modifier = Modifier.background(Color.White)
-                        .padding(10.dp),
+
+
+                Card(
+                    modifier = Modifier,
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
                 ) {
-                    Button(
-                        onClick = { /* Ação de renovar */ },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE9F1FB)),
-                        modifier = Modifier.background(color = Color(0xFFE9F1FB)),
+                    Column(
+                        modifier = Modifier.background(Color.White)
+                            .padding(10.dp),
+                    ) {
+                        Button(
+                            onClick = { /* Ação de renovar */ },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                            modifier = Modifier.background(color = Color.White),
 
-                        ) {
-                        Text(text = "\uD83D\uDDC4\uFE0F\u200B \n Verificar \n Armário",
-                            color = Color.Black
-                        )
+                            ) {
+                            Text(text = "\uD83D\uDDC4\uFE0F\u200B \nArmario",
+                                color = Color.Black
+                            )
+                        }
+
                     }
-
                 }
+
+
+
+
+
             }
         }
     }
