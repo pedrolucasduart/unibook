@@ -37,10 +37,6 @@ fun AdminMainScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        bottomBar = {
-            // 1. Passando o parâmetro corretamente aqui
-            AdminBottomNavBar(onEmprestimosClick = onEmprestimosClick)
-        },
         containerColor = FundoApp
     ) { paddingValues ->
 
@@ -95,7 +91,9 @@ fun AdminMainScreen(
     }
 }
 
-// --- COMPONENTES MENORES
+
+
+
 
 @Composable
 fun TopBarAdmin(
@@ -250,7 +248,12 @@ fun StudentItemCard(nome: String, matricula: String, onClick: () -> Unit) {
 
 // 2. Parâmetro adicionado nesta declaração
 @Composable
-fun AdminBottomNavBar(onEmprestimosClick: () -> Unit = {}) {
+fun AdminBottomNavBar(
+    onEmprestimosClick: () -> Unit = {},
+    onNavigateToHome: () -> Unit,
+    currentRoute: String,
+    onNavigateToEmprestimos: () -> Unit = {},
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()

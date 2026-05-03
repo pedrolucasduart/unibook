@@ -6,6 +6,8 @@
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
+        <DialogSelection />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>
