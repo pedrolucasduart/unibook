@@ -2,6 +2,7 @@ package com.projeto.unibook1.telasgerais
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,7 +32,7 @@ import com.projeto.unibook1.usuario.Inicio.BottomNavBar
 @Composable
 fun AcessoBiblioteca(
     modifier: Modifier = Modifier,
-    onReservaClick: () -> Unit
+    onBackClick: () -> Unit
 ){
     Scaffold(
         bottomBar = { BottomNavBar() }
@@ -47,6 +48,7 @@ fun AcessoBiblioteca(
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color(0xFF1976D2),
                 fontWeight = FontWeight.Bold,
+                modifier = Modifier.clickable { onBackClick() }
             )
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -199,5 +201,5 @@ fun AcessoBiblioteca(
 @Preview(showBackground = true)
 @Composable
 fun AcessoBibliotecaPreview() {
-    AcessoBiblioteca(onReservaClick = {})
+    AcessoBiblioteca(onBackClick = {})
 }

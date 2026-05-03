@@ -53,7 +53,7 @@ import androidx.compose.ui.zIndex
 @Composable
 fun ArmarioScreen(
     modifier: Modifier = Modifier,
-    onReservaClick: () -> Unit
+    onBackClick: () -> Unit
 ){
     Scaffold(
         bottomBar = { BottomNavBar() }
@@ -66,6 +66,7 @@ fun ArmarioScreen(
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color(0xFF1976D2),
                 fontWeight = FontWeight.Bold,
+                modifier = Modifier.clickable { onBackClick() }
             )
             Spacer(modifier = Modifier.height(24.dp))
             Card(
@@ -198,5 +199,5 @@ fun ArmarioScreen(
 @Preview(showBackground = true)
 @Composable
 fun ArmariosPreview() {
-    ArmarioScreen(onReservaClick = {})
+    ArmarioScreen(onBackClick = {})
 }

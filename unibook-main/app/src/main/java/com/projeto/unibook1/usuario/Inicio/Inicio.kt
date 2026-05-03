@@ -41,19 +41,56 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.projeto.unibook1.telasgerais.AcessoBiblioteca
+import com.projeto.unibook1.usuario.mapa.MapScreen
+
 class MainActivity: ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MaterialTheme {
-                TelaInicial(onReservaClick = {})
+                val navController = rememberNavController()
+                
+                NavHost(navController = navController, startDestination = "inicio") {
+                    composable("inicio") {
+                        TelaInicial(
+                            onReservaClick = { navController.navigate("reservas") },
+                            onQrCodeClick = { navController.navigate("acesso_biblioteca") },
+                            onMapaClick = { navController.navigate("mapa") },
+                            onArmarioClick = { navController.navigate("verificar_armario") }
+                        )
+                    }
+                    composable("reservas") {
+                        TelaReservas(onBackClick = { navController.popBackStack() })
+                    }
+                    composable("acesso_biblioteca") {
+                        AcessoBiblioteca(onBackClick = { navController.popBackStack() })
+                    }
+                    composable("mapa") {
+                        MapScreen(
+                            onBackClick = { navController.popBackStack() },
+                            onReservaClick = { navController.navigate("reservas") }
+                        )
+                    }
+                    composable("verificar_armario") {
+                        ArmarioScreen(onBackClick = { navController.popBackStack() })
+                    }
+                }
             }
         }
     }
 }
 @Composable
-fun TelaInicial(onReservaClick: () -> Unit) {
+fun TelaInicial(
+    onReservaClick: () -> Unit,
+    onQrCodeClick: () -> Unit,
+    onMapaClick: () -> Unit,
+    onArmarioClick: () -> Unit
+) {
     var nomeAluno by remember { mutableStateOf("Nome do Aluno") }
     var livrosAtivos by remember { mutableStateOf("3") }
     var totalReservas by remember { mutableStateOf("1") }
@@ -258,7 +295,7 @@ fun TelaInicial(onReservaClick: () -> Unit) {
                             .padding(10.dp),
                     ) {
                         Button(
-                            onClick = { /* Ação de renovar */ },
+                            onClick = { onQrCodeClick() },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                             modifier = Modifier.background(color = Color.White),
 
@@ -280,7 +317,7 @@ fun TelaInicial(onReservaClick: () -> Unit) {
                             .padding(10.dp),
                     ) {
                         Button(
-                            onClick = { /* Ação de renovar */ },
+                            onClick = { onMapaClick() },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                             modifier = Modifier.background(color = Color.White),
 
@@ -303,7 +340,7 @@ fun TelaInicial(onReservaClick: () -> Unit) {
                             .padding(10.dp),
                     ) {
                         Button(
-                            onClick = { /* Ação de renovar */ },
+                            onClick = { onArmarioClick() },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                             modifier = Modifier.background(color = Color.White),
 
@@ -347,6 +384,11 @@ fun BottomNavBar() {
 @Preview(showBackground = true)
 @Composable
 fun TelaInicialPreview() {
-    TelaInicial(onReservaClick = {})
+    TelaInicial(
+        onReservaClick = {},
+        onQrCodeClick = {},
+        onMapaClick = {},
+        onArmarioClick = {}
+    )
 }
 

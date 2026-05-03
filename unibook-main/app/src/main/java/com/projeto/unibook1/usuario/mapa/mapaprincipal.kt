@@ -1,5 +1,6 @@
 package com.projeto.unibook1.usuario.mapa
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -20,7 +21,8 @@ import androidx.compose.runtime.remember
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
-    onReservaClick: () -> Unit
+    onBackClick: () -> Unit,
+    onReservaClick: () -> Unit = {}
 ) {
     // 👇 Arrumado: Faltava o } no final dessa linha!
     var andarSelecionado by remember { mutableStateOf("Térreo") }
@@ -40,9 +42,16 @@ fun MapScreen(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "🎓 Unifriends")
+                Text(
+                    text = "⬅\uFE0F Mapa",
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = Color(0xFF1976D2),
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clickable { onBackClick() }
+                )
                 Text(text = "🔔")
             }
 
@@ -274,6 +283,6 @@ fun BottomNavBar() {
 @Composable
 fun MapScreenPreview() {
     MaterialTheme {
-        MapScreen(onReservaClick = {})
+        MapScreen(onBackClick = {})
     }
 }
