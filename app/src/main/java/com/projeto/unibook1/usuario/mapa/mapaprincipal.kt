@@ -22,7 +22,6 @@ import com.projeto.unibook1.usuario.Inicio.BottomNavBar
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
     onReservaClick: () -> Unit
 ) {
     // 👇 Arrumado: Faltava o } no final dessa linha!
