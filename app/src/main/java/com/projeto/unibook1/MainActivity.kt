@@ -13,6 +13,10 @@ import com.projeto.unibook1.ui.theme.Unibook1Theme
 // Telas Gerais
 import com.projeto.unibook1.usuario.mapa.MapScreen
 import com.projeto.unibook1.telasgerais.TelaReservaArmario
+import com.projeto.unibook1.usuario.Inicio.TelaInicial
+import com.projeto.unibook1.usuario.livro.LivroPesquisaScreen
+import com.projeto.unibook1.usuario.livro.LivroInsightScreen
+import com.projeto.unibook1.usuario.livro.LivroRec2Screen
 
 // Telas Admin
 import com.projeto.unibook1.ui.admin.AdminLoginScreen
@@ -280,6 +284,28 @@ class MainActivity : ComponentActivity() {
                         TelaReservaArmario()
                     }
 
+                    composable("inicio") {
+                        TelaInicial(
+                            onReservaClick = { navController.navigate("reserva") },
+                            onQrCodeClick = { /* Lógica futura */ },
+                            onMapaClick = { navController.navigate("mapa") },
+                            onArmarioClick = { navController.navigate("reserva") },
+                            onSearchClick = { navController.navigate("livro_pesquisa") }
+                        )
+                    }
+
+                    composable("livro_pesquisa") {
+                        LivroPesquisaScreen(navController = navController)
+                    }
+
+                    composable("detalhes") {
+                        LivroInsightScreen(navController = navController)
+                    }
+
+                    composable("recomendacoes_curso") {
+                        LivroRec2Screen(navController = navController)
+                    }
+
                     // ==========================================
                     // TELAS DE USUÁRIO (ALUNO)
                     // ==========================================
@@ -290,7 +316,7 @@ class MainActivity : ComponentActivity() {
                             onNavigateToSuporte = { },
                             onEsqueceuSenha = { navController.navigate(route = "recuperar_senha_aluno") },
                             onLoginSucesso = {
-                                navController.navigate("mapa") { popUpTo("login_aluno") { inclusive = true } }
+                                navController.navigate("inicio") { popUpTo("login_aluno") { inclusive = true } }
                             }
                         )
                     }

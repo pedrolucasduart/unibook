@@ -23,7 +23,8 @@ fun TelaInicial(
     onReservaClick: () -> Unit,
     onQrCodeClick: () -> Unit,
     onMapaClick: () -> Unit,
-    onArmarioClick: () -> Unit
+    onArmarioClick: () -> Unit,
+    onSearchClick: () -> Unit
 ) {
     var nomeAluno by remember { mutableStateOf("Lucas") }
     var livrosAtivos by remember { mutableStateOf("3") }
@@ -65,7 +66,16 @@ fun TelaInicial(
                 value = "",
                 onValueChange = {},
                 placeholder = { Text("🔍 Livro, autor, assunto...") },
-                modifier = Modifier.fillMaxWidth().background(Color.White),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .clickable { onSearchClick() },
+                enabled = false,
+                colors = OutlinedTextFieldDefaults.colors(
+                    disabledTextColor = Color.Black,
+                    disabledBorderColor = Color.Gray,
+                    disabledPlaceholderColor = Color.Gray
+                ),
                 shape = RoundedCornerShape(12.dp)
             )
 
@@ -176,6 +186,7 @@ fun TelaInicialPreview() {
         onReservaClick = {},
         onQrCodeClick = {},
         onMapaClick = {},
-        onArmarioClick = {}
+        onArmarioClick = {},
+        onSearchClick = {}
     )
 }

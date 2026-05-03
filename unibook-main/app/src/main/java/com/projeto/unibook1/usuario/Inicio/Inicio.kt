@@ -25,6 +25,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -45,6 +46,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.projeto.unibook1.telasgerais.AcessoBiblioteca
+import com.projeto.unibook1.usuario.livro.LivroPesquisaScreen
 import com.projeto.unibook1.usuario.mapa.MapScreen
 
 class MainActivity: ComponentActivity(){
@@ -61,8 +63,12 @@ class MainActivity: ComponentActivity(){
                             onReservaClick = { navController.navigate("reservas") },
                             onQrCodeClick = { navController.navigate("acesso_biblioteca") },
                             onMapaClick = { navController.navigate("mapa") },
-                            onArmarioClick = { navController.navigate("verificar_armario") }
+                            onArmarioClick = { navController.navigate("verificar_armario") },
+                            onSearchClick = { navController.navigate("livro_pesquisa") }
                         )
+                    }
+                    composable("livro_pesquisa") {
+                        LivroPesquisaScreen(navController = navController)
                     }
                     composable("reservas") {
                         TelaReservas(onBackClick = { navController.popBackStack() })
@@ -95,7 +101,8 @@ fun TelaInicial(
     onReservaClick: () -> Unit,
     onQrCodeClick: () -> Unit,
     onMapaClick: () -> Unit,
-    onArmarioClick: () -> Unit
+    onArmarioClick: () -> Unit,
+    onSearchClick: () -> Unit
 ) {
     var nomeAluno by remember { mutableStateOf("Nome do Aluno") }
     var livrosAtivos by remember { mutableStateOf("3") }
@@ -152,6 +159,13 @@ fun TelaInicial(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
                     .background(Color.White)
+                    .clickable { onSearchClick() },
+                enabled = false,
+                colors = OutlinedTextFieldDefaults.colors(
+                    disabledTextColor = Color.Black,
+                    disabledBorderColor = Color.Gray,
+                    disabledPlaceholderColor = Color.Gray
+                )
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -394,7 +408,8 @@ fun TelaInicialPreview() {
         onReservaClick = {},
         onQrCodeClick = {},
         onMapaClick = {},
-        onArmarioClick = {}
+        onArmarioClick = {},
+        onSearchClick = {}
     )
 }
 
