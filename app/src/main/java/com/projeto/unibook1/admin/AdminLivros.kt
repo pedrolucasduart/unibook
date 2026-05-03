@@ -164,47 +164,6 @@ fun CardLivro(livro: LivroMock, onClick: () -> Unit) {
 
 
 @Composable
-fun AdminBottomNavBar(
-    currentRoute: String,
-    onNavigateToHome: () -> Unit,
-    onNavigateToEmprestimos: () -> Unit,
-    onNavigateToLivros: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .background(Color.White, shape = RoundedCornerShape(32.dp))
-            .padding(horizontal = 8.dp, vertical = 8.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            NavItem(
-                nome = "INÍCIO",
-                icone = Icons.Default.Home,
-                isActive = currentRoute == "admin_home",
-                onClick = onNavigateToHome
-            )
-            NavItem(
-                nome = "EMPRÉSTIMOS",
-                icone = Icons.Default.MenuBook,
-                isActive = currentRoute == "admin_emprestimos",
-                onClick = onNavigateToEmprestimos
-            )
-            NavItem(
-                nome = "LIVROS",
-                icone = Icons.Default.LibraryBooks,
-                isActive = currentRoute == "admin_livros",
-                onClick = onNavigateToLivros
-            )
-        }
-    }
-}
-
-@Composable
 fun NavItem(nome: String, icone: androidx.compose.ui.graphics.vector.ImageVector, isActive: Boolean, onClick: () -> Unit) {
     val backgroundColor = if (isActive) Color(0xFFF3E5F5) else Color.Transparent
     val contentColor = if (isActive) RoxoForte else Color.Gray
