@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -321,7 +322,8 @@ fun TelaInicial(
 
                             ) {
                             Text(text = "\uD83D\uDCF7\u200B \n QR \n Code",
-                                color = Color.Black
+                                color = Color.Black,
+                                textAlign = TextAlign.Center
                             )
                         }
 
@@ -342,8 +344,9 @@ fun TelaInicial(
                             modifier = Modifier.background(color = Color.White),
 
                             ) {
-                            Text(text = "\uD83D\uDDFA\uFE0F\u200B \n Mapa",
-                                color = Color.Black
+                            Text(text = "\uD83D\uDDFA\uFE0F\u200B \nMapa",
+                                color = Color.Black,
+                                textAlign = TextAlign.Center
                             )
                         }
 
@@ -366,7 +369,8 @@ fun TelaInicial(
 
                             ) {
                             Text(text = "\uD83D\uDDC4\uFE0F\u200B \nArmario",
-                                color = Color.Black
+                                color = Color.Black,
+                                textAlign = TextAlign.Center
                             )
                         }
 
