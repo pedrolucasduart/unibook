@@ -30,7 +30,11 @@ data class SolicitacaoEmprestimo(
 @Composable
 fun AdminEmprestimos(
     BackClick: () -> Unit,
-    onStudentClick: () -> Unit
+    onStudentClick: () -> Unit,
+    // 👇 1. Adicionamos as rotas de navegação aqui
+    onNavigateToHome: () -> Unit = {},
+    onNavigateToEmprestimos: () -> Unit = {},
+    onNavigateToLivros: () -> Unit = {}
 ) {
     val listaDeSolicitacoes = listOf(
         SolicitacaoEmprestimo("Ana Clara Silva", "20240129"),
@@ -64,7 +68,13 @@ fun AdminEmprestimos(
             )
         },
         bottomBar = {
-            BottomBarSimples()
+            // 👇 2. Puxamos a sua barra oficial (que está no arquivo AdminMainScreen)
+            AdminBottomNavBar(
+                currentRoute = "admin_emprestimos", // Destaca o ícone do meio
+                onNavigateToHome = onNavigateToHome,
+                onNavigateToEmprestimos = onNavigateToEmprestimos,
+                onNavigateToLivros = onNavigateToLivros
+            )
         }
     ) { padding ->
 
@@ -138,29 +148,8 @@ fun CardEstudante(
     }
 }
 
-@Composable
-fun BottomBarSimples() {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp),
-        color = Color.White,
-        shadowElevation = 6.dp
-    ) {
-        Row(
-            Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(Icons.Default.Home, null)
-            Icon(Icons.Default.Refresh, null, tint = CorPrimaria)
-            Icon(Icons.Default.Person, null)
-        }
-    }
-}
-
 @Preview
 @Composable
-fun Preview() {
-    AdminEmprestimos({}, {})
+fun PreviewAdminEmprestimos() {
+    AdminEmprestimos(BackClick = {}, onStudentClick = {})
 }

@@ -1,4 +1,4 @@
-package com.projeto.unibook1.admin // 👈 Verifique se o pacote bate com a sua pasta!
+package com.projeto.unibook1.admin
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,20 +33,29 @@ fun AdminMainScreen(
     onOpenScannerClick: () -> Unit = {},
     onStudentClick: (String) -> Unit = {},
     onProfileClick: () -> Unit = {},
-    onEmprestimosClick: () -> Unit = {}
+    // 👇 1. Adicionamos as rotas de navegação da barra aqui no topo
+    onNavigateToHome: () -> Unit = {},
+    onNavigateToEmprestimos: () -> Unit = {},
+    onNavigateToLivros: () -> Unit = {}
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        containerColor = FundoApp,
+        // 👇 2. Chamamos a sua Barra de Navegação AQUI, presa no Scaffold
         bottomBar = {
-            // 1. Passando o parâmetro corretamente aqui
-            AdminBottomNavBar(onEmprestimosClick = onEmprestimosClick)
-        },
-        containerColor = FundoApp
+            AdminBottomNavBar(
+                currentRoute = "admin_home", // Dizemos que a tela atual é a Home
+                onNavigateToHome = onNavigateToHome,
+                onNavigateToEmprestimos = onNavigateToEmprestimos,
+                onNavigateToLivros = onNavigateToLivros
+            )
+        }
     ) { paddingValues ->
 
         Column(
             modifier = modifier
                 .fillMaxSize()
+                // 👇 3. O paddingValues garante que a lista não fique escondida atrás da barra
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp)
@@ -95,8 +104,6 @@ fun AdminMainScreen(
     }
 }
 
-// --- COMPONENTES MENORES
-
 @Composable
 fun TopBarAdmin(
     nomeAdmin: String,
@@ -107,7 +114,6 @@ fun TopBarAdmin(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Botão de Perfil
         IconButton(
             onClick = onProfileClick,
             modifier = Modifier
@@ -123,7 +129,6 @@ fun TopBarAdmin(
             )
         }
 
-        // Nome do Admin
         Text(
             text = nomeAdmin.uppercase(),
             color = RoxoPrincipal,
@@ -248,9 +253,14 @@ fun StudentItemCard(nome: String, matricula: String, onClick: () -> Unit) {
     }
 }
 
-// 2. Parâmetro adicionado nesta declaração
+// 👇 4. Atualizei a sua NavBar para reagir aos cliques e mostrar a cor certa
 @Composable
-fun AdminBottomNavBar(onEmprestimosClick: () -> Unit = {}) {
+fun AdminBottomNavBar(
+    currentRoute: String,
+    onNavigateToHome: () -> Unit,
+    onNavigateToEmprestimos: () -> Unit,
+    onNavigateToLivros: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -267,26 +277,60 @@ fun AdminBottomNavBar(onEmprestimosClick: () -> Unit = {}) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .background(FundoApp, shape = RoundedCornerShape(16.dp))
+                    .clickable { onNavigateToHome() }
+                    .background(
+                        if (currentRoute == "admin_home") FundoApp else Color.Transparent,
+                        shape = RoundedCornerShape(16.dp)
+                    )
                     .padding(horizontal = 20.dp, vertical = 8.dp)
             ) {
                 Text(text = "🏠", fontSize = 20.sp)
-                Text(text = "INÍCIO", color = RoxoPrincipal, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    text = "INÍCIO",
+                    color = if (currentRoute == "admin_home") RoxoPrincipal else TextoCinza,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
 
-            // Item Empréstimos (3. Modificador clickable adicionado aqui)
+            // Item Empréstimos
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable { onEmprestimosClick() }
+                modifier = Modifier
+                    .clickable { onNavigateToEmprestimos() }
+                    .background(
+                        if (currentRoute == "admin_emprestimos") FundoApp else Color.Transparent,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .padding(horizontal = 20.dp, vertical = 8.dp)
             ) {
                 Text(text = "📖", fontSize = 20.sp)
-                Text(text = "EMPRÉSTIMOS", color = TextoCinza, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    text = "EMPRÉSTIMOS",
+                    color = if (currentRoute == "admin_emprestimos") RoxoPrincipal else TextoCinza,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
 
             // Item Livros
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .clickable { onNavigateToLivros() }
+                    .background(
+                        if (currentRoute == "admin_livros") FundoApp else Color.Transparent,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .padding(horizontal = 20.dp, vertical = 8.dp)
+            ) {
                 Text(text = "👥", fontSize = 20.sp)
-                Text(text = "LIVROS", color = TextoCinza, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    text = "LIVROS",
+                    color = if (currentRoute == "admin_livros") RoxoPrincipal else TextoCinza,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
