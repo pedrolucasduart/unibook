@@ -46,11 +46,10 @@ fun MapScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "⬅️ Mapa",
+                    text = "Unifriends",
                     style = MaterialTheme.typography.headlineMedium,
                     color = Color(0xFF1976D2),
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable { onBackClick() }
                 )
                 Text(text = "🔔")
             }

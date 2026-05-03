@@ -10,10 +10,11 @@ import androidx.navigation.compose.rememberNavController
 // Temas
 import com.projeto.unibook1.ui.theme.Unibook1Theme
 
-// Telas Gerais
+// Telas Gerais e Início
 import com.projeto.unibook1.usuario.mapa.MapScreen
 import com.projeto.unibook1.telasgerais.TelaReservaArmario
 import com.projeto.unibook1.usuario.Inicio.TelaInicial
+import com.projeto.unibook1.usuario.Inicio.ArmarioScreen // 👈 Import da nova tela de Armário
 import com.projeto.unibook1.usuario.livro.LivroPesquisaScreen
 import com.projeto.unibook1.usuario.livro.LivroInsightScreen
 import com.projeto.unibook1.usuario.livro.LivroRec2Screen
@@ -195,20 +196,18 @@ class MainActivity : ComponentActivity() {
                             onNavigateToRegulares = { navController.navigate("admin_regulares") },
                             onNavigateToIrregulares = { navController.navigate("admin_atrasados") },
                             onNavigateToBloqueados = { navController.navigate("admin_bloqueados") },
-                            // Comandos da barra de navegação:
                             onNavigateToHome = { navController.navigate("admin_home") },
-                            onNavigateToEmprestimos = { /* Já estamos na gestão, não faz nada */ },
+                            onNavigateToEmprestimos = { /* Já estamos na gestão */ },
                             onNavigateToLivros = { navController.navigate("admin_livros") }
                         )
                     }
 
-                    // --- SOLICITAÇÕES ---
                     composable("admin_emprestimos") {
                         AdminEmprestimos(
                             onStudentClick = { navController.navigate("detalhes_solicitacao") },
                             BackClick = { navController.popBackStack() },
                             onNavigateToHome = { navController.navigate("admin_home") },
-                            onNavigateToEmprestimos = { /* Já estamos nela, não faz nada */ },
+                            onNavigateToEmprestimos = { },
                             onNavigateToLivros = { navController.navigate("admin_livros") }
                         )
                     }
@@ -236,7 +235,6 @@ class MainActivity : ComponentActivity() {
                         AdminPerfilSolicitacao(onBack = { navController.popBackStack() })
                     }
 
-                    // --- REGULARES ---
                     composable("admin_regulares") {
                         AdminEmprestimosRegulares(
                             onBack = { navController.popBackStack() },
@@ -248,7 +246,6 @@ class MainActivity : ComponentActivity() {
                         AdminPerfilEmprestimo(onBack = { navController.popBackStack() })
                     }
 
-                    // --- ATRASADOS ---
                     composable("admin_atrasados") {
                         AdminEmprestimosAtrasados(
                             onBack = { navController.popBackStack() },
@@ -260,7 +257,6 @@ class MainActivity : ComponentActivity() {
                         AdminDetalhesAtraso(onBack = { navController.popBackStack() })
                     }
 
-                    // --- BLOQUEADOS ---
                     composable("admin_bloqueados") {
                         AdminAlunosBloqueados(
                             onBack = { navController.popBackStack() },
@@ -277,33 +273,20 @@ class MainActivity : ComponentActivity() {
                     // ==========================================
 
                     composable("mapa") {
-                        MapScreen(onReservaClick = { navController.navigate("reserva") })
+                        // 👇 Alterado para apontar para a nova rota do armário
+                        MapScreen(onReservaClick = { navController.navigate("armario_screen") })
                     }
 
-                    composable("reserva") {
-                        TelaReservaArmario()
-                    }
-
-                    composable("inicio") {
-                        TelaInicial(
-                            onReservaClick = { navController.navigate("reserva") },
-                            onQrCodeClick = { /* Lógica futura */ },
-                            onMapaClick = { navController.navigate("mapa") },
-                            onArmarioClick = { navController.navigate("reserva") },
-                            onSearchClick = { navController.navigate("livro_pesquisa") }
+                    // 👇 Nova rota adicionada para a tela de Verificação do Armário
+                    composable("armario_screen") {
+                        ArmarioScreen(
+                            onBackClick = { navController.popBackStack() },
+                            onPerdiChaveClick = { /* Lógica futura se houver tela de chave perdida */ }
                         )
                     }
 
-                    composable("livro_pesquisa") {
-                        LivroPesquisaScreen(navController = navController)
-                    }
-
-                    composable("detalhes") {
-                        LivroInsightScreen(navController = navController)
-                    }
-
-                    composable("recomendacoes_curso") {
-                        LivroRec2Screen(navController = navController)
+                    composable("reserva") {
+                        TelaReservaArmario() // Deixei aqui caso você precise depois
                     }
 
                     // ==========================================
@@ -316,7 +299,7 @@ class MainActivity : ComponentActivity() {
                             onNavigateToSuporte = { },
                             onEsqueceuSenha = { navController.navigate(route = "recuperar_senha_aluno") },
                             onLoginSucesso = {
-                                navController.navigate("inicio") { popUpTo("login_aluno") { inclusive = true } }
+                                navController.navigate("mapa") { popUpTo("login_aluno") { inclusive = true } }
                             }
                         )
                     }

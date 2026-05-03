@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.projeto.unibook1"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.projeto.unibook1"
