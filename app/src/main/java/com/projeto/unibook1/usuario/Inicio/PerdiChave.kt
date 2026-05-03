@@ -1,6 +1,7 @@
 package com.projeto.unibook1.usuario.Inicio
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -15,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PerdiScreen() {
+fun PerdiScreen(onBackClick: () -> Unit) {
     Scaffold(
         bottomBar = { BottomNavBar() }
     ) { paddingValues ->
@@ -31,6 +32,7 @@ fun PerdiScreen() {
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color(0xFF1976D2),
                 fontWeight = FontWeight.Bold,
+                modifier = Modifier.clickable { onBackClick() }
             )
             
             Spacer(modifier = Modifier.height(24.dp))
@@ -72,5 +74,5 @@ fun PerdiScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PerdiPreview() {
-    PerdiScreen()
+    PerdiScreen(onBackClick = {})
 }

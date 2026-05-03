@@ -77,7 +77,13 @@ class MainActivity: ComponentActivity(){
                         )
                     }
                     composable("verificar_armario") {
-                        ArmarioScreen(onBackClick = { navController.popBackStack() })
+                        ArmarioScreen(
+                            onBackClick = { navController.popBackStack() },
+                            onPerdiChaveClick = { navController.navigate("perdi_chave") }
+                        )
+                    }
+                    composable("perdi_chave") {
+                        PerdiScreen(onBackClick = { navController.popBackStack() })
                     }
                 }
             }
@@ -264,7 +270,7 @@ fun TelaInicial(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Button(
-                        onClick = { /* Ação de renovar */ },
+                        onClick = { onReservaClick() },
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B1A10)),
                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
                         modifier = Modifier.height(38.dp)

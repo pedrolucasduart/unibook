@@ -1,5 +1,6 @@
 package com.projeto.unibook1.usuario.mapa
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ import com.projeto.unibook1.usuario.Inicio.BottomNavBar
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
     onReservaClick: () -> Unit
 ) {
     // 👇 Arrumado: Faltava o } no final dessa linha!
@@ -41,9 +43,16 @@ fun MapScreen(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "🎓 Unifriends")
+                Text(
+                    text = "⬅️ Mapa",
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = Color(0xFF1976D2),
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clickable { onBackClick() }
+                )
                 Text(text = "🔔")
             }
 

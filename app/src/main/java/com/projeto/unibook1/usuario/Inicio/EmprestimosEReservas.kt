@@ -23,6 +23,7 @@ import com.projeto.unibook1.usuario.mapa.BottomNavBar
 @Composable
 fun TelaReservas(
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit
 ) {
     Scaffold(
         modifier = modifier,
@@ -38,10 +39,11 @@ fun TelaReservas(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Empréstimos e Reservas",
+                text = "⬅️ Empréstimos e Reservas",
                 style = MaterialTheme.typography.headlineLarge,
                 color = Color(0xFF1976D2),
                 fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier.clickable { onBackClick() }
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -319,7 +321,7 @@ fun CardResumo(titulo: String, valor: String, icone: ImageVector) {
 @Preview(showBackground = true)
 @Composable
 fun TelaReservasPreview() {
-        TelaReservas()
+    TelaReservas(onBackClick = {})
 }
 
 

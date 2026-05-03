@@ -3,6 +3,7 @@ package com.projeto.unibook1.usuario.Inicio
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,7 +36,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ArmarioScreen(
-    onReservaClick: () -> Unit = {}
+    onBackClick: () -> Unit,
+    onPerdiChaveClick: () -> Unit
 ){
     Scaffold(
         bottomBar = { BottomNavBar() }
@@ -44,17 +46,12 @@ fun ArmarioScreen(
             modifier = Modifier.fillMaxSize().background(Color(0xFFF6F6F9)).padding(14.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "⬅️ Verificar Armário",
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = Color(0xFF1976D2),
-                    fontWeight = FontWeight.Bold,
-                )
-            }
+            Text(text = "⬅️ Verificar Armário",
+                style = MaterialTheme.typography.headlineMedium,
+                color = Color(0xFF1976D2),
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.clickable { onBackClick() }
+            )
             Spacer(modifier = Modifier.height(24.dp))
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -94,7 +91,7 @@ fun ArmarioScreen(
                                 )
 
                             Button(
-                                onClick = { /* Ação de ir para  "Perdi minha chave" */ },
+                                onClick = { onPerdiChaveClick() },
                                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                             ) {
                                 Text(text = "🗝️")
@@ -186,5 +183,8 @@ fun ArmarioScreen(
 @Preview(showBackground = true)
 @Composable
 fun ArmariosPreview() {
-    ArmarioScreen()
+    ArmarioScreen(
+        onBackClick = {},
+        onPerdiChaveClick = {}
+    )
 }

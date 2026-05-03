@@ -54,7 +54,7 @@ import androidx.compose.ui.zIndex
 @Composable
 fun PerdiScreen(
     modifier: Modifier = Modifier,
-    onReservaClick: () -> Unit
+    onBackClick: () -> Unit
 ){
     Scaffold(
         bottomBar = { BottomNavBar() }
@@ -67,6 +67,7 @@ fun PerdiScreen(
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color(0xFF1976D2),
                 fontWeight = FontWeight.Bold,
+                modifier = Modifier.clickable { onBackClick() }
             )
             Spacer(modifier = Modifier.height(24.dp))
             Column(
@@ -174,5 +175,5 @@ fun PerdiScreen(
 @Preview(showBackground = true)
 @Composable
 fun PerdiPreview() {
-    PerdiScreen(onReservaClick = {})
+    PerdiScreen(onBackClick = {})
 }

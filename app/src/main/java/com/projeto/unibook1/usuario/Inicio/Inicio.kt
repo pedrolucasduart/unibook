@@ -19,7 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TelaInicial(onReservaClick: () -> Unit = {}) {
+fun TelaInicial(
+    onReservaClick: () -> Unit,
+    onQrCodeClick: () -> Unit,
+    onMapaClick: () -> Unit,
+    onArmarioClick: () -> Unit
+) {
     var nomeAluno by remember { mutableStateOf("Lucas") }
     var livrosAtivos by remember { mutableStateOf("3") }
     var totalReservas by remember { mutableStateOf("1") }
@@ -113,9 +118,9 @@ fun TelaInicial(onReservaClick: () -> Unit = {}) {
             Spacer(modifier = Modifier.height(24.dp))
             Text(text = "Acesso Rápido", fontWeight = FontWeight.Bold)
             Row(modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                QuickAccessButton("📷\nQR Code", { /* QR Code */ })
-                QuickAccessButton("🗺️\nMapa", { /* Mapa */ })
-                QuickAccessButton("🗄️\nArmário", { /* Armário */ })
+                QuickAccessButton("📷\nQR Code", onQrCodeClick)
+                QuickAccessButton("🗺️\nMapa", onMapaClick)
+                QuickAccessButton("🗄️\nArmário", onArmarioClick)
             }
         }
     }
@@ -167,5 +172,10 @@ fun BottomNavBar() {
 @Preview(showBackground = true)
 @Composable
 fun TelaInicialPreview() {
-    TelaInicial()
+    TelaInicial(
+        onReservaClick = {},
+        onQrCodeClick = {},
+        onMapaClick = {},
+        onArmarioClick = {}
+    )
 }

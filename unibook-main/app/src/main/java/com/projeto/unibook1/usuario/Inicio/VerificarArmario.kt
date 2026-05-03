@@ -53,7 +53,8 @@ import androidx.compose.ui.zIndex
 @Composable
 fun ArmarioScreen(
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onPerdiChaveClick: () -> Unit
 ){
     Scaffold(
         bottomBar = { BottomNavBar() }
@@ -107,7 +108,7 @@ fun ArmarioScreen(
                                 )
 
                             Button(
-                                onClick = { /* Ação de ir para pagina "Perdi minha chave" */ },
+                                onClick = { onPerdiChaveClick() },
                                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                             ) {
                                 Text(text = "\uD83D\uDDDD\uFE0F\u200B")
@@ -199,5 +200,8 @@ fun ArmarioScreen(
 @Preview(showBackground = true)
 @Composable
 fun ArmariosPreview() {
-    ArmarioScreen(onBackClick = {})
+    ArmarioScreen(
+        onBackClick = {},
+        onPerdiChaveClick = {}
+    )
 }
