@@ -21,7 +21,15 @@ import com.projeto.unibook1.ui.theme.AdminColor
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminGestaoEmprestimos(
-    onNavigateToSolicitacoes: () -> Unit
+    // Rotas das subtelas dos cards
+    onNavigateToSolicitacoes: () -> Unit,
+    onNavigateToRegulares: () -> Unit = {},
+    onNavigateToIrregulares: () -> Unit = {},
+    onNavigateToBloqueados: () -> Unit = {},
+    // Rotas da barra de navegação principal
+    onNavigateToHome: () -> Unit = {},
+    onNavigateToEmprestimos: () -> Unit = {},
+    onNavigateToLivros: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -45,7 +53,15 @@ fun AdminGestaoEmprestimos(
             )
         },
 
-        bottomBar = { BottomNavigationBar() },
+        bottomBar = {
+            // Barra oficial do admin
+            AdminBottomNavBar(
+                currentRoute = "admin_emprestimos",
+                onNavigateToHome = onNavigateToHome,
+                onNavigateToEmprestimos = onNavigateToEmprestimos,
+                onNavigateToLivros = onNavigateToLivros
+            )
+        },
 
         containerColor = AdminColor.BackgroundGray
     ) { padding ->
@@ -56,8 +72,6 @@ fun AdminGestaoEmprestimos(
                 .padding(padding)
                 .padding(horizontal = 20.dp)
         ) {
-
-            SearchBar()
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -90,57 +104,26 @@ fun AdminGestaoEmprestimos(
                 MenuCard(
                     title = "Empréstimos ativos regulares",
                     subtitle = "DENTRO DO PRAZO",
-                    icon = Icons.AutoMirrored.Filled.LibraryBooks
+                    icon = Icons.AutoMirrored.Filled.LibraryBooks,
+                    onClick = onNavigateToRegulares
                 )
 
                 MenuCard(
                     title = "Empréstimos ativos irregulares",
                     subtitle = "ATRASADOS",
                     icon = Icons.Default.Warning,
-                    statusColor = AdminColor.StatusRed
+                    statusColor = AdminColor.StatusRed,
+                    onClick = onNavigateToIrregulares
                 )
 
                 MenuCard(
                     title = "Alunos bloqueados",
                     subtitle = "RESTRIÇÕES DE ACESSO",
-                    icon = Icons.Default.Block
+                    icon = Icons.Default.Block,
+                    onClick = onNavigateToBloqueados
                 )
             }
         }
-    }
-}
-
-@Composable
-fun BottomNavigationBar() {
-    NavigationBar(containerColor = AdminColor.CardWhite) {
-
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Home, null) },
-            label = { Text("Início") },
-            selected = false,
-            onClick = {}
-        )
-
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Book, null) },
-            label = { Text("Empréstimos") },
-            selected = true,
-            onClick = {}
-        )
-
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.People, null) },
-            label = { Text("Alunos") },
-            selected = false,
-            onClick = {}
-        )
-
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Person, null) },
-            label = { Text("Perfil") },
-            selected = false,
-            onClick = {}
-        )
     }
 }
 
@@ -181,27 +164,6 @@ fun MenuCard(
                 Text(title, fontWeight = FontWeight.Bold)
                 Text(subtitle, color = statusColor, fontSize = 12.sp)
             }
-        }
-    }
-}
-
-@Composable
-fun SearchBar() {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp),
-        shape = RoundedCornerShape(16.dp),
-        color = AdminColor.SearchBarGray,
-        shadowElevation = 2.dp
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        ) {
-            Icon(Icons.Default.Search, null, tint = AdminColor.PrimaryPurple)
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Buscar aluno...", color = Color.LightGray)
         }
     }
 }

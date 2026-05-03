@@ -31,6 +31,14 @@ import com.projeto.unibook1.admin.AdminConcluirScreen
 import com.projeto.unibook1.admin.AdminGestaoEmprestimos
 import com.projeto.unibook1.admin.AdminPerfilSolicitacao
 
+// Novas Telas Admin (Gestão de Empréstimos)
+import com.projeto.unibook1.admin.AdminAlunosBloqueados
+import com.projeto.unibook1.admin.AdminPerfilBloqueado
+import com.projeto.unibook1.admin.AdminEmprestimosAtrasados
+import com.projeto.unibook1.admin.AdminDetalhesAtraso
+import com.projeto.unibook1.admin.AdminEmprestimosRegulares
+import com.projeto.unibook1.admin.AdminPerfilEmprestimo
+
 // Telas Aluno
 import com.projeto.unibook1.usuario.cadastro.CadastroScreen
 import com.projeto.unibook1.usuario.cadastro.DefinirNovaSenhaScreen
@@ -51,7 +59,9 @@ class MainActivity : ComponentActivity() {
                     startDestination = "login_admin"
                 ) {
 
-                    // --- TELAS DE LOGIN E CADASTRO ADMIN ---
+                    // ==========================================
+                    // TELAS DE LOGIN E CADASTRO ADMIN
+                    // ==========================================
 
                     composable("login_admin") {
                         AdminLoginScreen(
@@ -85,7 +95,6 @@ class MainActivity : ComponentActivity() {
                             onNavigateToRegister = {
                                 navController.navigate("admin_register") { popUpTo("login_admin") }
                             }
-                            // ❌ REMOVIDO: onNavigateToDefinirSenha (Não existia na tela)
                         )
                     }
 
@@ -100,45 +109,34 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    // --- TELAS PRINCIPAIS DO ADMIN ---
+                    // ==========================================
+                    // TELAS PRINCIPAIS DO ADMIN
+                    // ==========================================
 
                     composable("admin_home") {
                         AdminMainScreen(
                             onProfileClick = { navController.navigate("admin_profile") },
                             onOpenScannerClick = { navController.navigate("admin_scanner") },
                             onStudentClick = { _ -> /* Lógica futura */ },
-
-                            // 👇 A MÁGICA ACONTECE AQUI! Colocamos os comandos de volta!
-                            onNavigateToHome = { /* Já está nela, não faz nada */ },
-                            onNavigateToEmprestimos = { navController.navigate("admin_emprestimos") },
-                            onNavigateToLivros = { navController.navigate("admin_livros") }
-                        )
-                    }
-
-                    composable("admin_emprestimos") {
-                        AdminEmprestimos(
-                            onStudentClick = { navController.navigate("detalhes_solicitacao") },
-                            BackClick = { navController.popBackStack() },
-                            // 👇 Adicione estas três linhas:
-                            onNavigateToHome = { navController.navigate("admin_home") },
-                            onNavigateToEmprestimos = { /* Já estamos nela, não faz nada */ },
+                            onNavigateToHome = { },
+                            onNavigateToEmprestimos = { navController.navigate("admin_gestao_emprestimos") },
                             onNavigateToLivros = { navController.navigate("admin_livros") }
                         )
                     }
 
                     composable("admin_livros") {
                         AdminLivros(
-                            // Se a tela AdminLivros também reclamar de "No parameter with name",
-                            // você terá que apagar os onNavigate daqui também no futuro.
                             onNavigateToHome = { navController.navigate("admin_home") },
-                            onNavigateToEmprestimos = { navController.navigate("admin_emprestimos") },
-                            onNavigateToLivros = { /* Já está nela */ },
+                            onNavigateToEmprestimos = { navController.navigate("admin_gestao_emprestimos") },
+                            onNavigateToLivros = { },
                             onNavigateToEditBook = { navController.navigate("admin_editar_livro") },
                             onNavigateToAddBook = { navController.navigate("admin_add_book") }
                         )
                     }
 
-                    // --- FUNCIONALIDADES DO ADMIN ---
+                    // ==========================================
+                    // FUNCIONALIDADES DO ADMIN (LIVROS E SCANNER)
+                    // ==========================================
 
                     composable("admin_editar_livro") {
                         AdminEditarLivroScreen(
@@ -155,25 +153,6 @@ class MainActivity : ComponentActivity() {
                             onNavigateToHome = { navController.navigate("admin_home") },
                             onNavigateToEmprestimos = { navController.navigate("admin_emprestimos") },
                             onNavigateToLivros = { navController.navigate("admin_livros") }
-                        )
-                    }
-
-                    composable("detalhes_solicitacao") {
-                        AdminDetalhesSolicitacaoScreen(
-                            onCloseClick = { navController.popBackStack() },
-                            onNavigateToHome = { navController.navigate("admin_home") { popUpTo("admin_home") { inclusive = true } } },
-                            onNavigateToEmprestimos = {
-                                navController.navigate("admin_emprestimos") {
-                                    popUpTo("admin_home") { saveState = true }
-                                    restoreState = true
-                                }
-                            },
-                            onNavigateToLivros = {
-                                navController.navigate("admin_livros") {
-                                    popUpTo("admin_home") { saveState = true }
-                                    restoreState = true
-                                }
-                            }
                         )
                     }
 
@@ -202,20 +181,97 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    // ROTAS LEGADAS/SECUNDÁRIAS DO ADMIN
+                    // ==========================================
+                    // FLUXO DE GESTÃO DE EMPRÉSTIMOS
+                    // ==========================================
+
                     composable("admin_gestao_emprestimos") {
                         AdminGestaoEmprestimos(
-                            onNavigateToSolicitacoes = { navController.navigate("admin_emprestimos") }
+                            onNavigateToSolicitacoes = { navController.navigate("admin_emprestimos") },
+                            onNavigateToRegulares = { navController.navigate("admin_regulares") },
+                            onNavigateToIrregulares = { navController.navigate("admin_atrasados") },
+                            onNavigateToBloqueados = { navController.navigate("admin_bloqueados") },
+                            // Comandos da barra de navegação:
+                            onNavigateToHome = { navController.navigate("admin_home") },
+                            onNavigateToEmprestimos = { /* Já estamos na gestão, não faz nada */ },
+                            onNavigateToLivros = { navController.navigate("admin_livros") }
+                        )
+                    }
+
+                    // --- SOLICITAÇÕES ---
+                    composable("admin_emprestimos") {
+                        AdminEmprestimos(
+                            onStudentClick = { navController.navigate("detalhes_solicitacao") },
+                            BackClick = { navController.popBackStack() },
+                            onNavigateToHome = { navController.navigate("admin_home") },
+                            onNavigateToEmprestimos = { /* Já estamos nela, não faz nada */ },
+                            onNavigateToLivros = { navController.navigate("admin_livros") }
+                        )
+                    }
+
+                    composable("detalhes_solicitacao") {
+                        AdminDetalhesSolicitacaoScreen(
+                            onCloseClick = { navController.popBackStack() },
+                            onNavigateToHome = { navController.navigate("admin_home") { popUpTo("admin_home") { inclusive = true } } },
+                            onNavigateToEmprestimos = {
+                                navController.navigate("admin_emprestimos") {
+                                    popUpTo("admin_home") { saveState = true }
+                                    restoreState = true
+                                }
+                            },
+                            onNavigateToLivros = {
+                                navController.navigate("admin_livros") {
+                                    popUpTo("admin_home") { saveState = true }
+                                    restoreState = true
+                                }
+                            }
                         )
                     }
 
                     composable("admin_perfil_solicitacao") {
-                        AdminPerfilSolicitacao(
-                            onBack = { navController.popBackStack() }
+                        AdminPerfilSolicitacao(onBack = { navController.popBackStack() })
+                    }
+
+                    // --- REGULARES ---
+                    composable("admin_regulares") {
+                        AdminEmprestimosRegulares(
+                            onBack = { navController.popBackStack() },
+                            onAlunoClick = { navController.navigate("admin_perfil_emprestimo") }
                         )
                     }
 
-                    // --- TELAS GERAIS E MAPA ---
+                    composable("admin_perfil_emprestimo") {
+                        AdminPerfilEmprestimo(onBack = { navController.popBackStack() })
+                    }
+
+                    // --- ATRASADOS ---
+                    composable("admin_atrasados") {
+                        AdminEmprestimosAtrasados(
+                            onBack = { navController.popBackStack() },
+                            onAlunoClick = { navController.navigate("admin_detalhes_atraso") }
+                        )
+                    }
+
+                    composable("admin_detalhes_atraso") {
+                        AdminDetalhesAtraso(onBack = { navController.popBackStack() })
+                    }
+
+                    // --- BLOQUEADOS ---
+                    composable("admin_bloqueados") {
+                        AdminAlunosBloqueados(
+                            onBack = { navController.popBackStack() },
+                            onAlunoClick = { navController.navigate("admin_perfil_bloqueado") }
+                        )
+                    }
+
+                    composable("admin_perfil_bloqueado") {
+                        AdminPerfilBloqueado(onBack = { navController.popBackStack() })
+                    }
+
+                    // ==========================================
+                    // TELAS GERAIS E MAPA
+                    // ==========================================
+
                     composable("mapa") {
                         MapScreen(onReservaClick = { navController.navigate("reserva") })
                     }
@@ -224,7 +280,10 @@ class MainActivity : ComponentActivity() {
                         TelaReservaArmario()
                     }
 
-                    // --- TELAS DE USUÁRIO (ALUNO) ---
+                    // ==========================================
+                    // TELAS DE USUÁRIO (ALUNO)
+                    // ==========================================
+
                     composable(route = "login_aluno") {
                         LoginAlunoScreen(
                             onNavigateToCadastro = { navController.navigate(route = "cadastro") },
