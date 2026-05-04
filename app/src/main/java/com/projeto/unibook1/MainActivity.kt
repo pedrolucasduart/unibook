@@ -18,6 +18,10 @@ import com.projeto.unibook1.usuario.Inicio.ArmarioScreen // 👈 Import da nova 
 import com.projeto.unibook1.usuario.livro.LivroPesquisaScreen
 import com.projeto.unibook1.usuario.livro.LivroInsightScreen
 import com.projeto.unibook1.usuario.livro.LivroRec2Screen
+import com.projeto.unibook1.usuario.livro.LivroMainScreen
+import com.projeto.unibook1.usuario.livro.LivroProfessoresScreen
+import com.projeto.unibook1.usuario.livro.LivroReviewScreen
+import com.projeto.unibook1.usuario.livro.ProfessorPerfilScreen
 
 // Telas Admin
 import com.projeto.unibook1.ui.admin.AdminLoginScreen
