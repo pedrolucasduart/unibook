@@ -126,7 +126,11 @@ fun CadastroScreen(
 
         // chama a fun validar quando for clicado
         Button(
-            onClick = { validar() },
+            onClick = {
+                if (validar()) {
+                    onNavigateToLogin()
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
