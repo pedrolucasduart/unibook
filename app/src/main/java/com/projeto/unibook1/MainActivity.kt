@@ -14,7 +14,7 @@ import com.projeto.unibook1.ui.theme.Unibook1Theme
 import com.projeto.unibook1.usuario.mapa.MapScreen
 import com.projeto.unibook1.telasgerais.TelaReservaArmario
 import com.projeto.unibook1.usuario.Inicio.TelaInicial
-import com.projeto.unibook1.usuario.Inicio.ArmarioScreen // 👈 Import da nova tela de Armário
+import com.projeto.unibook1.usuario.Inicio.ArmarioScreen
 import com.projeto.unibook1.usuario.livro.LivroPesquisaScreen
 import com.projeto.unibook1.usuario.livro.LivroInsightScreen
 import com.projeto.unibook1.usuario.livro.LivroRec2Screen
@@ -39,8 +39,6 @@ import com.projeto.unibook1.admin.AdminScannerScreen
 import com.projeto.unibook1.admin.AdminConcluirScreen
 import com.projeto.unibook1.admin.AdminGestaoEmprestimos
 import com.projeto.unibook1.admin.AdminPerfilSolicitacao
-
-// Novas Telas Admin (Gestão de Empréstimos)
 import com.projeto.unibook1.admin.AdminAlunosBloqueados
 import com.projeto.unibook1.admin.AdminPerfilBloqueado
 import com.projeto.unibook1.admin.AdminEmprestimosAtrasados
@@ -52,7 +50,13 @@ import com.projeto.unibook1.admin.AdminPerfilEmprestimo
 import com.projeto.unibook1.usuario.cadastro.CadastroScreen
 import com.projeto.unibook1.usuario.cadastro.DefinirNovaSenhaScreen
 import com.projeto.unibook1.usuario.cadastro.LoginAlunoScreen
+import com.projeto.unibook1.usuario.cadastro.SelecaoScreen
+import com.projeto.unibook1.usuario.cadastro.SuporteAlunoScreen
+import com.projeto.unibook1.usuario.cadastro.ChatScreen
 import com.projeto.unibook1.usuario.cadastro.RecuperarSenhaScreen as RecuperarSenhaAlunoScreen
+
+// Suporte
+import com.projeto.unibook1.usuario.suporte.FAQScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,8 +69,19 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = "login_admin"
+                    startDestination = "selecao"
                 ) {
+
+                    // ==========================================
+                    // TELA DE SELEÇÃO (PONTO DE ENTRADA)
+                    // ==========================================
+
+                    composable("selecao") {
+                        SelecaoScreen(
+                            onAlunoClick = { navController.navigate("login_aluno") },
+                            onAdminClick = { navController.navigate("login_admin") }
+                        )
+                    }
 
                     // ==========================================
                     // TELAS DE LOGIN E CADASTRO ADMIN
@@ -78,7 +93,7 @@ class MainActivity : ComponentActivity() {
                             onNavigateToForgotPassword = { navController.navigate("forgot_password") },
                             onLoginSuccess = {
                                 navController.navigate("admin_home") {
-                                    popUpTo("login_admin") { inclusive = true }
+                                    popUpTo("selecao") { inclusive = false }
                                 }
                             }
                         )
@@ -102,7 +117,9 @@ class MainActivity : ComponentActivity() {
                                 }
                             },
                             onNavigateToRegister = {
-                                navController.navigate("admin_register") { popUpTo("login_admin") }
+                                navController.navigate("admin_register") {
+                                    popUpTo("login_admin")
+                                }
                             }
                         )
                     }
@@ -126,7 +143,7 @@ class MainActivity : ComponentActivity() {
                         AdminMainScreen(
                             onProfileClick = { navController.navigate("admin_profile") },
                             onOpenScannerClick = { navController.navigate("admin_scanner") },
-                            onStudentClick = { _ -> /* Lógica futura */ },
+                            onStudentClick = { _ -> },
                             onNavigateToHome = { },
                             onNavigateToEmprestimos = { navController.navigate("admin_gestao_emprestimos") },
                             onNavigateToLivros = { navController.navigate("admin_livros") }
@@ -201,7 +218,7 @@ class MainActivity : ComponentActivity() {
                             onNavigateToIrregulares = { navController.navigate("admin_atrasados") },
                             onNavigateToBloqueados = { navController.navigate("admin_bloqueados") },
                             onNavigateToHome = { navController.navigate("admin_home") },
-                            onNavigateToEmprestimos = { /* Já estamos na gestão */ },
+                            onNavigateToEmprestimos = { },
                             onNavigateToLivros = { navController.navigate("admin_livros") }
                         )
                     }
@@ -219,7 +236,11 @@ class MainActivity : ComponentActivity() {
                     composable("detalhes_solicitacao") {
                         AdminDetalhesSolicitacaoScreen(
                             onCloseClick = { navController.popBackStack() },
-                            onNavigateToHome = { navController.navigate("admin_home") { popUpTo("admin_home") { inclusive = true } } },
+                            onNavigateToHome = {
+                                navController.navigate("admin_home") {
+                                    popUpTo("admin_home") { inclusive = true }
+                                }
+                            },
                             onNavigateToEmprestimos = {
                                 navController.navigate("admin_emprestimos") {
                                     popUpTo("admin_home") { saveState = true }
@@ -277,20 +298,18 @@ class MainActivity : ComponentActivity() {
                     // ==========================================
 
                     composable("mapa") {
-                        // 👇 Alterado para apontar para a nova rota do armário
                         MapScreen(onReservaClick = { navController.navigate("armario_screen") })
                     }
 
-                    // 👇 Nova rota adicionada para a tela de Verificação do Armário
                     composable("armario_screen") {
                         ArmarioScreen(
                             onBackClick = { navController.popBackStack() },
-                            onPerdiChaveClick = { /* Lógica futura se houver tela de chave perdida */ }
+                            onPerdiChaveClick = { }
                         )
                     }
 
                     composable("reserva") {
-                        TelaReservaArmario() // Deixei aqui caso você precise depois
+                        TelaReservaArmario()
                     }
 
                     // ==========================================
@@ -300,18 +319,30 @@ class MainActivity : ComponentActivity() {
                     composable(route = "login_aluno") {
                         LoginAlunoScreen(
                             onNavigateToCadastro = { navController.navigate(route = "cadastro") },
-                            onNavigateToSuporte = { },
+                            onNavigateToSuporte = { navController.navigate("suporte") },
                             onEsqueceuSenha = { navController.navigate(route = "recuperar_senha_aluno") },
                             onLoginSucesso = {
-                                navController.navigate("mapa") { popUpTo("login_aluno") { inclusive = true } }
+                                navController.navigate("tela_inicial") {
+                                    popUpTo("selecao") { inclusive = true }
+                                }
                             }
+                        )
+                    }
+
+                    composable(route = "tela_inicial") {
+                        TelaInicial(
+                            onReservaClick = { navController.navigate("armario_screen") },
+                            onQrCodeClick = { navController.navigate("admin_scanner") },
+                            onMapaClick = { navController.navigate("mapa") },
+                            onArmarioClick = { navController.navigate("armario_screen") },
+                            onSearchClick = { navController.navigate("pesquisa") }
                         )
                     }
 
                     composable(route = "cadastro") {
                         CadastroScreen(
                             onNavigateToLogin = { navController.navigate(route = "login_aluno") },
-                            onNavigateToSuporte = { }
+                            onNavigateToSuporte = { navController.navigate("suporte") }
                         )
                     }
 
@@ -326,10 +357,42 @@ class MainActivity : ComponentActivity() {
                         DefinirNovaSenhaScreen(
                             onVoltarLogin = { navController.navigate("login_aluno") },
                             onSenhaAtualizada = {
-                                navController.navigate("login_aluno") { popUpTo("login_aluno") { inclusive = true } }
+                                navController.navigate("login_aluno") {
+                                    popUpTo("login_aluno") { inclusive = true }
+                                }
                             }
                         )
                     }
+
+                    // ✅ ROTAS DE SUPORTE CORRIGIDAS
+                    composable(route = "suporte") {
+                        SuporteAlunoScreen(
+                            onVoltar = { navController.popBackStack() },
+                            onIniciarConversa = { categoria ->
+                                navController.navigate("chat/$categoria")
+                            },
+                            onAbrirFaq = { navController.navigate("faq") }
+                        )
+                    }
+
+                    composable(route = "chat/{categoria}") { backStackEntry ->
+                        val categoria = backStackEntry.arguments?.getString("categoria") ?: "geral"
+                        ChatScreen(
+                            categoria = categoria,
+                            onVoltar = { navController.popBackStack() }
+                        )
+                    }
+
+                    composable(route = "faq") {
+                        FAQScreen(
+                            onVoltar = { navController.popBackStack() }
+                        )
+                    }
+
+                    // ==========================================
+                    // TELAS DE LIVROS
+                    // ==========================================
+
                     composable("livros_main") {
                         LivroMainScreen(navController = navController)
                     }
