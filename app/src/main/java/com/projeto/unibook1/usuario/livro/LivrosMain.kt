@@ -1,4 +1,4 @@
- /*package com.projeto.unibook1.usuario.livro
+package com.projeto.unibook1.usuario.livro
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -75,7 +75,7 @@ class LivrosMain : ComponentActivity() {
                         startDestination = "main"
                     ) {
                         composable("main") {
-                            MainScreen(navController)
+                            LivroMainScreen(navController)
                         }
                         composable("professores") {
                             LivroProfessoresScreen(navController)
@@ -100,13 +100,19 @@ class LivrosMain : ComponentActivity() {
                             ProfessorPerfilScreen(navController)
                         }
                         composable("inicio") {
-                            TelaInicial(onReservaClick = { navController.navigate("perfil") })
+                            TelaInicial(
+                                onReservaClick = { navController.navigate("perfil") },
+                                onQrCodeClick = { /* Ação futura */ },
+                                onMapaClick = { navController.navigate("mapa") },
+                                onArmarioClick = { navController.navigate("reserva_armario") },
+                                onSearchClick = { navController.navigate("pesquisa") }
+                            )
                         }
                         composable("mapa") {
                             MapScreen(onReservaClick = { navController.navigate("reserva_armario") })
                         }
                         composable("perfil") {
-                            TelaReservas()
+                            TelaReservas(onBackClick = { navController.popBackStack() })
                         }
                         composable("reserva_armario") {
                             TelaReservaArmario()
@@ -119,7 +125,7 @@ class LivrosMain : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen(navController: NavController) {
+fun LivroMainScreen(navController: NavController) {
     Scaffold(
         containerColor = Color.White,
 
@@ -724,7 +730,6 @@ fun LivroBottomNavBar(navController: NavController) {
 fun AzureScholarPreview() {
     val navController = rememberNavController()
     MaterialTheme {
-        MainScreen(navController)
+        LivroMainScreen(navController)
     }
 }
-*/
