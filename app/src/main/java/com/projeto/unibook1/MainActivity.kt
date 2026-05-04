@@ -330,6 +330,33 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
+                    composable("livros_main") {
+                        LivroMainScreen(navController = navController)
+                    }
+
+                    composable("pesquisa") {
+                        LivroPesquisaScreen(navController = navController)
+                    }
+
+                    composable("insight") {
+                        LivroInsightScreen(navController = navController)
+                    }
+
+                    composable("professores") {
+                        LivroProfessoresScreen(navController = navController)
+                    }
+
+                    composable("recomendacoes_curso") {
+                        LivroRec2Screen(navController = navController)
+                    }
+
+                    composable("avaliacao") {
+                        LivroReviewScreen(navController = navController)
+                    }
+
+                    composable("professor_perfil") {
+                        ProfessorPerfilScreen(navController = navController)
+                    }
                 }
             }
         }
