@@ -46,7 +46,7 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.projeto.unibook1.telasgerais.AcessoBiblioteca
+//import com.projeto.unibook1.telasgerais.AcessoBiblioteca
 import com.projeto.unibook1.usuario.livro.LivroPesquisaScreen
 import com.projeto.unibook1.usuario.mapa.MapScreen
 
@@ -75,7 +75,7 @@ class MainActivity: ComponentActivity(){
                         TelaReservas(onBackClick = { navController.popBackStack() })
                     }
                     composable("acesso_biblioteca") {
-                        AcessoBiblioteca(onBackClick = { navController.popBackStack() })
+//                        AcessoBiblioteca(onBackClick = { navController.popBackStack() })
                     }
                     composable("mapa") {
                         MapScreen(
