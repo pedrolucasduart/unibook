@@ -53,6 +53,7 @@ import com.projeto.unibook1.usuario.cadastro.LoginAlunoScreen
 import com.projeto.unibook1.usuario.cadastro.SelecaoScreen
 import com.projeto.unibook1.usuario.cadastro.SuporteAlunoScreen
 import com.projeto.unibook1.usuario.cadastro.ChatScreen
+import com.projeto.unibook1.usuario.cadastro.OnboardingScreen
 import com.projeto.unibook1.usuario.cadastro.RecuperarSenhaScreen as RecuperarSenhaAlunoScreen
 
 // Suporte
@@ -322,8 +323,23 @@ class MainActivity : ComponentActivity() {
                             onNavigateToSuporte = { navController.navigate("suporte") },
                             onEsqueceuSenha = { navController.navigate(route = "recuperar_senha_aluno") },
                             onLoginSucesso = {
-                                navController.navigate("tela_inicial") {
+                                navController.navigate("onboarding") {
                                     popUpTo("selecao") { inclusive = true }
+                                }
+                            }
+                        )
+                    }
+
+                    composable("onboarding") {
+                        OnboardingScreen(
+                            onPular = {
+                                navController.navigate("tela_inicial") {
+                                    popUpTo("onboarding") { inclusive = true }
+                                }
+                            },
+                            onConcluir = {
+                                navController.navigate("tela_inicial") {
+                                    popUpTo("onboarding") { inclusive = true }
                                 }
                             }
                         )
