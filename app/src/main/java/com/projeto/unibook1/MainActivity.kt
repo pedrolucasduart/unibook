@@ -15,6 +15,7 @@ import com.projeto.unibook1.usuario.mapa.MapScreen
 import com.projeto.unibook1.telasgerais.TelaReservaArmario
 import com.projeto.unibook1.usuario.Inicio.TelaInicial
 import com.projeto.unibook1.usuario.Inicio.ArmarioScreen
+import com.projeto.unibook1.usuario.Inicio.TelaReservas
 import com.projeto.unibook1.usuario.livro.LivroPesquisaScreen
 import com.projeto.unibook1.usuario.livro.LivroInsightScreen
 import com.projeto.unibook1.usuario.livro.LivroRec2Screen
@@ -351,8 +352,14 @@ class MainActivity : ComponentActivity() {
                             onQrCodeClick = { navController.navigate("admin_scanner") },
                             onMapaClick = { navController.navigate("mapa") },
                             onArmarioClick = { navController.navigate("armario_screen") },
-                            onSearchClick = { navController.navigate("pesquisa") }
+                            onSearchClick = { navController.navigate("pesquisa") },
+                            onLivrosClick = { navController.navigate("livros_main") },
+                            onPerfilClick = { navController.navigate("perfil") }
                         )
+                    }
+
+                    composable("perfil") {
+                        TelaReservas(onBackClick = { navController.popBackStack() })
                     }
 
                     composable(route = "cadastro") {

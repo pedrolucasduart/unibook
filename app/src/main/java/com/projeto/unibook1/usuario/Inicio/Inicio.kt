@@ -24,14 +24,23 @@ fun TelaInicial(
     onQrCodeClick: () -> Unit,
     onMapaClick: () -> Unit,
     onArmarioClick: () -> Unit,
-    onSearchClick: () -> Unit
+    onSearchClick: () -> Unit,
+    onLivrosClick: () -> Unit,
+    onPerfilClick: () -> Unit
 ) {
     var nomeAluno by remember { mutableStateOf("Lucas") }
     var livrosAtivos by remember { mutableStateOf("3") }
     var totalReservas by remember { mutableStateOf("1") }
 
     Scaffold(
-        bottomBar = { BottomNavBar() }
+        bottomBar = {
+            BottomNavBar(
+                onInicioClick = { /* Já estamos no início */ },
+                onMapaClick = onMapaClick,
+                onLivrosClick = onLivrosClick,
+                onPerfilClick = onPerfilClick
+            )
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -150,36 +159,41 @@ fun QuickAccessButton(text: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun BottomNavBar() {
+fun BottomNavBar(
+    onInicioClick: () -> Unit,
+    onMapaClick: () -> Unit,
+    onLivrosClick: () -> Unit,
+    onPerfilClick: () -> Unit
+) {
     NavigationBar(containerColor = Color.White) {
         NavigationBarItem(
             selected = true,
-            onClick = { },
+            onClick = onInicioClick,
             icon = { Text("🏠") },
             label = { Text("Início") }
         )
         NavigationBarItem(
             selected = false,
-            onClick = { },
+            onClick = onMapaClick,
             icon = { Text("🗺️") },
             label = { Text("Mapa") }
         )
         NavigationBarItem(
             selected = false,
-            onClick = { },
+            onClick = onLivrosClick,
             icon = { Text("📚") },
             label = { Text("Livros") }
         )
         NavigationBarItem(
             selected = false,
-            onClick = { },
+            onClick = onPerfilClick,
             icon = { Text("👤") },
             label = { Text("Perfil") }
         )
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TelaInicialPreview() {
     TelaInicial(
@@ -187,6 +201,8 @@ fun TelaInicialPreview() {
         onQrCodeClick = {},
         onMapaClick = {},
         onArmarioClick = {},
-        onSearchClick = {}
+        onSearchClick = {},
+        onLivrosClick = {},
+        onPerfilClick = {}
     )
 }
