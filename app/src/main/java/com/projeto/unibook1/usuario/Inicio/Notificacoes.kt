@@ -12,11 +12,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun NotificacoesScreen() {
+fun NotificacoesScreen(navController: NavController) {
     Scaffold(
-        bottomBar = { BottomNavBar() }
+        bottomBar = {
+            BottomNavBar(
+                onInicioClick = { navController.navigate("inicio") },
+                onMapaClick = { navController.navigate("mapa") },
+                onLivrosClick = { navController.navigate("livros") },
+                onPerfilClick = { navController.navigate("perfil") }
+            )
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -32,11 +41,11 @@ fun NotificacoesScreen() {
                 color = Color(0xFF1976D2),
                 fontWeight = FontWeight.Bold
             )
-            
+
             Spacer(modifier = Modifier.height(24.dp))
             Text(text = "HOJE", color = Color(0xFF485569), fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
@@ -53,8 +62,9 @@ fun NotificacoesScreen() {
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun NotificacoesPreview() {
-    NotificacoesScreen()
+    NotificacoesScreen(navController = rememberNavController())
 }

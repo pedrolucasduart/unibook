@@ -299,12 +299,16 @@ class MainActivity : ComponentActivity() {
                     // TELAS GERAIS E MAPA
                     // ==========================================
 
-                    composable("mapa") {
-                        MapScreen(onReservaClick = { navController.navigate("armario_screen") })
+                    composable(route = "mapa") {
+                        MapScreen(
+                            navController = navController,  // adicione essa linha
+                            onReservaClick = { navController.navigate(route = "armario_screen") }
+                        )
                     }
 
-                    composable("armario_screen") {
+                    composable(route = "armario_screen") {
                         ArmarioScreen(
+                            navController = navController,  // adicione essa linha
                             onBackClick = { navController.popBackStack() },
                             onPerdiChaveClick = { }
                         )
@@ -359,7 +363,10 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("perfil") {
-                        TelaReservas(onBackClick = { navController.popBackStack() })
+                        TelaReservas(
+                            navController = navController,  // adicione essa linha
+                            onBackClick = { navController.popBackStack() }
+                        )
                     }
 
                     composable(route = "cadastro") {

@@ -38,7 +38,12 @@ fun AdminMainScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
-            AdminBottomNavBar()
+            AdminBottomNavBar(
+    onInicioClick = { navController.navigate("inicio") },
+    onMapaClick = { navController.navigate("mapa") },
+    onLivrosClick = { navController.navigate("livros") },
+    onPerfilClick = { navController.navigate("perfil") }
+)
         },
         containerColor = FundoApp
     ) { paddingValues ->

@@ -14,11 +14,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun PerdiScreen(onBackClick: () -> Unit) {
+fun PerdiScreen(navController: NavController, onBackClick: () -> Unit) {
     Scaffold(
-        bottomBar = { BottomNavBar() }
+        bottomBar = {
+            BottomNavBar(
+                onInicioClick = { navController.navigate("inicio") },
+                onMapaClick = { navController.navigate("mapa") },
+                onLivrosClick = { navController.navigate("livros") },
+                onPerfilClick = { navController.navigate("perfil") }
+            )
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -34,7 +43,7 @@ fun PerdiScreen(onBackClick: () -> Unit) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.clickable { onBackClick() }
             )
-            
+
             Spacer(modifier = Modifier.height(24.dp))
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                 Text(text = "🗝️", style = MaterialTheme.typography.displayLarge)
@@ -46,11 +55,11 @@ fun PerdiScreen(onBackClick: () -> Unit) {
                     textAlign = TextAlign.Center
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(24.dp))
             Text(text = "Não se preocupe. Para recuperar o acesso ao seu armário ou solicitar uma nova chave, por favor, dirija-se à recepção principal da biblioteca munido do seu número de matrícula ou documento com foto.",
                 textAlign = TextAlign.Center, color = Color.Gray)
-            
+
             Spacer(modifier = Modifier.height(24.dp))
             Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color.White)) {
                 Column(modifier = Modifier.padding(16.dp).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -58,7 +67,7 @@ fun PerdiScreen(onBackClick: () -> Unit) {
                     Text(text = "123", style = MaterialTheme.typography.displaySmall, fontWeight = FontWeight.Bold, color = Color(0xFF1976D2))
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(24.dp))
             Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color(0xFFEBF1F7))) {
                 Column(modifier = Modifier.padding(16.dp).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -74,5 +83,5 @@ fun PerdiScreen(onBackClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PerdiPreview() {
-    PerdiScreen(onBackClick = {})
+    PerdiScreen(navController = rememberNavController(), onBackClick = {})
 }

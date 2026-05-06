@@ -18,16 +18,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.projeto.unibook1.usuario.mapa.BottomNavBar
 
 @Composable
 fun TelaReservas(
     modifier: Modifier = Modifier,
+    navController: NavController,
     onBackClick: () -> Unit
 ) {
     Scaffold(
         modifier = modifier,
-        bottomBar = { BottomNavBar() }
+        bottomBar = {
+            BottomNavBar(
+                onInicioClick = { navController.navigate("inicio") },
+                onMapaClick = { navController.navigate("mapa") },
+                onLivrosClick = { navController.navigate("livros") },
+                onPerfilClick = { navController.navigate("perfil") }
+            )
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -61,7 +71,6 @@ fun TelaReservas(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Empréstimos Atuais section
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -94,7 +103,6 @@ fun TelaReservas(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Minhas Reservas section
             Text(
                 text = "Minhas Reservas",
                 fontWeight = FontWeight.Bold,
@@ -121,7 +129,6 @@ fun TelaReservas(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Summary cards
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -149,7 +156,6 @@ fun ItemEmprestimo(titulo: String, dataDevolucao: String) {
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Book cover placeholder
             Box(
                 modifier = Modifier
                     .size(80.dp, 110.dp)
@@ -321,7 +327,8 @@ fun CardResumo(titulo: String, valor: String, icone: ImageVector) {
 @Preview(showBackground = true)
 @Composable
 fun TelaReservasPreview() {
-    TelaReservas(onBackClick = {})
+    TelaReservas(
+        navController = rememberNavController(),
+        onBackClick = {}
+    )
 }
-
-

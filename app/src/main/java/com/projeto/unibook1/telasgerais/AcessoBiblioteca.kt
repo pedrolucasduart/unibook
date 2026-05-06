@@ -38,7 +38,14 @@ fun AcessoBiblioteca(
     onBackClick: () -> Unit
 ){
     Scaffold(
-        bottomBar = { BottomNavBar() }
+        bottomBar = {
+            BottomNavBar(
+                onInicioClick = { /* navController.navigate("inicio") */ },
+                onMapaClick = { /* navController.navigate("mapa") */ },
+                onLivrosClick = { /* navController.navigate("livros") */ },
+                onPerfilClick = { /* navController.navigate("perfil") */ }
+            )
+        }
     ) { paddingValues ->
 
         Column(
