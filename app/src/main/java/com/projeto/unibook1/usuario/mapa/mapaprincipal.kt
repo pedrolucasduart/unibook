@@ -17,19 +17,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.projeto.unibook1.usuario.Inicio.BottomNavBar
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
+    navController: NavController,
     onReservaClick: () -> Unit
 ) {
-    // 👇 Arrumado: Faltava o } no final dessa linha!
     var andarSelecionado by remember { mutableStateOf("Térreo") }
 
     Scaffold(
         bottomBar = {
-            BottomNavBar()
+            BottomNavBar(
+                onInicioClick = { navController.navigate("inicio") },
+                onMapaClick = { navController.navigate("mapa") },
+                onLivrosClick = { navController.navigate("livros") },
+                onPerfilClick = { navController.navigate("perfil") }
+            )
         }
     ) { paddingValues ->
 
@@ -71,7 +77,6 @@ fun MapScreen(
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                // LÓGICA DO BOTÃO TÉRREO
                 if (andarSelecionado == "Térreo") {
                     Button(
                         onClick = { andarSelecionado = "Térreo" },
@@ -84,7 +89,6 @@ fun MapScreen(
                     ) { Text(text = "Térreo") }
                 }
 
-                // LÓGICA DO BOTÃO 1º ANDAR
                 if (andarSelecionado == "1º Andar") {
                     Button(
                         onClick = { andarSelecionado = "1º Andar" },
@@ -112,7 +116,6 @@ fun MapScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        // O texto muda conforme o botão que você apertou!
                         text = if (andarSelecionado == "Térreo") "[ Imagem do Mapa Térreo Aqui ]" else "[ Imagem do Mapa 1º Andar Aqui ]",
                         color = Color(0xFF8B9CB6),
                         fontWeight = FontWeight.Bold
@@ -135,12 +138,8 @@ fun MapScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
-                Card(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
+                Card(modifier = Modifier.weight(1f)) {
+                    Column(modifier = Modifier.padding(16.dp)) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
@@ -149,10 +148,8 @@ fun MapScreen(
                             Text(text = "10 LIVRES")
                         }
                         Spacer(modifier = Modifier.height(16.dp))
-
                         Text(text = "Armários", fontWeight = FontWeight.Bold)
                         Text(text = "Bloco A - Térreo")
-
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
                             onClick = { onReservaClick() },
@@ -165,12 +162,8 @@ fun MapScreen(
 
                 Spacer(modifier = Modifier.width(16.dp))
 
-                Card(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
+                Card(modifier = Modifier.weight(1f)) {
+                    Column(modifier = Modifier.padding(16.dp)) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
@@ -179,12 +172,9 @@ fun MapScreen(
                             Text(text = "Esgotado")
                         }
                         Spacer(modifier = Modifier.height(16.dp))
-
                         Text(text = "Armários", fontWeight = FontWeight.Bold)
                         Text(text = "Entrada Principal")
-
                         Spacer(modifier = Modifier.height(16.dp))
-
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(containerColor = Color(0xFFF0F4F8))
@@ -208,18 +198,13 @@ fun MapScreen(
                     .padding(horizontal = 16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
+                Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = "LEGENDA DO MAPA",
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF8B9CB6)
                     )
-
                     Spacer(modifier = Modifier.height(16.dp))
-
-                    // SE FOR TÉRREO, MOSTRA ISSO:
                     if (andarSelecionado == "Térreo") {
                         Row(modifier = Modifier.fillMaxWidth()) {
                             Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
@@ -238,12 +223,10 @@ fun MapScreen(
                             }
                             Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
                                 Text(text = "\uD83D\uDFE2")
-                                Text(text = "Salas de Estudo OI")
+                                Text(text = "Salas de Estudo")
                             }
                         }
-                    }
-                    // SE FOR 1º ANDAR, MOSTRA ISSO:
-                    else {
+                    } else {
                         Row(modifier = Modifier.fillMaxWidth()) {
                             Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
                                 Text(text = "🔴 ")
@@ -255,8 +238,8 @@ fun MapScreen(
                             }
                         }
                     }
-                } // 👇 Arrumado: Faltava fechar a Column aqui!
-            } // 👇 Arrumado: Faltava fechar o Card aqui!
+                }
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
         }
@@ -264,17 +247,22 @@ fun MapScreen(
 }
 
 @Composable
-fun BottomNavBar() {
+fun BottomNavBar(
+    onInicioClick: () -> Unit,
+    onMapaClick: () -> Unit,
+    onLivrosClick: () -> Unit,
+    onPerfilClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        Text(text = "🏠 Início")
-        Text(text = "🗺️ Mapa")
-        Text(text = "📚 Livros")
-        Text(text = "👤 Perfil")
+        Text(text = "🏠 Início", modifier = Modifier.clickable { onInicioClick() })
+        Text(text = "🗺️ Mapa", modifier = Modifier.clickable { onMapaClick() })
+        Text(text = "📚 Livros", modifier = Modifier.clickable { onLivrosClick() })
+        Text(text = "👤 Perfil", modifier = Modifier.clickable { onPerfilClick() })
     }
 }
 
@@ -282,6 +270,9 @@ fun BottomNavBar() {
 @Composable
 fun MapScreenPreview() {
     MaterialTheme {
-        MapScreen(onReservaClick = {})
+        MapScreen(
+            navController = rememberNavController(),
+            onReservaClick = {}
+        )
     }
 }

@@ -39,28 +39,28 @@ import com.projeto.unibook1.usuario.mapa.MapScreen
 import com.projeto.unibook1.telasgerais.TelaReservaArmario
 
 // ── Color palette ──────────────────────────────────────────────────────────────
-private val AzureBlue      = Color(0xFF1565C0)
-private val AzureBlueDark  = Color(0xFF0D47A1)
-private val ButtonBlue     = Color(0xFF1A73E8)
+private val AzureBlue = Color(0xFF1565C0)
+private val AzureBlueDark = Color(0xFF0D47A1)
+private val ButtonBlue = Color(0xFF1A73E8)
 private val AvailableGreen = Color(0xFF4CAF50)
 private val AvailableGreenBg = Color(0xFFE8F5E9)
-private val BorrowedRed    = Color(0xFFE53935)
-private val BorrowedRedBg  = Color(0xFFFFEBEE)
-private val StarYellow     = Color(0xFFFFC107)
-private val BlueBorder     = Color(0xFF1A73E8)
-private val LightBlueBg    = Color(0xFFEEF4FC)
-private val ChipBg         = Color(0xFFF5F5F5)
-private val ChipBorder     = Color(0xFFE0E0E0)
-private val TextPrimary    = Color(0xFF1A1A1A)
-private val TextSecondary  = Color(0xFF666666)
-private val TextBlue       = Color(0xFF1A73E8)
-private val Divider        = Color(0xFFEEEEEE)
-private val BookCardBg1    = Color(0xFFF5E6D3)
-private val BookCardBg2    = Color(0xFFF7EDE2)
-private val BookCardBg3    = Color(0xFF4E8B7A)
-private val BookCardBg4    = Color(0xFFF5D6C0)
-private val NavSelected    = Color(0xFF1A73E8)
-private val NavUnselected  = Color(0xFF9E9E9E)
+private val BorrowedRed = Color(0xFFE53935)
+private val BorrowedRedBg = Color(0xFFFFEBEE)
+private val StarYellow = Color(0xFFFFC107)
+private val BlueBorder = Color(0xFF1A73E8)
+private val LightBlueBg = Color(0xFFEEF4FC)
+private val ChipBg = Color(0xFFF5F5F5)
+private val ChipBorder = Color(0xFFE0E0E0)
+private val TextPrimary = Color(0xFF1A1A1A)
+private val TextSecondary = Color(0xFF666666)
+private val TextBlue = Color(0xFF1A73E8)
+private val Divider = Color(0xFFEEEEEE)
+private val BookCardBg1 = Color(0xFFF5E6D3)
+private val BookCardBg2 = Color(0xFFF7EDE2)
+private val BookCardBg3 = Color(0xFF4E8B7A)
+private val BookCardBg4 = Color(0xFFF5D6C0)
+private val NavSelected = Color(0xFF1A73E8)
+private val NavUnselected = Color(0xFF9E9E9E)
 
 class LivrosMain : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,15 +105,26 @@ class LivrosMain : ComponentActivity() {
                                 onQrCodeClick = { /* Ação futura */ },
                                 onMapaClick = { navController.navigate("mapa") },
                                 onArmarioClick = { navController.navigate("reserva_armario") },
-                                onSearchClick = { navController.navigate("pesquisa") }
+                                onSearchClick = { navController.navigate("pesquisa") },
+                                onLivrosClick = { navController.navigate("main") },   // adicione se necessário
+                                onPerfilClick = { navController.navigate("perfil") }  // adicione se necessário
                             )
                         }
-                        composable("mapa") {
-                            MapScreen(onReservaClick = { navController.navigate("reserva_armario") })
-                        }
+
                         composable("perfil") {
-                            TelaReservas(onBackClick = { navController.popBackStack() })
+                            TelaReservas(
+                                navController = navController,  // adicione essa linha
+                                onBackClick = { navController.popBackStack() }
+                            )
                         }
+
+                        composable("mapa") {
+                            MapScreen(
+                                navController = navController,  // adicione essa linha
+                                onReservaClick = { navController.navigate("reserva_armario") }
+                            )
+                        }
+
                         composable("reserva_armario") {
                             TelaReservaArmario()
                         }
@@ -190,7 +201,6 @@ fun TopAppBarSection() {
         }
 
 
-
     }
 }
 
@@ -230,7 +240,7 @@ fun LivroFilterChipsRow() {
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        LivroFilterChipItem(label = "Curso",     icon = Icons.Default.School)
+        LivroFilterChipItem(label = "Curso", icon = Icons.Default.School)
         Spacer(Modifier.width(8.dp))
         LivroFilterChipItem(label = "Professor", icon = Icons.Default.Person)
         Spacer(Modifier.width(8.dp))
@@ -318,9 +328,19 @@ fun LivroDestaqueSection() {
             Spacer(Modifier.weight(1f))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 repeat(4) {
-                    Icon(Icons.Default.Star, null, tint = StarYellow, modifier = Modifier.size(16.dp))
+                    Icon(
+                        Icons.Default.Star,
+                        null,
+                        tint = StarYellow,
+                        modifier = Modifier.size(16.dp)
+                    )
                 }
-                Icon(Icons.Default.StarHalf, null, tint = StarYellow, modifier = Modifier.size(16.dp))
+                Icon(
+                    Icons.Default.StarHalf,
+                    null,
+                    tint = StarYellow,
+                    modifier = Modifier.size(16.dp)
+                )
                 Spacer(Modifier.width(4.dp))
                 Text("(4.8)", fontSize = 13.sp, color = TextSecondary)
             }
@@ -538,9 +558,24 @@ fun RecommendedBookCard(book: BookCard) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(12.dp)
                 ) {
-                    Text("CARTA DO", fontSize = 9.sp, color = Color.White.copy(alpha = 0.8f), fontWeight = FontWeight.Light)
-                    Text("MARKETING", fontSize = 12.sp, color = Color.White, fontWeight = FontWeight.Bold)
-                    Text("DIGITAL", fontSize = 12.sp, color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(
+                        "CARTA DO",
+                        fontSize = 9.sp,
+                        color = Color.White.copy(alpha = 0.8f),
+                        fontWeight = FontWeight.Light
+                    )
+                    Text(
+                        "MARKETING",
+                        fontSize = 12.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        "DIGITAL",
+                        fontSize = 12.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }
@@ -573,8 +608,22 @@ data class CatalogBook(
 )
 
 private val catalogBooks = listOf(
-    CatalogBook("Psicologia Social", "Leon Festinger", "EMPRESTADO", false, false, Color(0xFF4A7E8A)),
-    CatalogBook("Justiça: O que é...", "Michael Sandel", "DISPONÍVEL", true, true, Color(0xFF8B7355)),
+    CatalogBook(
+        "Psicologia Social",
+        "Leon Festinger",
+        "EMPRESTADO",
+        false,
+        false,
+        Color(0xFF4A7E8A)
+    ),
+    CatalogBook(
+        "Justiça: O que é...",
+        "Michael Sandel",
+        "DISPONÍVEL",
+        true,
+        true,
+        Color(0xFF8B7355)
+    ),
 )
 
 @Composable
@@ -615,7 +664,12 @@ fun CatalogBookItem(book: CatalogBook) {
         )
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = book.title, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary)
+            Text(
+                text = book.title,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = TextPrimary
+            )
             Text(text = book.author, fontSize = 12.sp, color = TextSecondary)
             Spacer(Modifier.height(5.dp))
             Box(
@@ -642,7 +696,6 @@ fun CatalogBookItem(book: CatalogBook) {
 }
 
 
-
 @Composable
 fun LivroBottomNavBar(navController: NavController) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
@@ -660,7 +713,11 @@ fun LivroBottomNavBar(navController: NavController) {
             selected = currentRoute == "inicio",
             onClick = { navController.navigate("inicio") },
             icon = {
-                Icon(Icons.Outlined.Home, contentDescription = "Início", modifier = Modifier.size(22.dp))
+                Icon(
+                    Icons.Outlined.Home,
+                    contentDescription = "Início",
+                    modifier = Modifier.size(22.dp)
+                )
             },
             label = { Text("Início", fontSize = 11.sp) },
             colors = NavigationBarItemDefaults.colors(
@@ -675,7 +732,11 @@ fun LivroBottomNavBar(navController: NavController) {
             selected = currentRoute == "mapa",
             onClick = { navController.navigate("mapa") },
             icon = {
-                Icon(Icons.Outlined.Map, contentDescription = "Mapa", modifier = Modifier.size(22.dp))
+                Icon(
+                    Icons.Outlined.Map,
+                    contentDescription = "Mapa",
+                    modifier = Modifier.size(22.dp)
+                )
             },
             label = { Text("Mapa", fontSize = 11.sp) },
             colors = NavigationBarItemDefaults.colors(
@@ -688,7 +749,7 @@ fun LivroBottomNavBar(navController: NavController) {
         )
         NavigationBarItem(
             selected = currentRoute == "main",
-            onClick = { 
+            onClick = {
                 if (currentRoute != "main") {
                     navController.navigate("main") {
                         popUpTo("main") { inclusive = true }
@@ -696,7 +757,11 @@ fun LivroBottomNavBar(navController: NavController) {
                 }
             },
             icon = {
-                Icon(Icons.Default.MenuBook, contentDescription = "Livros", modifier = Modifier.size(22.dp))
+                Icon(
+                    Icons.Default.MenuBook,
+                    contentDescription = "Livros",
+                    modifier = Modifier.size(22.dp)
+                )
             },
             label = { Text("Livros", fontSize = 11.sp) },
             colors = NavigationBarItemDefaults.colors(
@@ -711,7 +776,11 @@ fun LivroBottomNavBar(navController: NavController) {
             selected = currentRoute == "perfil",
             onClick = { navController.navigate("perfil") },
             icon = {
-                Icon(Icons.Outlined.Person, contentDescription = "Perfil", modifier = Modifier.size(22.dp))
+                Icon(
+                    Icons.Outlined.Person,
+                    contentDescription = "Perfil",
+                    modifier = Modifier.size(22.dp)
+                )
             },
             label = { Text("Perfil", fontSize = 11.sp) },
             colors = NavigationBarItemDefaults.colors(

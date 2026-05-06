@@ -19,7 +19,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,14 +32,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun ArmarioScreen(
+    navController: NavController,
     onBackClick: () -> Unit,
     onPerdiChaveClick: () -> Unit
 ){
     Scaffold(
-        bottomBar = { BottomNavBar() }
+        bottomBar = {
+            BottomNavBar(
+                onInicioClick = { navController.navigate("inicio") },
+                onMapaClick = { navController.navigate("mapa") },
+                onLivrosClick = { navController.navigate("livros") },
+                onPerfilClick = { navController.navigate("perfil") }
+            )
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier.fillMaxSize().background(Color(0xFFF6F6F9)).padding(14.dp)
@@ -63,17 +72,17 @@ fun ArmarioScreen(
                     Text(text = "⚪ ATIVO",
                         color = Color.White,
                         fontWeight = FontWeight.Bold
-                        )
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = "Armário 123",
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.headlineMedium
-                        )
+                    )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(text = "Tamanho: Grande",
                         color = Color(0xFFD1E3F6),
-                        )
+                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
                     Card(
@@ -88,7 +97,7 @@ fun ArmarioScreen(
                             Text(text = "Perdeu a chave?",
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold
-                                )
+                            )
 
                             Button(
                                 onClick = { onPerdiChaveClick() },
@@ -152,8 +161,7 @@ fun ArmarioScreen(
                         Text(text = "Localização:")
                         Text(text = "Bloco C - Piso 2",
                             fontWeight = FontWeight.Bold,
-                            )
-
+                        )
                     }
                 }
 
@@ -170,20 +178,18 @@ fun ArmarioScreen(
                         Text(text = "25 dez 2026",
                             fontWeight = FontWeight.Bold,
                         )
-
                     }
                 }
             }
-
         }
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ArmariosPreview() {
     ArmarioScreen(
+        navController = rememberNavController(),
         onBackClick = {},
         onPerdiChaveClick = {}
     )
