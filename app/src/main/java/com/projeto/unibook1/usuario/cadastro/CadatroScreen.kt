@@ -281,6 +281,7 @@ fun CampoSenha(label: String, valor: String, onValorChange: (String) -> Unit) {
 fun CadastroScreenPreview() {
     CadastroScreen(
         onNavigateToLogin = {},
-        onNavigateToSuporte = {}
+        onNavigateToSuporte = {},
+        emailsJaCadastrados = listOf("aluno@unifor.br", "teste@unifor.br")
     )
 }

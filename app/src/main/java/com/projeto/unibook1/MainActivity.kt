@@ -1,8 +1,11 @@
 package com.projeto.unibook1
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -26,7 +29,7 @@ import com.projeto.unibook1.usuario.livro.LivroProfessoresScreen
 import com.projeto.unibook1.usuario.livro.LivroReviewScreen
 import com.projeto.unibook1.usuario.livro.ProfessorPerfilScreen
 
-// Telas Admin — alias para evitar conflito de nome com ProfileScreen do aluno
+// Telas Admin
 import com.projeto.unibook1.ui.admin.AdminLoginScreen
 import com.projeto.unibook1.ui.admin.AdminRegisterScreen
 import com.projeto.unibook1.admin.AdminMainScreen
@@ -59,20 +62,11 @@ import com.projeto.unibook1.usuario.cadastro.ChatScreen
 import com.projeto.unibook1.usuario.cadastro.OnboardingScreen
 import com.projeto.unibook1.usuario.cadastro.RecuperarSenhaScreen as RecuperarSenhaAlunoScreen
 
-// Telas Aluno - Perfil — alias para evitar conflito com ProfileScreen do admin
-// Parâmetros de cada tela verificados diretamente no código fonte:
-//   ProfileScreen      → onBackClick, onSettingsClick, onHistoricoClick,
-//                         onPrivacidadeClick, onNotificacoesClick,
-//                         onHelpAndSupport, onViewSharedLocker, onLogout
-//   SettingsScreen     → user, appVersion, onChangePassword, onUpdateEmail,
-//                         onLGPD, onExportData, onAbout, onLogout
-//   PrivacyDataScreen  → onNavigateBack, onReadPrivacyPolicy,
-//                         onStartExport, onConfigureExclusion
-//   NotificationPreferencesScreen → onBack, onMoreOptions
+// Telas Aluno - Perfil
 import com.projeto.unibook1.usuario.perfil.ProfileScreen as AlunoProfileScreen
-import com.projeto.unibook1.usuario.perfil.SettingsScreen as AlunoSettingsScreen
 import com.projeto.unibook1.usuario.perfil.PrivacyDataScreen
 import com.projeto.unibook1.usuario.perfil.NotificationPreferencesScreen
+import com.projeto.unibook1.usuario.perfil.SettingsScreen
 
 // Suporte
 import com.projeto.unibook1.usuario.suporte.FAQScreen
@@ -351,7 +345,8 @@ class MainActivity : ComponentActivity() {
                     composable("cadastro") {
                         CadastroScreen(
                             onNavigateToLogin   = { navController.navigate("login_aluno") },
-                            onNavigateToSuporte = { navController.navigate("suporte") }
+                            onNavigateToSuporte = { navController.navigate("suporte") },
+                            emailsJaCadastrados = listOf("aluno@unifor.br")
                         )
                     }
 
@@ -406,7 +401,7 @@ class MainActivity : ComponentActivity() {
 
                     composable("perfil") {
                         AlunoProfileScreen(
-                            onBackClick         = {
+                            onBackClick = {
                                 navController.navigate("tela_inicial") {
                                     popUpTo("tela_inicial") { inclusive = false }
                                 }
@@ -417,6 +412,8 @@ class MainActivity : ComponentActivity() {
                             onNotificacoesClick = { navController.navigate("notificacoes") },
                             onHelpAndSupport    = { navController.navigate("suporte") },
                             onViewSharedLocker  = { navController.navigate("armario_screen") },
+                            onMapaClick         = { navController.navigate("mapa") },
+                            onLivrosClick       = { navController.navigate("livros_main") },
                             onLogout = {
                                 navController.navigate("selecao") {
                                     popUpTo(0) { inclusive = true }
@@ -425,33 +422,36 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable("configuracoes") {
-                        AlunoSettingsScreen(
-                            onUpdateEmail = { },
-                            onLGPD        = { navController.navigate("privacidade") },
-                            onExportData  = { navController.navigate("privacidade") },
-                            onAbout       = { },
-                            onLogout = {
+                    composable(route = "configuracoes") {
+                        SettingsScreen(
+                            onNavigateToAlterarSenha = { navController.navigate("definir_nova_senha_aluno") },
+                            onLGPD                   = { navController.navigate("privacidade") },
+                            onNavigateToLogin = {
                                 navController.navigate("selecao") {
                                     popUpTo(0) { inclusive = true }
                                 }
-                            }
+                            },
+                            onBack = { navController.popBackStack() }
                         )
                     }
 
-                    composable("privacidade") {
+                    composable(route = "privacidade") {
+                        val context = LocalContext.current
                         PrivacyDataScreen(
-                            onNavigateBack       = { navController.popBackStack() },
-                            onReadPrivacyPolicy  = { },
-                            onStartExport        = { },
-                            onConfigureExclusion = { }
+                            onNavigateBack      = { navController.popBackStack() },
+                            onReadPrivacyPolicy = {
+                                val intent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://www.gov.br/esporte/pt-br/acesso-a-informacao/lgpd")
+                                )
+                                context.startActivity(intent)
+                            }
                         )
                     }
 
                     composable("notificacoes") {
                         NotificationPreferencesScreen(
-                            onBack        = { navController.popBackStack() },
-                            onMoreOptions = { }
+                            onBack = { navController.popBackStack() }
                         )
                     }
 

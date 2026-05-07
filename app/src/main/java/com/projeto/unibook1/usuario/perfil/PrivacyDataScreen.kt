@@ -1,10 +1,7 @@
 package com.projeto.unibook1.usuario.perfil
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -14,7 +11,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -23,30 +19,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 // ── Colors ────────────────────────────────────────────────────────────────────
-private val BluePrimary    = Color(0xFF1565C0)
+private val BluePrimary    = Color(0xFF2196F3)
 private val BlueLight      = Color(0xFFE8F0FE)
 private val BlueChip       = Color(0xFFE3EEFF)
 private val BackgroundGray = Color(0xFFF5F7FA)
 private val CardWhite      = Color(0xFFFFFFFF)
 private val TextDark       = Color(0xFF1A1A2E)
 private val TextGray       = Color(0xFF6B7280)
-private val RedLight       = Color(0xFFFEE2E2)
-private val RedIcon        = Color(0xFFDC2626)
-private val DividerColor   = Color(0xFFE5E7EB)
-private val ButtonDisabled = Color(0xFFE5E7EB)
-private val TextDisabled   = Color(0xFF9CA3AF)
 
 // ── Screen ────────────────────────────────────────────────────────────────────
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrivacyDataScreen(
     onNavigateBack: () -> Unit = {},
-    onReadPrivacyPolicy: () -> Unit = {},
-    onStartExport: () -> Unit = {},
-    onConfigureExclusion: () -> Unit = {}
+    onReadPrivacyPolicy: () -> Unit = {}
 ) {
     var personalizedRecommendations by remember { mutableStateOf(true) }
-    var aiMentorProcessing          by remember { mutableStateOf(true) }
 
     Scaffold(
         containerColor = BackgroundGray,
@@ -58,12 +46,11 @@ fun PrivacyDataScreen(
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         Text(
-                            text = "Privacy & Data",
+                            text = "Privacidade & Dados",
                             color = BluePrimary,
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp
                         )
-                        // LGPD chip
                         Surface(
                             shape = RoundedCornerShape(50),
                             color = BlueChip,
@@ -111,24 +98,13 @@ fun PrivacyDataScreen(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // ── Hero card ──────────────────────────────────────────────────
             HeroInfoCard(onReadPrivacyPolicy = onReadPrivacyPolicy)
 
-            // ── Gerenciar Consentimento ────────────────────────────────────
             ConsentSection(
                 personalizedRecommendations = personalizedRecommendations,
-                aiMentorProcessing = aiMentorProcessing,
-                onToggleRecommendations = { personalizedRecommendations = it },
-                onToggleAiMentor = { aiMentorProcessing = it }
+                onToggleRecommendations = { personalizedRecommendations = it }
             )
 
-            // ── Suas Ações de Dados ────────────────────────────────────────
-            DataActionsSection(
-                onStartExport = onStartExport,
-                onConfigureExclusion = onConfigureExclusion
-            )
-
-            // ── Compliance footer ──────────────────────────────────────────
             ComplianceFooter()
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -136,7 +112,6 @@ fun PrivacyDataScreen(
     }
 }
 
-// ── Hero info card ─────────────────────────────────────────────────────────────
 @Composable
 private fun HeroInfoCard(onReadPrivacyPolicy: () -> Unit) {
     Card(
@@ -157,34 +132,34 @@ private fun HeroInfoCard(onReadPrivacyPolicy: () -> Unit) {
                 lineHeight = 30.sp
             )
             Text(
-                text = "Na Unifriends, utilizamos suas informações para criar uma experiência de aprendizado personalizada. Seus dados alimentam a gestão inteligente da biblioteca, geram recomendações de leitura precisas e fundamentam planos de estudos criados por nossa IA Mentor.",
+                text = "Na Unifriends, utilizamos suas informações para criar uma experiência de aprendizado personalizada. Seus dados alimentam a gestão inteligente da biblioteca e geram recomendações de leitura precisas.",
                 color = TextGray,
                 fontSize = 14.sp,
                 lineHeight = 22.sp
             )
-            // Link row
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+
+            // 3. Botão de política de privacidade ajeitado
+            Button(
+                onClick = onReadPrivacyPolicy,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = BluePrimary,
+                    contentColor = Color.White
+                )
             ) {
-                TextButton(
-                    onClick = onReadPrivacyPolicy,
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text(
-                        text = "Ler Política de Privacidade\nCompleta",
-                        color = BluePrimary,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp
-                    )
-                }
                 Icon(
                     imageVector = Icons.Outlined.OpenInNew,
-                    contentDescription = "Abrir link",
-                    tint = BluePrimary,
+                    contentDescription = null,
                     modifier = Modifier.size(18.dp)
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    text = "Ler Política de Privacidade",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp
                 )
             }
         }
@@ -195,9 +170,8 @@ private fun HeroInfoCard(onReadPrivacyPolicy: () -> Unit) {
 @Composable
 private fun ConsentSection(
     personalizedRecommendations: Boolean,
-    aiMentorProcessing: Boolean,
-    onToggleRecommendations: (Boolean) -> Unit,
-    onToggleAiMentor: (Boolean) -> Unit
+    onToggleRecommendations: (Boolean) -> Unit
+    // 2. aiMentorProcessing removido
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         SectionHeader(
@@ -205,20 +179,13 @@ private fun ConsentSection(
             label = "Gerenciar Consentimento"
         )
 
-        // Each consent item in its own card (matching prototype)
         ConsentCard(
-            title = "Recomendações\nPersonalizadas",
+            title = "Recomendações Personalizadas",
             description = "Sugestões de livros e cursos com base no seu histórico acadêmico.",
             enabled = personalizedRecommendations,
             onToggle = onToggleRecommendations
         )
 
-        ConsentCard(
-            title = "Processamento de Dados\npor IA Mentor",
-            description = "Permite que nossa IA analise seu progresso para sugerir melhorias no plano de estudos.",
-            enabled = aiMentorProcessing,
-            onToggle = onToggleAiMentor
-        )
     }
 }
 
@@ -252,8 +219,7 @@ private fun ConsentCard(
                     text = title,
                     color = TextDark,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                    lineHeight = 20.sp
+                    fontSize = 14.sp
                 )
                 Text(
                     text = description,
@@ -273,135 +239,6 @@ private fun ConsentCard(
                     uncheckedBorderColor = Color(0xFFD1D5DB)
                 )
             )
-        }
-    }
-}
-
-// ── Data actions section ──────────────────────────────────────────────────────
-@Composable
-private fun DataActionsSection(
-    onStartExport: () -> Unit,
-    onConfigureExclusion: () -> Unit
-) {
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        SectionHeader(
-            icon = Icons.Outlined.Storage,
-            label = "Suas Ações de Dados"
-        )
-
-        // Export card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = CardWhite),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(44.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(BlueLight),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.AccountCircle,
-                        contentDescription = null,
-                        tint = BluePrimary,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-                Text(
-                    text = "Exportar meus dados",
-                    color = TextDark,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp
-                )
-                Text(
-                    text = "Baixe uma cópia legível de todas as suas informações armazenadas conosco.",
-                    color = TextGray,
-                    fontSize = 13.sp,
-                    lineHeight = 19.sp
-                )
-                Button(
-                    onClick = onStartExport,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = BluePrimary,
-                        contentColor = Color.White
-                    )
-                ) {
-                    Text(
-                        text = "Iniciar Exportação",
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 15.sp
-                    )
-                }
-            }
-        }
-
-        // Delete card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = CardWhite),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(44.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(RedLight),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Delete,
-                        contentDescription = null,
-                        tint = RedIcon,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-                Text(
-                    text = "Solicitar exclusão de dados",
-                    color = TextDark,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp
-                )
-                Text(
-                    text = "Remova permanentemente sua conta e dados pessoais de nossa plataforma.",
-                    color = TextGray,
-                    fontSize = 13.sp,
-                    lineHeight = 19.sp
-                )
-                Button(
-                    onClick = onConfigureExclusion,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = ButtonDisabled,
-                        contentColor = TextDisabled
-                    ),
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
-                ) {
-                    Text(
-                        text = "Configurar Exclusão",
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 15.sp
-                    )
-                }
-            }
         }
     }
 }

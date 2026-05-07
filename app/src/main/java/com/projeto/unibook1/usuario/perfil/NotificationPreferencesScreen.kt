@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 // ── Cores ─────────────────────────────────────────────────────────
-private val Blue        = Color(0xFF2563EB)
+private val Blue        = Color(0xFF2196F3)
 private val LightBlue   = Color(0xFFEFF6FF)
 private val Background  = Color(0xFFF1F5F9)
 private val CardBg      = Color(0xFFFFFFFF)
@@ -48,8 +48,7 @@ data class NotificationCategory(
 
 @Composable
 fun NotificationPreferencesScreen(
-    onBack: () -> Unit = {},
-    onMoreOptions: () -> Unit = {}
+    onBack: () -> Unit = {}
 ) {
     val categories = listOf(
         NotificationCategory(
@@ -118,7 +117,6 @@ fun NotificationPreferencesScreen(
         )
     )
 
-    // Estado dos toggles — mapa "categoria.item" -> Boolean
     val toggleStates = remember {
         mutableStateMapOf<String, Boolean>().apply {
             categories.forEach { cat ->
@@ -144,24 +142,18 @@ fun NotificationPreferencesScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 4.dp, end = 8.dp, top = 16.dp, bottom = 4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar", tint = Blue)
-                    }
-                    Text(
-                        "Preferências de\nNotificação",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Blue,
-                        lineHeight = 26.sp
-                    )
+                IconButton(onClick = onBack) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Voltar", tint = Blue)
                 }
-                IconButton(onClick = onMoreOptions) {
-                    Icon(Icons.Default.MoreVert, contentDescription = "Mais opções", tint = TextPrimary)
-                }
+                Text(
+                    "Preferências de\nNotificação",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Blue,
+                    lineHeight = 26.sp
+                )
             }
 
             Spacer(Modifier.height(8.dp))
@@ -218,13 +210,17 @@ fun NotificationPreferencesScreen(
 
             // ── Categorias de Notificação ─────────────────────────
             categories.forEach { category ->
-                // Rótulo da categoria
                 Row(
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 0.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Icon(category.icon, contentDescription = null, tint = Blue, modifier = Modifier.size(20.dp))
+                    Icon(
+                        category.icon,
+                        contentDescription = null,
+                        tint = Blue,
+                        modifier = Modifier.size(20.dp)
+                    )
                     Text(
                         category.label,
                         fontWeight = FontWeight.Bold,
@@ -235,7 +231,6 @@ fun NotificationPreferencesScreen(
 
                 Spacer(Modifier.height(10.dp))
 
-                // Card dos itens
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -263,7 +258,11 @@ fun NotificationPreferencesScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Column(modifier = Modifier.weight(1f).padding(end = 12.dp)) {
+                                Column(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(end = 12.dp)
+                                ) {
                                     Text(
                                         item.title,
                                         fontWeight = FontWeight.SemiBold,
