@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 // ── Cores ─────────────────────────────────────────────────────────
-private val Blue        = Color(0xFF2563EB)
+private val Blue        = Color(0xFF2196F3)
 private val LightBlue   = Color(0xFFEFF6FF)
 private val Background  = Color(0xFFF1F5F9)
 private val CardBg      = Color(0xFFFFFFFF)
@@ -71,7 +71,7 @@ fun ProfileScreen(
         name = "Lucas Silva",
         registration = "2124567",
         semester = "4° Semestre",
-        course = "Psicologia"
+        course = "Ciência da Computação"
     ),
     loans: List<LoanItem> = listOf(
         LoanItem("Psicologia Experimental", "15 Out", 0.6f)
@@ -85,7 +85,6 @@ fun ProfileScreen(
         location = "Bloco B, 2° andar",
         sharedWith = "Ziltom"
     ),
-    onEditPhoto: () -> Unit = {},
     onViewSharedLocker: () -> Unit = {},
     onHelpAndSupport: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
@@ -93,6 +92,8 @@ fun ProfileScreen(
     onHistoricoClick: () -> Unit = {},
     onPrivacidadeClick: () -> Unit = {},
     onNotificacoesClick: () -> Unit = {},
+    onMapaClick: () -> Unit = {},       // ← adicionado
+    onLivrosClick: () -> Unit = {},     // ← adicionado
     onLogout: () -> Unit = {}
 ) {
     var showLogoutDialog by remember { mutableStateOf(false) }
@@ -111,6 +112,8 @@ fun ProfileScreen(
         bottomBar = {
             BottomNavBar(
                 onInicioClick = onBackClick,
+                onMapaClick   = onMapaClick,    // ← adicionado
+                onLivrosClick = onLivrosClick,  // ← adicionado
                 onPerfilClick = {}
             )
         },
@@ -144,36 +147,19 @@ fun ProfileScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(contentAlignment = Alignment.BottomEnd) {
-                    Box(
-                        modifier = Modifier
-                            .size(90.dp)
-                            .clip(CircleShape)
-                            .background(Color(0xFFCBD5E1)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            Icons.Default.Person,
-                            contentDescription = "Foto de perfil",
-                            tint = Color.White,
-                            modifier = Modifier.size(56.dp)
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .size(28.dp)
-                            .clip(CircleShape)
-                            .background(Blue)
-                            .clickable { onEditPhoto() },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            Icons.Default.Edit,
-                            contentDescription = "Editar foto de perfil",
-                            tint = Color.White,
-                            modifier = Modifier.size(14.dp)
-                        )
-                    }
+                Box(
+                    modifier = Modifier
+                        .size(90.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFFCBD5E1)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Default.Person,
+                        contentDescription = "Foto de perfil",
+                        tint = Color.White,
+                        modifier = Modifier.size(56.dp)
+                    )
                 }
 
                 Spacer(Modifier.height(10.dp))
@@ -588,6 +574,8 @@ private fun MenuDivider() {
 @Composable
 private fun BottomNavBar(
     onInicioClick: () -> Unit = {},
+    onMapaClick: () -> Unit = {},
+    onLivrosClick: () -> Unit = {},
     onPerfilClick: () -> Unit = {}
 ) {
     NavigationBar(containerColor = CardBg, tonalElevation = 0.dp) {
@@ -599,13 +587,13 @@ private fun BottomNavBar(
         )
         NavigationBarItem(
             selected = false,
-            onClick = {},
+            onClick = onMapaClick,
             icon = { Icon(Icons.Outlined.Map, contentDescription = "Mapa") },
             label = { Text("Mapa", fontSize = 11.sp) }
         )
         NavigationBarItem(
             selected = false,
-            onClick = {},
+            onClick = onLivrosClick,
             icon = { Icon(Icons.Outlined.MenuBook, contentDescription = "Livros") },
             label = { Text("Livros", fontSize = 11.sp) }
         )

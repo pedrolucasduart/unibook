@@ -108,7 +108,6 @@ fun RecuperarSenhaScreen(
                     isLoading = true
                     mensagem = null
                     isLoading = false
-                    mensagem = "Instruções enviadas! Verifique seu e-mail."
                     onContinuar()
                 }
             },
